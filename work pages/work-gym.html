@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revitalizing Third Spaces — Daniel Park</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           #ffffff;
+      --bg2:          #f4fdf7;
+      --surface:      #e8f8ee;
+      --border:       #d4eddd;
+      --border2:      #a8d9b8;
+      --text:         #0a1a0f;
+      --muted:        #6b9278;
+      --muted2:       #b2d4bc;
+      --accent:       #16a34a;
+      --accent-light: #f0fdf4;
+      --accent-mid:   #4ade80;
+      --green:        #16a34a;
+      --green-light:  #f0fdf4;
+      --green-mid:    #86efac;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif; font-weight: 300;
+      overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none;
+    }
+
+    .cursor { position: fixed; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+    .cursor-box { position: fixed; width: 26px; height: 26px; border: 1.5px solid var(--accent-mid); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); opacity: 0.5; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 52px; border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); z-index: 100;
+    }
+    .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--accent); font-weight: 500; text-decoration: none; }
+    .nav-back { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--muted); display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+    .nav-back:hover { color: var(--accent); }    .nav-back span { transition: transform 0.2s; }
+    .nav-back:hover span { transform: translateX(-3px); }
+
+    /* HERO */
+    .case-hero {
+      padding: 120px 52px 80px; border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .case-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: 0.3; pointer-events: none;
+    }
+    .case-hero::after {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(22,163,74,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; max-width: 960px; }
+    .breadcrumb {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 32px; display: flex; align-items: center; gap: 10px;
+      opacity: 0; animation: fadeIn 0.5s 0.1s forwards;
+    }
+    .breadcrumb span { color: var(--accent); }
+    .breadcrumb::before { content: '// '; opacity: 0.4; }
+    .case-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(32px, 5vw, 72px);
+      font-weight: 400; line-height: 1.0; letter-spacing: -0.025em; margin-bottom: 8px;
+      opacity: 0; transform: translateY(30px);
+      animation: up 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+    }
+    .case-title .blue { color: var(--accent); }
+    .case-subtitle-line {
+      font-family: 'IBM Plex Mono', monospace; font-size: clamp(13px, 1.8vw, 18px);
+      font-weight: 300; color: var(--muted); letter-spacing: -0.01em; margin-bottom: 36px;
+      opacity: 0; animation: fadeIn 0.6s 0.4s forwards;
+    }
+    .hero-desc {
+      font-size: 16px; line-height: 1.8; color: #5a6080;
+      font-weight: 300; max-width: 640px; margin-bottom: 48px;
+      opacity: 0; animation: fadeIn 0.6s 0.5s forwards;
+    }
+    .hero-desc strong { color: var(--text); font-weight: 400; }
+    .case-meta {
+      display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--border);
+      opacity: 0; animation: fadeIn 0.6s 0.65s forwards;
+    }
+    .meta-cell { padding: 16px 28px; border-right: 1px solid var(--border); }
+    .meta-cell:last-child { border-right: none; }
+    .meta-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .meta-val { font-size: 14px; color: var(--text); font-weight: 400; }
+    .meta-val.blue { color: var(--accent); }
+    .meta-val.green { color: var(--green); }
+
+    /* PHOTO SLOTS */
+    .photo-slot {
+      width: 100%; background: var(--bg2);
+      border: 2px dashed var(--border2);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+    }
+    .photo-slot.hero-slot  { aspect-ratio: 16/7; }
+    .photo-slot.landscape  { aspect-ratio: 16/9; }
+    .photo-slot.wide       { aspect-ratio: 21/9; }
+    .photo-slot.square     { aspect-ratio: 1/1; }
+    .photo-slot.phone      { aspect-ratio: 9/16; }
+    .photo-slot.tall       { aspect-ratio: 4/5; }
+    .photo-slot.short      { aspect-ratio: 3/1; }
+
+    .photo-slot-tag {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); background: var(--accent-light);
+      padding: 4px 12px; border: 1px solid var(--accent-mid);
+    }    .photo-slot-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      letter-spacing: 0.08em; color: var(--muted); text-align: center; padding: 0 20px;
+    }
+    .photo-slot-hint {
+      font-size: 11px; color: var(--muted2); text-align: center; padding: 0 20px;
+      font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.04em;
+    }
+    .photo-caption {
+      padding: 12px 16px; font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; letter-spacing: 0.08em; color: var(--muted);
+      border-top: 1px solid var(--border); background: var(--bg);
+    }
+    .photo-wrap { border: 1px solid var(--border); overflow: hidden; margin: 28px 0; }
+    .photo-wrap.no-margin { margin: 0; }
+    .hifi-video-frame {
+      background: #0a0f14;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hifi-video-frame video {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      max-height: min(52vh, 620px);
+      height: auto;
+    }
+    .photo-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+    .photo-grid-2 .photo-wrap { margin: 0; }
+    /* Persona + journey: same frame height (journey aspect) so landscape journey isn’t dwarfed by portrait persona */
+    .photo-grid-2.persona-journey-pair .pj-visual {
+      aspect-ratio: 2954 / 1708;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .photo-grid-2.persona-journey-pair .pj-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .photo-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
+    .photo-grid-3 .photo-wrap { margin: 0; }
+    /* 4 phone screens in a row */
+    .photo-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 28px 0; }
+    .photo-grid-4 .photo-wrap { margin: 0; }
+
+    /* BODY */
+    .case-body { max-width: 860px; margin: 0 auto; padding: 80px 52px; }
+
+    .section { margin-bottom: 72px; }
+    .sec-anchor { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block; }
+    .sec-anchor::before { content: '// '; opacity: 0.4; color: var(--muted); }
+    .sec-heading { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 400; letter-spacing: -0.01em; color: var(--text); margin-bottom: 20px; line-height: 1.2; }
+    .sec-text { font-size: 15px; line-height: 1.9; color: #5a6080; font-weight: 300; margin-bottom: 16px; }
+    .sec-text strong { color: var(--text); font-weight: 400; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 56px 0; }
+
+    .highlight-box { border: 1px solid var(--accent-mid); background: var(--accent-light); padding: 24px 28px; margin: 28px 0; }
+    .highlight-box p { font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--accent); letter-spacing: 0.01em; }
+    .highlight-box.green { border-color: var(--green-mid); background: var(--green-light); }
+    .highlight-box.green p { color: var(--green); }
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); margin: 28px 0; }
+    .stat-cell { padding: 24px; border-right: 1px solid var(--border); }
+    .stat-cell:last-child { border-right: none; }
+    .stat-num { font-family: 'IBM Plex Mono', monospace; font-size: 36px; font-weight: 400; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 6px; }
+    .stat-desc { font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.5; }
+
+    .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+    .insight-card { border: 1px solid var(--border); padding: 24px; background: var(--bg2); transition: border-color 0.2s; }
+    .insight-card:hover { border-color: var(--accent-mid); }
+    .insight-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .insight-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+    .insight-body { font-size: 13px; line-height: 1.7; color: var(--muted); font-weight: 300; }
+
+    .case-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+    .case-list li { font-size: 14px; line-height: 1.7; color: #5a6080; font-weight: 300; display: flex; gap: 12px; }
+    .case-list li::before { content: '→'; color: var(--accent); font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 3px; flex-shrink: 0; }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.04em; padding: 5px 12px; border: 1px solid var(--border2); color: var(--muted); background: var(--bg2); }
+
+    /* feature rows for prototype decisions */
+    .feature-list { display: flex; flex-direction: column; gap: 0; margin: 28px 0; border: 1px solid var(--border); }
+    .feature-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid var(--border); }
+    .feature-row:last-child { border-bottom: none; }
+    .feature-name { padding: 18px 20px; font-size: 13px; font-weight: 400; color: var(--text); background: var(--bg2); border-right: 1px solid var(--border); display: flex; align-items: flex-start; }
+    .feature-why { padding: 18px 20px; font-size: 13px; line-height: 1.7; color: var(--muted); font-weight: 300; }
+    .feature-why strong { color: var(--text); font-weight: 400; }
+
+    /* user quote */
+    .quote-block { border-left: 3px solid var(--accent); padding: 16px 24px; margin: 24px 0; background: var(--accent-light); }
+    .quote-text { font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--accent); font-style: italic; }
+    .quote-attr { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+
+    /* next / footer */
+    .next-project { border-top: 1px solid var(--border); padding: 64px 52px; display: flex; justify-content: space-between; align-items: center; background: var(--bg2); text-decoration: none; transition: background 0.2s; }
+    .next-project:hover { background: var(--accent-light); }    .next-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .next-title { font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 400; color: var(--text); transition: color 0.2s; }
+    .next-project:hover .next-title { color: var(--accent); }
+    .next-arrow { font-size: 32px; color: var(--muted2); transition: color 0.2s, transform 0.2s; }
+    .next-project:hover .next-arrow { color: var(--accent); transform: translate(6px,-6px); }
+    footer { padding: 28px 52px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .ft-left { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+    .ft-links { display: flex; gap: 28px; }
+    .ft-links a { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .ft-links a:hover { color: var(--accent); }
+
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes up { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-box" id="curb"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">dp.portfolio</a>
+  <a href="index.html#works" class="nav-back"><span>←</span> back to work</a>
+</nav>
+
+<!-- HERO -->
+<section class="case-hero">
+  <div class="hero-inner">
+    <div class="breadcrumb">Work <span>/</span> Product Design · Berkeley Innovation</div>
+    <h1 class="case-title">Revitalizing<br><span class="blue">Third Spaces_</span></h1>
+    <div class="case-subtitle-line">Reducing social friction in shared gym spaces — a 1-week design challenge</div>
+    <p class="hero-desc">
+      A solo end-to-end design challenge through <strong>Berkeley Innovation</strong>. Starting from a broad prompt — revitalize urban third spaces — I narrowed to gyms, conducted user research, synthesized insights, and prototyped a system that makes gym interactions more predictable and opt-in.
+    </p>
+    <div class="case-meta">
+      <div class="meta-cell"><div class="meta-label">Type</div><div class="meta-val blue">Solo Design Challenge</div></div>
+      <div class="meta-cell"><div class="meta-label">Timeline</div><div class="meta-val">1 Week</div></div>
+      <div class="meta-cell"><div class="meta-label">Org</div><div class="meta-val">Berkeley Innovation</div></div>
+      <div class="meta-cell"><div class="meta-label">Focus</div><div class="meta-val green">Prototyping Track</div></div>
+      <div class="meta-cell"><div class="meta-label">Tools</div><div class="meta-val">Figma · Research</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HERO IMAGE -->
+<div class="photo-wrap" style="margin:0;border-left:none;border-right:none;">
+  <img src="photos/thumbnails/Frame 25.png" alt="Revitalizing Third Spaces — gym design challenge" style="width:100%;display:block;" />
+  <div class="photo-caption">Berkeley Innovation · 1-week design challenge</div>
+</div>
+
+<div class="case-body">
+
+  <!-- OVERVIEW -->
+  <section class="section reveal">
+    <span class="sec-anchor">01 — overview</span>
+    <h2 class="sec-heading">The prompt & my focus</h2>
+    <p class="sec-text">The challenge was open-ended: <strong>revitalize third places in urban areas</strong> — cafes, libraries, parks. Rather than picking an obvious space, I asked myself which third places I personally hesitate to visit. The answer was the gym.</p>
+    <p class="sec-text">Through early personal observations and conversations, I realized gym avoidance wasn't just my problem. People trying to get fit in urban areas were running into the same invisible wall — not a physical barrier, but a social one.</p>
+
+    <div class="highlight-box">
+      <p>Initial HMW: "How might we reduce awkward interactions in gyms so people feel more comfortable working out?"<br/><br/>→ <strong>Refined to: "How might we make gym interactions more predictable and opt-in, so people with different social comfort levels can all participate comfortably?"</strong></p>
+    </div>
+
+    <div class="tag-list">
+      <span class="tag">UX Research</span>
+      <span class="tag">Affinity Mapping</span>
+      <span class="tag">User Persona</span>
+      <span class="tag">Journey Map</span>
+      <span class="tag">Crazy 8s</span>
+      <span class="tag">Impact–Effort Matrix</span>
+      <span class="tag">Lo-Fi Prototype</span>
+      <span class="tag">Hi-Fi Prototype</span>
+      <span class="tag">User Testing</span>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- RESEARCH -->
+  <section class="section reveal">
+    <span class="sec-anchor">02 — research</span>
+    <h2 class="sec-heading">Understanding the real barriers</h2>
+    <p class="sec-text">I intentionally avoided locking into my early assumption ("awkward gym interactions") to reduce confirmation bias. I used a mixed-method approach with a small sample, appropriate for the 1-week timeline.</p>
+
+    <div class="stats-row">
+      <div class="stat-cell"><div class="stat-num">3–4</div><div class="stat-desc">Semi-structured user interviews with solo gym-goers</div></div>
+      <div class="stat-cell"><div class="stat-num">2</div><div class="stat-desc">User types: socially awkward vs. socially confident</div></div>
+      <div class="stat-cell"><div class="stat-num">1</div><div class="stat-desc">Week end-to-end: research → prototype → testing</div></div>
+    </div>
+
+    <p class="sec-text">I deliberately recruited both <strong>socially awkward and socially confident</strong> participants to avoid over-indexing on anxiety as the sole factor. This revealed something important: the two groups had very different blockers.</p>
+
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="insight-num">Socially Awkward</div>
+        <div class="insight-title">Felt watched, judged, and avoided small interactions</div>
+        <div class="insight-body">Explicitly described feeling watched and judged. Disliked asking how many sets remained. Tended to blame themselves — "I'm just too self-conscious." Avoided unfamiliar machines rather than asking for help.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Socially Confident</div>
+        <div class="insight-title">Stopped by overcrowding, not social anxiety</div>
+        <div class="insight-body">Viewed the gym as a social space. Open to interaction and learning new techniques. What stopped them was overcrowding and unpredictable machine availability — they'd arrive, find everything occupied, and leave.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- SYNTHESIS -->
+  <section class="section reveal">
+    <span class="sec-anchor">03 — synthesis</span>
+    <h2 class="sec-heading">Affinity mapping the emotional patterns</h2>
+    <p class="sec-text">I chose affinity mapping because gym discomfort isn't a single pain point — it's a collection of small emotional experiences. I listed each experience as an atomic note, grouped by emotion type, then labeled the theme only after grouping.</p>
+
+    <p class="sec-text">Three clusters emerged:</p>
+    <ul class="case-list">
+      <li><strong>Anticipated judgment & visibility</strong> — how users feel just being present, even without direct interaction</li>
+      <li><strong>Unclear social norms in shared space</strong> — the cognitive load of not knowing when or how to interact with strangers</li>
+      <li><strong>Silent adaptation & self-protection</strong> — how users respond: avoiding machines, scrolling phones, shrinking routines to "safe" equipment</li>
+    </ul>
+
+    <!-- Affinity map photo -->
+    <div class="photo-wrap">
+      <img src="photos/gym/affinitymap.png" alt="Affinity map — full synthesis board with three theme clusters" style="width:100%;display:block;" />
+      <div class="photo-caption">Affinity mapping — three clusters: anticipated judgment, unclear social norms, silent adaptation</div>
+    </div>
+
+    <div class="highlight-box green">
+      <p>Key shift: The issue isn't that people hate interaction — it's that interaction is unpredictable. The real problem is a lack of agency over when and how interaction occurs.</p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- PERSONA + JOURNEY MAP -->
+  <section class="section reveal">
+    <span class="sec-anchor">04 — persona & journey</span>
+    <h2 class="sec-heading">Emily — the in-between gym-goer</h2>
+    <p class="sec-text">The persona Emily was synthesized from interview patterns — not a single individual. I defined her as an early-20s gym-goer who attends 2–3x/week and usually goes alone, because this profile consistently appeared across participants and best captured the tension between motivation and avoidance.</p>
+    <p class="sec-text">She's not a beginner, but not fully confident — an "in-between" state where she knows the gym but still experiences anxiety around visibility, judgment, and unclear social norms. Her behaviors (sticking to familiar machines, using phone to avoid eye contact) are adaptive strategies, not personal shortcomings.</p>
+
+    <!-- Persona + Journey map side by side or stacked -->
+    <div class="photo-grid-2 persona-journey-pair">
+      <div class="photo-wrap no-margin">
+        <div class="pj-visual">
+          <img src="photos/gym/persona.jpg" alt="User persona — Emily" />
+        </div>
+        <div class="photo-caption">User persona: Emily</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <div class="pj-visual">
+          <img src="photos/gym/journeymap.jpg" alt="Emotional journey map — five stages from before arrival to after" />
+        </div>
+        <div class="photo-caption">Journey map: Before Arrival → Entering → Approaching → Decision → After</div>
+      </div>
+    </div>
+
+    <p class="sec-text">The journey map revealed that <strong>anxiety starts before users physically enter the space</strong>. The "Decision & Adaptation" stage is the most critical — this is where users silently compromise their original plans. Avoidance is not a satisfying outcome; it's a coping mechanism. And afterward, they normalize it: <em>"This is just how gyms are."</em></p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- KEY INSIGHTS -->
+  <section class="section reveal">
+    <span class="sec-anchor">05 — key insights</span>
+    <h2 class="sec-heading">Three core insights that shaped the design</h2>
+
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="insight-num">Insight 01</div>
+        <div class="insight-title">Anticipated judgment shapes behavior before interaction occurs</div>
+        <div class="insight-body">Users feel judged and pressured simply by being present — even without direct interaction. They hesitate to go knowing it'll be overcrowded and machines won't be available.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Insight 02</div>
+        <div class="insight-title">Unclear social norms create cognitive load</div>
+        <div class="insight-body">The thought of having to interact with people creates more discomfort than the interaction itself. Not knowing the unspoken rules around shared equipment is the real friction.</div>
+      </div>
+      <div class="insight-card" style="grid-column: 1/-1;">
+        <div class="insight-num">Insight 03 — Most Important</div>
+        <div class="insight-title">Users adapt and succumb, normalizing friction as "gym culture"</div>
+        <div class="insight-body">The contrast between socially confident and socially awkward users revealed that the issue is not interaction itself — it's a lack of agency over <em>when</em> and <em>how</em> interaction occurs. Both groups would thrive if norms were made explicit and opt-in.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- IDEATION -->
+  <section class="section reveal">
+    <span class="sec-anchor">06 — ideation</span>
+    <h2 class="sec-heading">Diverge → Converge</h2>
+    <p class="sec-text">I used <strong>Crazy 8s</strong> to rapidly generate ideas across digital, physical, and environmental dimensions — avoiding solution fixation by prioritizing quantity first. Then I used an <strong>Impact–Effort matrix</strong> to converge on the most viable concepts.</p>
+
+    <div class="photo-grid-2">
+      <div class="photo-wrap no-margin">
+        <img src="photos/gym/crazy8.jpg" alt="Crazy 8s — divergent ideation sketches" style="width:100%;display:block;" />
+        <div class="photo-caption">Crazy 8s — 8 ideas in 8 minutes</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <img src="photos/gym/2x2.png" alt="Impact–Effort matrix — 2×2 prioritization" style="width:100%;display:block;" />
+        <div class="photo-caption">Impact–Effort matrix — prioritizing low-effort, high-impact solutions</div>
+      </div>
+    </div>
+
+    <p class="sec-text">Ideas that landed in the <strong>high-impact, low-effort</strong> quadrant were prioritized because they reduce social friction without forcing interaction, align with observed behaviors, and can be implemented without redesigning the gym:</p>
+    <ul class="case-list">
+      <li>Displaying sets remaining / machine availability — reduces uncertainty and hovering</li>
+      <li>QR-based queue — wait without verbal negotiation</li>
+      <li>Instructional photos/videos on machines — learn without public embarrassment</li>
+      <li>DND / Open-to-collaborate toggle — make intent visible, prevent unwanted interruptions</li>
+    </ul>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- LO-FI PROTOTYPE -->
+  <section class="section reveal">
+    <span class="sec-anchor">07 — lo-fi prototype</span>
+    <h2 class="sec-heading">Sketching the core flow</h2>
+    <p class="sec-text">The low-fidelity prototype established the core linear flow: <strong>equipment list → machine detail → join queue → workout</strong>. I intentionally kept the flow simple to reduce hesitation at decision points — the journey map showed most drop-offs happen between "approaching equipment" and "deciding what to do next."</p>
+
+    <!-- Lo-fi wireframe photo -->
+    <div class="photo-wrap">
+      <img src="photos/gym/lofi.jpg" alt="Low-fidelity sketches — full equipment list to workout flow" style="width:100%;display:block;" />
+      <div class="photo-caption">Lo-fi prototype: equipment list → machine detail → queue confirmation → workout</div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- MID-FI + USER TESTING -->
+  <section class="section reveal">
+    <span class="sec-anchor">08 — mid-fi & user testing</span>
+    <h2 class="sec-heading">Testing the interaction flow, not the visuals</h2>
+    <p class="sec-text">I ran moderated usability testing with 2 participants who regularly go to the gym alone. Testing goal: evaluate whether the core interaction flow reduced social discomfort and decision hesitation — not to validate visual design.</p>
+
+    <!-- Mid-fi screens -->
+    <div class="photo-wrap">
+      <img src="photos/gym/midfi.png" alt="Mid-fidelity screens — GYM list through working out flow" style="width:100%;display:block;" />
+      <div class="photo-caption">Mid-fi prototype — Frames 4–7: GYM list, Lat Pulldown detail, Queue Confirmation, Working Out</div>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">"Knowing I'm #4 makes waiting feel intentional instead of awkward."</div>
+      <div class="quote-attr">— User testing participant</div>
+    </div>
+
+    <p class="sec-text">Key observations from testing:</p>
+    <ul class="case-list">
+      <li>Queue confirmation reduced anxiety immediately — uncertainty, not waiting, was the main stressor</li>
+      <li>Remaining sets and DND mode were interpreted correctly without explanation</li>
+      <li>"Join Queue" felt more comfortable than asking verbally how many sets remained</li>
+      <li>Tutorial placement felt reassuring, but only after users felt socially safe first</li>
+    </ul>
+
+    <p class="sec-text">Pain points identified: users hesitated before tapping "Join Queue" and wanted clearer feedback on what happens after joining. I refined these in the hi-fi iteration.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- HI-FI PROTOTYPE -->
+  <section class="section reveal">
+    <span class="sec-anchor">09 — hi-fi prototype</span>
+    <h2 class="sec-heading">The final design</h2>
+    <p class="sec-text">The high-fidelity prototype brought the system together — real-time availability, queue management, social signaling, and in-context tutorials — all in a single coherent flow.</p>
+
+    <!-- Hi-fi overview — prototype walkthrough -->
+    <div class="photo-wrap">
+      <div class="hifi-video-frame">
+        <video autoplay muted playsinline controls preload="metadata">
+          <source src="photos/gym/hifi_video.mp4" type="video/mp4" />
+          Your browser does not support embedded video.
+        </video>
+      </div>
+      <div class="photo-caption">Hi-fi prototype overview — Before workout & Start workout flows</div>
+    </div>
+
+    <!-- Individual screen close-ups in a 4-grid -->
+    <div class="photo-grid-4">
+      <div class="photo-wrap no-margin">
+        <img src="photos/gym/Landing page.png" alt="Hi-fi — equipment availability landing screen" style="width:100%;display:block;" />
+        <div class="photo-caption">Equipment availability list</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <img src="photos/gym/Available workout.png" alt="Hi-fi — available workout, machine detail and join queue" style="width:100%;display:block;" />
+        <div class="photo-caption">Machine detail — queue, mode, sets</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <img src="photos/gym/Queue confirmation.png" alt="Hi-fi — queue confirmation screen" style="width:100%;display:block;" />
+        <div class="photo-caption">Queue confirmation — position + time</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <img src="photos/gym/Using the machine.png" alt="Hi-fi — using the machine, workout with DND" style="width:100%;display:block;" />
+        <div class="photo-caption">Workout screen — DND activated</div>
+      </div>
+    </div>
+
+    <p class="sec-text">Key design decisions and their research rationale:</p>
+
+    <div class="feature-list">
+      <div class="feature-row">
+        <div class="feature-name">Equipment availability list</div>
+        <div class="feature-why">Addresses anxiety before approaching. Users mentally prepare for discomfort before entering — surfacing availability early lets them plan without physical exposure.</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">Join Queue button</div>
+        <div class="feature-why">Replaces verbal interaction. Interviews showed users hesitate to ask "how many sets?" even when it's socially acceptable — fear of disrupting or being judged.</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">Queue confirmation screen</div>
+        <div class="feature-why"><strong>Ambiguity, not waiting, is the stressor.</strong> Showing position + time estimate replaces uncertainty with reassurance.</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">DND / Open to Collaborate</div>
+        <div class="feature-why">Externalizes social intent. Both user types benefit — awkward users avoid unwanted interruptions; confident users signal openness to interaction.</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">Remaining sets indicator</div>
+        <div class="feature-why">Makes progress visible and predictable for people waiting — directly reduces the pressure of standing nearby.</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">Tutorial access on machine</div>
+        <div class="feature-why">Lack of confidence, not lack of interest, stops users from trying new equipment. Low-pressure in-context tutorials remove that barrier.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- REFLECTION -->
+  <section class="section reveal">
+    <span class="sec-anchor">10 — reflection</span>
+    <h2 class="sec-heading">What I'd do next</h2>
+    <p class="sec-text">Through additional user testing, I realized many users want to avoid awkward gym interactions <strong>before they even arrive</strong> — not just while using equipment. One tester wished the system showed which days and times are typically crowded, so they could plan around low-traffic periods.</p>
+    <p class="sec-text">This revealed a gap in my original solution: while the design reduced discomfort <em>inside</em> the gym, it didn't sufficiently support decision-making <em>before entering</em> the space.</p>
+
+    <div class="highlight-box">
+      <p><strong>Key reframe: Revitalization isn't about managing awkward moments — it's about empowering users with predictability and control. Social anxiety in third spaces often begins in anticipation, not in the moment of interaction.</strong></p>
+    </div>
+
+    <p class="sec-text">If I were to iterate further, I'd extend the experience to include historical crowd data and peak-time indicators — letting users choose when to go rather than react once they arrive. This project reinforced that <strong>human-centered design must address both emotional preparation and real-time interaction.</strong></p>
+  </section>
+
+</div>
+
+<a href="work-campus.html" class="next-project" id="next-project">
+  <div>
+    <div class="next-label">Next project</div>
+    <div class="next-title" id="next-title">Campus Connect →</div>
+  </div>
+  <span class="next-arrow">↗</span>
+</a>
+
+<footer>
+  <div class="ft-left">© 2025 Daniel Park</div>
+  <div class="ft-links">
+    <a href="#">LinkedIn</a>
+    <a href="#">Resume</a>
+    <a href="mailto:daniel@email.com">Email</a>
+  </div>
+</footer>
+
+<script>
+  const cur = document.getElementById('cur');
+  const curb = document.getElementById('curb');
+  let mx=0,my=0,bx=0,by=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+  (function loop(){ bx+=(mx-bx)*0.1; by+=(my-by)*0.1; curb.style.left=bx+'px'; curb.style.top=by+'px'; requestAnimationFrame(loop); })();
+  const revs = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.08});
+  revs.forEach(r=>io.observe(r));
+
+  // Keep "Next project" in sync with homepage card 3
+  fetch('index.html')
+    .then(r => r.text())
+    .then(html => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const card3 = doc.querySelectorAll('.cards-grid > a.card')[2];
+      if (!card3) return;
+      const title = card3.querySelector('.card-title')?.textContent?.trim();
+      const href = card3.getAttribute('href');
+      if (title) document.getElementById('next-title').textContent = title + ' →';
+      if (href) document.getElementById('next-project').setAttribute('href', href);
+    })
+    .catch(() => {});
+</script>
+</body>
+</html>
