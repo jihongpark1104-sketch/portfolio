@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daniel Park</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #ffffff;
+      --bg2:          #f5f7ff;
+      --surface:      #eef1fb;
+      --border:       #e2e6f3;
+      --border2:      #cdd3ee;
+      --text:         #0f1120;
+      --muted:        #8a92b2;
+      --muted2:       #c5cadf;
+      --accent:       #2563eb;
+      --accent-light: #eff3ff;
+      --accent-mid:   #93aef5;
+      --accent2:      #6ea8fe;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    .cursor {
+      position: fixed; width: 5px; height: 5px;
+      background: var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+    }
+    .cursor-box {
+      position: fixed; width: 26px; height: 26px;
+      border: 1.5px solid var(--accent-mid);
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 52px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(16px);
+      z-index: 100;
+      opacity: 0; animation: fadeIn 0.5s 0.1s forwards;
+    }
+    .nav-logo {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px; color: var(--accent); letter-spacing: 0.03em; font-weight: 500;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; color: var(--muted); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-status {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      color: var(--muted); display: flex; align-items: center; gap: 8px;
+    }
+    .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent); animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; padding: 130px 52px 72px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+
+    /* subtle grid background */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    /* blue glow blob top-right */
+    .hero::after {
+      content: '';
+      position: absolute; top: -120px; right: -120px;
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-top { flex: 1; display: flex; flex-direction: column; justify-content: center; position: relative; }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 36px;
+      opacity: 0; animation: fadeIn 0.5s 0.3s forwards;
+    }
+    .eyebrow::before { content: '// '; opacity: 0.35; }
+
+    h1 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(56px, 9vw, 120px);
+      font-weight: 400; line-height: 0.95; letter-spacing: -0.03em;
+    }
+    h1 .l1 {
+      display: block; color: var(--text);
+      opacity: 0; transform: translateY(50px);
+      animation: up 0.85s cubic-bezier(0.16,1,0.3,1) 0.4s forwards;
+    }
+    h1 .l2 {
+      display: block; color: var(--accent);
+      opacity: 0; transform: translateY(50px);
+      animation: up 0.85s cubic-bezier(0.16,1,0.3,1) 0.55s forwards;
+    }
+
+    .roles {
+      margin-top: 44px; display: flex; flex-wrap: wrap; gap: 8px;
+      opacity: 0; animation: fadeIn 0.5s 1s forwards;
+    }
+    .role {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.06em; padding: 6px 14px;
+      border: 1px solid var(--border2); color: var(--muted);
+      background: var(--bg); transition: all 0.2s;
+    }
+    .role.on, .role:hover {
+      border-color: var(--accent); color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    /* hero footer bar */
+    .hero-footer {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      border-top: 1px solid var(--border); margin-top: 64px;
+      opacity: 0; animation: fadeIn 0.5s 1.2s forwards;
+      position: relative;
+    }
+    .hf-cell { padding: 24px 0; }
+    .hf-cell + .hf-cell { padding-left: 32px; border-left: 1px solid var(--border); }
+    .hf-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    }
+    .hf-val { font-size: 14px; color: var(--text); line-height: 1.65; font-weight: 300; }
+
+    /* ── WORKS ── */
+    .works { padding: 80px 52px; }
+
+    .sec-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 48px;
+    }
+    .sec-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    }
+    .sec-label::before { content: '01. '; color: var(--accent); }
+    .all-link {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.08em; color: var(--muted); text-decoration: none;
+      display: flex; align-items: center; gap: 6px; transition: color 0.2s;
+    }
+    .all-link span { display: inline-block; transition: transform 0.2s; }
+    .all-link:hover { color: var(--accent); }
+    .all-link:hover span { transform: translateX(4px); }
+
+    /* ── CARDS ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      overflow: hidden;
+      cursor: none;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+    .card:hover {
+      border-color: var(--accent-mid);
+      box-shadow: 0 8px 32px rgba(37,99,235,0.1);
+      transform: translateY(-4px);
+    }
+
+    .card-img {
+      width: 100%; aspect-ratio: 16/10; overflow: hidden;
+      background: var(--surface); position: relative;
+    }
+    .card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+      display: block;
+    }
+    .card:hover .card-img img { transform: scale(1.05); }
+    .card-img img.is-logo {
+      object-fit: contain;
+      object-position: center;
+      background: linear-gradient(135deg, #dbe4ff 0%, #bfcfff 100%);
+      padding: 28px 32px;
+      box-sizing: border-box;
+    }
+    .card-img img.is-blue-bg {
+      object-fit: contain;
+      object-position: center;
+      background: linear-gradient(135deg, #dbe4ff 0%, #bfcfff 100%);
+      padding: 18px;
+      box-sizing: border-box;
+    }
+    .card-img img.is-frame-preview {
+      transform: scale(1.12);
+      transform-origin: center center;
+    }
+    .card:hover .card-img img.is-frame-preview {
+      transform: scale(1.18);
+    }
+
+    /* placeholder when no image */
+    .card-ph {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .card:hover .card-ph { transform: scale(1.04); }
+    .ph-a { background: linear-gradient(135deg, #dbe4ff 0%, #bfcfff 100%); }
+    .ph-b { background: linear-gradient(135deg, #e0eaff 0%, #c7d9ff 100%); }
+    .ph-c { background: linear-gradient(135deg, #eef3ff 0%, #d0deff 100%); }
+    .ph-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 48px; font-weight: 300;
+      color: rgba(37,99,235,0.2); letter-spacing: -0.03em;
+    }
+
+    .card-body { padding: 22px 24px 26px; }
+
+    .card-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px;
+    }
+    .card-num {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      color: var(--muted2); letter-spacing: 0.06em;
+    }
+    .card-year {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      color: var(--muted); letter-spacing: 0.06em;
+    }
+
+    .card-title {
+      font-size: 16px; font-weight: 400; color: var(--text);
+      margin-bottom: 8px; line-height: 1.3;
+      transition: color 0.2s;
+    }
+    .card:hover .card-title { color: var(--accent); }
+
+    .card-desc {
+      font-size: 13px; line-height: 1.7; color: var(--muted);
+      font-weight: 300; margin-bottom: 18px;
+    }
+
+    .card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ctag {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.04em; padding: 3px 9px;
+      border: 1px solid var(--border2); color: var(--muted);
+      background: var(--bg2); transition: all 0.2s;
+    }
+    .card:hover .ctag { border-color: var(--accent-mid); color: var(--accent); background: var(--accent-light); }
+    .card-arrow {
+      font-size: 14px; color: var(--muted2);
+      transition: color 0.2s, transform 0.2s;
+    }
+    .card:hover .card-arrow { color: var(--accent); transform: translate(3px,-3px); }
+
+    /* ── ABOUT ── */
+    .about {
+      padding: 80px 52px; border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: 220px 1fr; gap: 80px; align-items: start;
+      background: var(--bg2);
+    }
+    .about-left { position: sticky; top: 90px; }
+    .about-sec-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    }
+    .about-sec-label::before { content: '02. '; color: var(--accent); }
+    .skill-list { margin-top: 32px; display: flex; flex-direction: column; }
+    .sk {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted);
+      padding: 9px 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sk::before { content: '—'; color: var(--accent); font-size: 9px; }
+
+    .about-body p {
+      font-size: 15px; line-height: 1.9; color: #5a6080; font-weight: 300; margin-bottom: 20px;
+    }
+    .about-body strong { color: var(--text); font-weight: 400; }
+    .about-body .mono { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--accent); }
+
+    .about-grid {
+      margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+    }
+    .ag-cell { padding: 18px 22px; border: 1px solid var(--border); background: var(--bg); }
+    .ag-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+    }
+    .ag-val { font-size: 14px; color: var(--text); font-weight: 300; }
+    .ag-val.blue { color: var(--accent); }
+
+    /* ── BANNER ── */
+    .banner {
+      padding: 64px 52px;
+      background: var(--accent);
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 40px;
+    }
+    .banner-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(22px, 3vw, 36px);
+      font-weight: 400; color: #fff; line-height: 1.2; letter-spacing: -0.01em;
+    }
+    .banner-text em { font-style: italic; opacity: 0.7; }
+    .banner-btn {
+      flex-shrink: 0;
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 14px 28px;
+      border: 1.5px solid rgba(255,255,255,0.5);
+      color: #fff; text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .banner-btn:hover { background: rgba(255,255,255,0.15); border-color: #fff; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 28px 52px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--bg);
+    }
+    .ft-left { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+    .ft-links { display: flex; gap: 28px; }
+    .ft-links a {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none; color: var(--muted); transition: color 0.2s;
+    }
+    .ft-links a:hover { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes up { from{opacity:0;transform:translateY(50px)} to{opacity:1;transform:translateY(0)} }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-box" id="curb"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">dp.portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#works">work</a></li>
+    <li><a href="#about">about</a></li>
+    <li><a href="mailto:daniel@email.com">contact</a></li>
+  </ul>
+  <div class="nav-status"><div class="dot"></div>available for roles</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-top">
+    <div class="eyebrow">portfolio_2026</div>
+    <h1>
+      <span class="l1">Daniel</span>
+      <span class="l2">Park_</span>
+    </h1>
+    <div class="roles">
+      <span class="role on">Product Designer</span>
+      <span class="role">UX Researcher</span>
+      <span class="role">Product Manager</span>
+      <span class="role">UI/UX Design</span>
+    </div>
+  </div>
+  <div class="hero-footer">
+    <div class="hf-cell">
+      <div class="hf-label">Location</div>
+      <div class="hf-val">Berkeley, CA</div>
+    </div>
+    <div class="hf-cell">
+      <div class="hf-label">Education</div>
+      <div class="hf-val">UC Berkeley<br>Cognitive Science and Data Science</div>
+    </div>
+    <div class="hf-cell">
+      <div class="hf-label">Focus</div>
+      <div class="hf-val">Human behavior × technology — designing products people actually understand.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section class="works" id="works">
+  <div class="sec-head reveal">
+    <span class="sec-label">Selected Work</span>
+    <a href="#" class="all-link">View all <span>→</span></a>
+  </div>
+  <div class="cards-grid reveal">
+
+    <a href="work-tinder.html" class="card" style="text-decoration:none">
+      <div class="card-img">
+        <img src="photos/thumbnails/Wordmark-R-gradient-whole-RGB-01.png" alt="Tinder" class="is-logo" />
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-num">01 / 03</span>
+          <span class="card-year">2024</span>
+        </div>
+        <div class="card-title">Project Title One</div>
+        <div class="card-desc">A short description of what this project is about, the problem it solved, and your role in it.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">UX Research</span>
+            <span class="ctag">Product</span>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="work-gym.html" class="card" style="text-decoration:none">
+      <div class="card-img">
+        <img src="photos/thumbnails/Frame 25.png" alt="Project Two preview image" class="is-frame-preview" />
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-num">02 / 03</span>
+          <span class="card-year">2024</span>
+        </div>
+        <div class="card-title">Project Title Two</div>
+        <div class="card-desc">A short description of what this project is about, the problem it solved, and your role in it.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">UI/UX</span>
+            <span class="ctag">PM</span>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="card" style="text-decoration:none">
+      <div class="card-img">
+        <img src="photos/thumbnails/iPhone 16 Pro.png" alt="Project Three preview image" class="is-blue-bg" />
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-num">03 / 03</span>
+          <span class="card-year">2026</span>
+        </div>
+        <div class="card-title">Project Title Three</div>
+        <div class="card-desc">A short description of what this project is about, the problem it solved, and your role in it.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Research</span>
+            <span class="ctag">Design</span>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-left reveal">
+    <div class="about-sec-label">About</div>
+    <div class="skill-list">
+      <div class="sk">Figma / Prototyping</div>
+      <div class="sk">User Research</div>
+      <div class="sk">Data Analysis</div>
+      <div class="sk">Product Strategy</div>
+      <div class="sk">Cognitive Science</div>
+      <div class="sk">Python / SQL</div>
+    </div>
+  </div>
+  <div class="about-body reveal" style="transition-delay:0.15s">
+    <p>I'm <strong>Daniel Park</strong>, a <span class="mono">Cognitive Science and Data Science</span> student at UC Berkeley. I'm interested in how people think, decide, and interact with systems — and how design can make those interactions better.</p>
+    <p>I work at the crossroads of <strong>UX research, product design, and product management</strong>. My goal is to bring a research-grounded, human-centered lens to product teams building things that matter.</p>
+    <p>Targeting <strong>PM and Product Design</strong> roles at tech companies where I can contribute from day one.</p>
+    <div class="about-grid">
+      <div class="ag-cell"><div class="ag-label">University</div><div class="ag-val">UC Berkeley</div></div>
+      <div class="ag-cell"><div class="ag-label">Major</div><div class="ag-val">Cognitive Science and Data Science</div></div>
+      <div class="ag-cell"><div class="ag-label">Target Role</div><div class="ag-val">PM / Product Designer</div></div>
+      <div class="ag-cell"><div class="ag-label">Status</div><div class="ag-val blue">Open to opportunities</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER -->
+<div class="banner reveal">
+  <div class="banner-text">Let's build something<br><em>people actually love.</em></div>
+  <a href="mailto:daniel@email.com" class="banner-btn">Get in touch →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-left">© 2026 Daniel Park</div>
+  <div class="ft-links">
+    <a href="#">LinkedIn</a>
+    <a href="#">Resume</a>
+    <a href="mailto:daniel@email.com">Email</a>
+  </div>
+</footer>
+
+<script>
+  // cursor
+  const cur = document.getElementById('cur');
+  const curb = document.getElementById('curb');
+  let mx=0,my=0,bx=0,by=0;
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
+  });
+  (function loop(){ bx+=(mx-bx)*0.1; by+=(my-by)*0.1; curb.style.left=bx+'px'; curb.style.top=by+'px'; requestAnimationFrame(loop); })();
+
+  // role cycling
+  const roles = document.querySelectorAll('.role');
+  let rc=0;
+  setInterval(()=>{ roles[rc].classList.remove('on'); rc=(rc+1)%roles.length; roles[rc].classList.add('on'); }, 2200);
+
+  // scroll reveal
+  const revs = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.08});
+  revs.forEach(r=>io.observe(r));
+</script>
+</body>
+</html>
