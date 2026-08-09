@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Connect — Daniel Park</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           #ffffff;
+      --bg2:          #f5f6ff;
+      --surface:      #eeeeff;
+      --border:       #e0e2f0;
+      --border2:      #c5c9e8;
+      --text:         #0d0f1a;
+      --muted:        #7b80a8;
+      --muted2:       #c0c4dc;
+      --accent:       #6c63ff;
+      --accent-light: #f0effe;
+      --accent-mid:   #a89cff;
+      /* per-feature colors matching the UI */
+      --home:    #6c63ff;
+      --market:  #00c896;
+      --community: #ff6b4a;
+      --rides:   #f5a623;
+      --housing: #00c896;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif; font-weight: 300;
+      overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none;
+    }
+
+    /* CURSOR */
+    .cursor { position: fixed; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+    .cursor-box { position: fixed; width: 26px; height: 26px; border: 1.5px solid var(--accent-mid); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); opacity: 0.5; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 52px; border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); z-index: 100;
+    }
+    .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--accent); font-weight: 500; text-decoration: none; }
+    .nav-back { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--muted); display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back span { transition: transform 0.2s; }
+    .nav-back:hover span { transform: translateX(-3px); }
+
+    /* HERO */
+    .case-hero {
+      padding: 120px 52px 80px; border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .case-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: 0.3; pointer-events: none;
+    }
+    .case-hero::after {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(108,99,255,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; max-width: 960px; }
+    .breadcrumb {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 32px; display: flex; align-items: center; gap: 10px;
+      opacity: 0; animation: fadeIn 0.5s 0.1s forwards;
+    }
+    .breadcrumb span { color: var(--accent); }
+    .breadcrumb::before { content: '// '; opacity: 0.4; }
+    .case-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(32px, 5vw, 72px);
+      font-weight: 400; line-height: 1.0; letter-spacing: -0.025em; margin-bottom: 8px;
+      opacity: 0; transform: translateY(30px);
+      animation: up 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+    }
+    .case-title .purple { color: var(--accent); }
+    .case-subtitle-line {
+      font-family: 'IBM Plex Mono', monospace; font-size: clamp(13px, 1.8vw, 18px);
+      font-weight: 300; color: var(--muted); letter-spacing: -0.01em; margin-bottom: 36px;
+      opacity: 0; animation: fadeIn 0.6s 0.4s forwards;
+    }
+    .hero-desc {
+      font-size: 16px; line-height: 1.8; color: #5a5f80;
+      font-weight: 300; max-width: 640px; margin-bottom: 48px;
+      opacity: 0; animation: fadeIn 0.6s 0.5s forwards;
+    }
+    .hero-desc strong { color: var(--text); font-weight: 400; }
+    .case-meta {
+      display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--border);
+      opacity: 0; animation: fadeIn 0.6s 0.65s forwards;
+    }
+    .meta-cell { padding: 16px 28px; border-right: 1px solid var(--border); }
+    .meta-cell:last-child { border-right: none; }
+    .meta-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .meta-val { font-size: 14px; color: var(--text); font-weight: 400; }
+    .meta-val.purple { color: var(--accent); }
+    .meta-val.green { color: var(--market); }
+
+    /* DARK COVER */
+    .cover {
+      background: #0e0f1a;
+      border-bottom: 1px solid #1e2040;
+      padding: 72px 52px;
+      display: flex; flex-direction: column; align-items: center; gap: 32px;
+    }
+    .cover-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(40px, 7vw, 100px);
+      font-weight: 400; color: #fff;
+      letter-spacing: -0.03em; line-height: 1;
+    }
+    .cover-title span { color: var(--accent); }
+    .cover-sub {
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+    .cover-features {
+      display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    }
+    .cover-feat {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.08em; padding: 6px 16px;
+      border-radius: 0;
+    }
+    .cf-home     { border: 1px solid rgba(108,99,255,0.4); color: #6c63ff; }
+    .cf-market   { border: 1px solid rgba(0,200,150,0.4);  color: #00c896; }
+    .cf-comm     { border: 1px solid rgba(255,107,74,0.4); color: #ff6b4a; }
+    .cf-rides    { border: 1px solid rgba(245,166,35,0.4); color: #f5a623; }
+    .cf-housing  { border: 1px solid rgba(0,200,150,0.4);  color: #00c896; }
+
+    /* PHOTO SLOTS */
+    .photo-slot {
+      width: 100%; background: var(--bg2);
+      border: 2px dashed var(--border2);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+    }
+    .photo-slot.hero-slot  { aspect-ratio: 16/6; }
+    .photo-slot.landscape  { aspect-ratio: 16/9; }
+    .photo-slot.wide       { aspect-ratio: 21/9; }
+    .photo-slot.square     { aspect-ratio: 1/1; }
+    .photo-slot.phone      { aspect-ratio: 9/18; }
+    .photo-slot.short      { aspect-ratio: 3/1; }
+    .photo-slot-tag {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); background: var(--accent-light);
+      padding: 4px 12px; border: 1px solid var(--accent-mid);
+    }
+    .photo-slot-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--muted); text-align: center; padding: 0 20px; }
+    .photo-slot-hint { font-size: 11px; color: var(--muted2); text-align: center; padding: 0 20px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.04em; }
+    .photo-caption { padding: 12px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: var(--muted); border-top: 1px solid var(--border); background: var(--bg); }
+    .photo-wrap { border: 1px solid var(--border); overflow: hidden; margin: 28px 0; }
+    .photo-wrap.no-margin { margin: 0; }
+    .photo-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+    .photo-grid-2 .photo-wrap { margin: 0; }
+    .photo-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
+    .photo-grid-3 .photo-wrap { margin: 0; }
+    .photo-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 28px 0; }
+    .photo-grid-5 .photo-wrap { margin: 0; }
+
+    /* BODY */
+    .case-body { max-width: 860px; margin: 0 auto; padding: 80px 52px; }
+    .section { margin-bottom: 72px; }
+    .sec-anchor { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block; }
+    .sec-anchor::before { content: '// '; opacity: 0.4; color: var(--muted); }
+    .sec-heading { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 400; letter-spacing: -0.01em; color: var(--text); margin-bottom: 20px; line-height: 1.2; }
+    .sec-text { font-size: 15px; line-height: 1.9; color: #5a5f80; font-weight: 300; margin-bottom: 16px; }
+    .sec-text strong { color: var(--text); font-weight: 400; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 56px 0; }
+
+    .highlight-box { border: 1px solid var(--accent-mid); background: var(--accent-light); padding: 24px 28px; margin: 28px 0; }
+    .highlight-box p { font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--accent); letter-spacing: 0.01em; }
+
+    /* IMPACT STATS */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); margin: 28px 0; }
+    .stat-cell { padding: 24px; border-right: 1px solid var(--border); }
+    .stat-cell:last-child { border-right: none; }
+    .stat-num { font-family: 'IBM Plex Mono', monospace; font-size: 36px; font-weight: 400; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 6px; }
+    .stat-desc { font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.5; }
+
+    /* FEATURE TABS — colored per section */
+    .feature-tabs { display: flex; gap: 0; border: 1px solid var(--border); margin: 28px 0; flex-wrap: wrap; }
+    .ftab { flex: 1; min-width: 120px; padding: 14px 16px; border-right: 1px solid var(--border); }
+    .ftab:last-child { border-right: none; }
+    .ftab-dot { width: 8px; height: 8px; border-radius: 50%; margin-bottom: 10px; }
+    .ftab-name { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+    .ftab-desc { font-size: 12px; line-height: 1.55; color: var(--muted); font-weight: 300; }
+
+    /* FRICTION CARDS */
+    .friction-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
+    .friction-card { border: 1px solid var(--border); padding: 22px; background: var(--bg2); transition: border-color 0.2s; }
+    .friction-card:hover { border-color: var(--accent-mid); }
+    .friction-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .friction-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+    .friction-body { font-size: 13px; line-height: 1.7; color: var(--muted); font-weight: 300; }
+
+    /* WORK LIST */
+    .case-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+    .case-list li { font-size: 14px; line-height: 1.7; color: #5a5f80; font-weight: 300; display: flex; gap: 12px; }
+    .case-list li::before { content: '→'; color: var(--accent); font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 3px; flex-shrink: 0; }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.04em; padding: 5px 12px; border: 1px solid var(--border2); color: var(--muted); background: var(--bg2); }
+
+    /* MOCKUP CAPTION PAIR */
+    .mockup-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 10px 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .mockup-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* QUOTE */
+    .quote-block { border-left: 3px solid var(--accent); padding: 16px 24px; margin: 24px 0; background: var(--accent-light); }
+    .quote-text { font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--accent); font-style: italic; }
+    .quote-attr { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+
+    /* NEXT / FOOTER */
+    .next-project { border-top: 1px solid var(--border); padding: 64px 52px; display: flex; justify-content: space-between; align-items: center; background: var(--bg2); text-decoration: none; transition: background 0.2s; }
+    .next-project:hover { background: var(--accent-light); }
+    .next-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .next-title { font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 400; color: var(--text); transition: color 0.2s; }
+    .next-project:hover .next-title { color: var(--accent); }
+    .next-arrow { font-size: 32px; color: var(--muted2); transition: color 0.2s, transform 0.2s; }
+    .next-project:hover .next-arrow { color: var(--accent); transform: translate(6px,-6px); }
+    footer { padding: 28px 52px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .ft-left { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+    .ft-links { display: flex; gap: 28px; }
+    .ft-links a { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .ft-links a:hover { color: var(--accent); }
+
+    /* CODE BLOCK */
+    .code-wrap { border: 1px solid var(--border); overflow: hidden; margin: 28px 0; }
+    .code-header {
+      background: #0e0f1a; padding: 12px 20px;
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid #1e2040;
+    }
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .code-dots span:nth-child(1) { background: #ff5f57; }
+    .code-dots span:nth-child(2) { background: #febc2e; }
+    .code-dots span:nth-child(3) { background: #28c840; }
+    .code-filename {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      color: rgba(255,255,255,0.35); letter-spacing: 0.08em; flex: 1;
+    }
+    .code-gh-link {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.08em; color: var(--accent-mid);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .code-gh-link:hover { color: #fff; }
+    .code-block {
+      background: #0e0f1a; padding: 28px 28px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;
+      line-height: 1.8; color: #c9d1d9; overflow-x: auto;
+      white-space: pre; margin: 0;
+    }
+    .code-block .c  { color: #6e7681; }          /* comment */
+    .code-block .k  { color: #ff7b72; }          /* keyword */
+    .code-block .fn { color: #d2a8ff; }          /* function name */
+    .code-block .s  { color: #a5d6ff; }          /* string */
+    .code-block .o  { color: #c9d1d9; }          /* operator */
+    .code-block .kw { color: #79c0ff; }          /* None/True/False */
+    .code-block .num{ color: #79c0ff; }          /* number */
+
+    /* GITHUB BTN */
+    .github-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid var(--border2); padding: 12px 24px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text); text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      margin-top: 4px;
+    }
+    .github-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .github-btn svg { flex-shrink: 0; }
+
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes up { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-box" id="curb"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">dp.portfolio</a>
+  <a href="index.html#works" class="nav-back"><span>←</span> back to work</a>
+</nav>
+
+<!-- HERO -->
+<section class="case-hero">
+  <div class="hero-inner">
+    <div class="breadcrumb">Work <span>/</span> Product Design · Startup</div>
+    <h1 class="case-title">Campus<br><span class="purple">Connect_</span></h1>
+    <div class="case-subtitle-line">The all-in-one campus app — market, rides, housing, community & more</div>
+    <p class="hero-desc">
+      As <strong>Product & UX Research Lead</strong> at Campus Connect, I identified key friction points through 100+ usability tests, built 15+ Figma prototypes, and scraped 5,800+ course records to accelerate early product validation — all while shaping the core product strategy from the ground up.
+    </p>
+    <div class="case-meta">
+      <div class="meta-cell"><div class="meta-label">Role</div><div class="meta-val purple">Product & UX Research Lead</div></div>
+      <div class="meta-cell"><div class="meta-label">Company</div><div class="meta-val">Campus Connect</div></div>
+      <div class="meta-cell"><div class="meta-label">Location</div><div class="meta-val">Berkeley, CA</div></div>
+      <div class="meta-cell"><div class="meta-label">Timeline</div><div class="meta-val">Sep 2025 – Present</div></div>
+      <div class="meta-cell"><div class="meta-label">Type</div><div class="meta-val green">Startup · 0→1</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DARK COVER -->
+<div class="cover">
+  <div class="cover-title">campus<span>.</span></div>
+  <div class="cover-sub">Product & UX Research · Berkeley, CA · 2025–Present</div>
+  <div class="cover-features">
+    <span class="cover-feat cf-home">Home</span>
+    <span class="cover-feat cf-market">Market</span>
+    <span class="cover-feat cf-comm">Community</span>
+    <span class="cover-feat cf-rides">Rides</span>
+    <span class="cover-feat cf-housing">Housing</span>
+  </div>
+</div>
+
+<div class="case-body">
+
+  <!-- OVERVIEW -->
+  <section class="section reveal">
+    <span class="sec-anchor">01 — overview</span>
+    <h2 class="sec-heading">What is Campus Connect?</h2>
+    <p class="sec-text">Campus Connect is a <strong>startup building an all-in-one platform</strong> for college students — combining a peer marketplace, anonymous community forum, ride sharing, housing search, and a smart home dashboard into a single app tailored to campus life.</p>
+    <p class="sec-text">I joined as <strong>Product & UX Research Lead</strong>, responsible for owning the research pipeline, designing and testing UI concepts in Figma, and building early data infrastructure to validate the product before full development.</p>
+
+    <div class="stats-row">
+      <div class="stat-cell">
+        <div class="stat-num">100+</div>
+        <div class="stat-desc">Usability tests conducted to identify friction points</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">35%</div>
+        <div class="stat-desc">Improvement in task completion clarity during moderated sessions</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">5,800+</div>
+        <div class="stat-desc">Course records scraped with BeautifulSoup to build data prototype</div>
+      </div>
+    </div>
+
+    <div class="tag-list">
+      <span class="tag">Product Strategy</span>
+      <span class="tag">UX Research</span>
+      <span class="tag">Figma</span>
+      <span class="tag">Usability Testing</span>
+      <span class="tag">Python / BeautifulSoup</span>
+      <span class="tag">Data Scraping</span>
+      <span class="tag">Interaction Design</span>
+      <span class="tag">0→1 Product</span>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- THE PRODUCT -->
+  <section class="section reveal">
+    <span class="sec-anchor">02 — the product</span>
+    <h2 class="sec-heading">Five features, one campus platform</h2>
+    <p class="sec-text">Campus Connect spans five core features, each solving a distinct pain point for college students. The challenge was designing a cohesive experience that doesn't feel fragmented — while making each feature feel purpose-built for its context.</p>
+
+    <div class="feature-tabs">
+      <div class="ftab">
+        <div class="ftab-dot" style="background:#6c63ff"></div>
+        <div class="ftab-name">Home</div>
+        <div class="ftab-desc">Dashboard showing daily schedule, notifications, and recent activity at a glance</div>
+      </div>
+      <div class="ftab">
+        <div class="ftab-dot" style="background:#00c896"></div>
+        <div class="ftab-name">Market</div>
+        <div class="ftab-desc">Buy & sell with fellow students — textbooks, furniture, electronics</div>
+      </div>
+      <div class="ftab">
+        <div class="ftab-dot" style="background:#ff6b4a"></div>
+        <div class="ftab-name">Community</div>
+        <div class="ftab-desc">Totally anonymous forum — life hacks, vents, campus tips, peer support</div>
+      </div>
+      <div class="ftab">
+        <div class="ftab-dot" style="background:#f5a623"></div>
+        <div class="ftab-name">Rides</div>
+        <div class="ftab-desc">Split rides with classmates — peer-to-peer campus rideshare with real scheduling</div>
+      </div>
+      <div class="ftab">
+        <div class="ftab-dot" style="background:#00c896"></div>
+        <div class="ftab-name">Housing</div>
+        <div class="ftab-desc">Find subleases and rentals near campus, filtered by distance and availability</div>
+      </div>
+    </div>
+
+    <!-- UI screenshot — dark mode -->
+    <!-- Replace with: <img src="images/campus-darkmode.png" alt="Campus Connect dark mode UI" style="width:100%;display:block;" /> -->
+    <div class="photo-wrap">
+      <div class="photo-slot hero-slot">
+        <span class="photo-slot-tag">📷 Dark Mode UI</span>
+        <div class="photo-slot-label">All 5 screens — dark mode overview</div>
+        <div class="photo-slot-hint">campus-darkmode.png &nbsp;·&nbsp; your first screenshot</div>
+      </div>
+      <div class="photo-caption">Campus Connect — dark mode: Home, Market, Community, Rides, Housing</div>
+    </div>
+
+    <!-- UI screenshot — light mode -->
+    <!-- Replace with: <img src="images/campus-lightmode.png" alt="Campus Connect light mode UI" style="width:100%;display:block;" /> -->
+    <div class="photo-wrap">
+      <div class="photo-slot hero-slot">
+        <span class="photo-slot-tag">📷 Light Mode UI</span>
+        <div class="photo-slot-label">All 5 screens — light mode overview</div>
+        <div class="photo-slot-hint">campus-lightmode.png &nbsp;·&nbsp; your second screenshot</div>
+      </div>
+      <div class="photo-caption">Campus Connect — light mode variant</div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- RESEARCH & FRICTION POINTS -->
+  <section class="section reveal">
+    <span class="sec-anchor">03 — research</span>
+    <h2 class="sec-heading">Finding the friction — 100+ usability tests</h2>
+    <p class="sec-text">I led the full research pipeline — designing test scenarios, running moderated usability sessions, and synthesizing findings into actionable friction points. With 100+ sessions across the product's core flows, I identified <strong>3 key friction areas</strong> that were blocking user progress.</p>
+
+    <div class="friction-grid">
+      <div class="friction-card">
+        <div class="friction-num">Friction Point 01</div>
+        <div class="friction-title">Scheduling — unclear task structure</div>
+        <div class="friction-body">Users struggled to understand their day at a glance. The home dashboard lacked visual hierarchy, making it hard to distinguish what was active, upcoming, or done.</div>
+      </div>
+      <div class="friction-card">
+        <div class="friction-num">Friction Point 02</div>
+        <div class="friction-title">Subleasing — trust & discovery gaps</div>
+        <div class="friction-body">Users were uncertain about listing legitimacy and had trouble filtering by their actual needs (distance, move-in date, price). The flow felt like a generic rental app, not a campus-specific one.</div>
+      </div>
+      <div class="friction-card">
+        <div class="friction-num">Friction Point 03</div>
+        <div class="friction-title">Marketplace — offer flow confusion</div>
+        <div class="friction-body">Users didn't understand what happened after tapping "Make Offer" — no confirmation, no status update. The gap between intent and feedback created drop-off at the most critical conversion point.</div>
+      </div>
+    </div>
+
+    <!-- Research / usability testing photo -->
+    <div class="photo-wrap">
+      <div class="photo-slot landscape">
+        <span class="photo-slot-tag">📷 Research Photo</span>
+        <div class="photo-slot-label">Usability testing session or research artifacts</div>
+        <div class="photo-slot-hint">usability-testing.jpg</div>
+      </div>
+      <div class="photo-caption">Moderated usability testing — 100+ sessions across all 5 features</div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- DESIGN WORK -->
+  <section class="section reveal">
+    <span class="sec-anchor">04 — design</span>
+    <h2 class="sec-heading">15+ Figma mockups to test & refine</h2>
+    <p class="sec-text">I developed <strong>15+ interactive UI mockups in Figma</strong> to test feature concepts and refine interaction logic before handing off to development. Each mockup was tied directly to a friction point or research hypothesis — not just visual exploration.</p>
+
+    <div class="highlight-box">
+      <p>Goal: improve task completion clarity by 35% during moderated sessions — by making the right action obvious at every decision point, removing ambiguity, and surfacing status at a glance.</p>
+    </div>
+
+    <!-- Individual screen close-ups -->
+    <div class="photo-grid-3">
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot phone">
+          <span class="photo-slot-tag">📷 Home</span>
+          <div class="photo-slot-label">Home screen close-up</div>
+          <div class="photo-slot-hint">screen-home.png</div>
+        </div>
+        <div class="mockup-label"><div class="mockup-dot" style="background:#6c63ff"></div>Home dashboard</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot phone">
+          <span class="photo-slot-tag">📷 Market</span>
+          <div class="photo-slot-label">Campus Market close-up</div>
+          <div class="photo-slot-hint">screen-market.png</div>
+        </div>
+        <div class="mockup-label"><div class="mockup-dot" style="background:#00c896"></div>Campus Market</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot phone">
+          <span class="photo-slot-tag">📷 Community</span>
+          <div class="photo-slot-label">Community screen close-up</div>
+          <div class="photo-slot-hint">screen-community.png</div>
+        </div>
+        <div class="mockup-label"><div class="mockup-dot" style="background:#ff6b4a"></div>Community forum</div>
+      </div>
+    </div>
+
+    <div class="photo-grid-2">
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot phone">
+          <span class="photo-slot-tag">📷 Rides</span>
+          <div class="photo-slot-label">Ride Share close-up</div>
+          <div class="photo-slot-hint">screen-rides.png</div>
+        </div>
+        <div class="mockup-label"><div class="mockup-dot" style="background:#f5a623"></div>Ride Share</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot phone">
+          <span class="photo-slot-tag">📷 Housing</span>
+          <div class="photo-slot-label">Housing screen close-up</div>
+          <div class="photo-slot-hint">screen-housing.png</div>
+        </div>
+        <div class="mockup-label"><div class="mockup-dot" style="background:#00c896"></div>Housing search</div>
+      </div>
+    </div>
+
+    <!-- Iteration / wireframe process photo -->
+    <div class="photo-wrap">
+      <div class="photo-slot landscape">
+        <span class="photo-slot-tag">📷 Design Process</span>
+        <div class="photo-slot-label">Figma workspace — iterations, wireframes, or component library</div>
+        <div class="photo-slot-hint">figma-workspace.png</div>
+      </div>
+      <div class="photo-caption">Figma — 15+ mockups built to test interaction logic before development</div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- DATA WORK -->
+  <section class="section reveal">
+    <span class="sec-anchor">05 — data</span>
+    <h2 class="sec-heading">5,800+ course records — building the data layer</h2>
+    <p class="sec-text">To accelerate early product validation, I used <strong>Python + BeautifulSoup</strong> to scrape and structure 5,800+ course records, building a searchable "Rate My Professor" style data prototype for the platform.</p>
+    <p class="sec-text">This wasn't just a technical exercise — it was a product decision. Having real, structured course data meant we could prototype the scheduling and discovery features with actual Berkeley courses instead of dummy content, making usability tests far more realistic and our findings more reliable.</p>
+
+    <ul class="case-list">
+      <li>Scraped 5,800+ course records including instructor, ratings, schedule, and enrollment data</li>
+      <li>Structured the data for searchability — normalized fields, removed duplicates, formatted for frontend consumption</li>
+      <li>Built a prototype data layer that fed directly into the Home dashboard scheduling feature</li>
+      <li>Enabled more realistic usability testing by replacing placeholder content with real Berkeley courses</li>
+    </ul>
+
+    <!-- CODE BLOCK -->
+    <div class="code-wrap">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-filename">data2.py</div>
+        <a href="https://github.com/jihongpark1104-sketch/Scheduling" target="_blank" class="code-gh-link">View on GitHub ↗</a>
+      </div>
+      <pre class="code-block"><span class="c"># ── Imports ────────────────────────────────────────────</span>
+<span class="k">import</span> re
+<span class="k">from</span> urllib.request <span class="k">import</span> Request, urlopen
+<span class="k">from</span> bs4 <span class="k">import</span> BeautifulSoup, Tag
+<span class="k">import</span> pandas <span class="k">as</span> pd
+
+BASE_URL <span class="o">=</span> <span class="s">"https://classes.berkeley.edu"</span>
+
+<span class="c"># ── Fetch raw HTML with spoofed User-Agent ──────────────</span>
+<span class="k">def</span> <span class="fn">fetch_html</span>(url: str) -> bytes:
+    req <span class="o">=</span> Request(url, headers<span class="o">=</span>{<span class="s">"User-Agent"</span>: <span class="s">"Mozilla/5.0"</span>})
+    <span class="k">with</span> urlopen(req) <span class="k">as</span> resp:
+        <span class="k">return</span> resp.read()
+
+<span class="c"># ── Parse one course card → structured dict ─────────────</span>
+<span class="k">def</span> <span class="fn">parse_card</span>(card: Tag) -> dict:
+    course_name <span class="o">=</span> card.select_one(<span class="s">".st--title h2"</span>)
+    professor   <span class="o">=</span> card.select_one(<span class="s">".st--instructors"</span>)
+    days        <span class="o">=</span> card.select_one(<span class="s">".st--meeting-days span:last-of-type"</span>)
+    time_el     <span class="o">=</span> card.select_one(<span class="s">".st--meeting-time span:last-of-type"</span>)
+
+    start_time <span class="o">=</span> end_time <span class="o">=</span> <span class="kw">None</span>
+    <span class="k">if</span> time_el:
+        parts <span class="o">=</span> [p.strip() <span class="k">for</span> p <span class="k">in</span> time_el.get_text().split(<span class="s">"–"</span>)]
+        <span class="k">if</span> len(parts) <span class="o">==</span> <span class="num">2</span>:
+            start_time, end_time <span class="o">=</span> parts
+
+    <span class="k">return</span> {
+        <span class="s">"Course Name"</span> : course_name.get_text(strip<span class="o">=</span><span class="kw">True</span>) <span class="k">if</span> course_name <span class="k">else</span> <span class="kw">None</span>,
+        <span class="s">"Professor"</span>   : professor.get_text(strip<span class="o">=</span><span class="kw">True</span>)   <span class="k">if</span> professor   <span class="k">else</span> <span class="kw">None</span>,
+        <span class="s">"Days"</span>        : days.get_text(strip<span class="o">=</span><span class="kw">True</span>)        <span class="k">if</span> days        <span class="k">else</span> <span class="kw">None</span>,
+        <span class="s">"Start Time"</span>  : start_time,
+        <span class="s">"End Time"</span>    : end_time,
+    }
+
+<span class="c"># ── Paginate across 334 pages of Berkeley class listings ─</span>
+<span class="k">def</span> <span class="fn">crawl_with_pagination</span>(url_template: str, max_pages: int <span class="o">=</span> <span class="num">334</span>):
+    all_rows <span class="o">=</span> []
+    <span class="k">for</span> page <span class="k">in</span> range(<span class="num">0</span>, max_pages <span class="o">+</span> <span class="num">1</span>):
+        rows <span class="o">=</span> parse_single_page(url_template.format(page<span class="o">=</span>page))
+        <span class="k">if not</span> rows: <span class="k">break</span>
+        all_rows.extend(rows)
+    <span class="k">return</span> all_rows
+
+<span class="c"># ── Run scraper → export 5,800+ rows to Excel ───────────</span>
+<span class="k">if</span> __name__ <span class="o">==</span> <span class="s">"__main__"</span>:
+    URL <span class="o">=</span> (<span class="s">"https://classes.berkeley.edu/search/class?"</span>
+           <span class="s">"f%5B0%5D=term%3A8576&page={page}"</span>)
+    rows <span class="o">=</span> crawl_with_pagination(URL)
+    df   <span class="o">=</span> pd.DataFrame(rows)
+    df.to_excel(<span class="s">"berkeley_schedule_all.xlsx"</span>, index<span class="o">=</span><span class="kw">False</span>)
+    <span class="fn">print</span>(<span class="k">f</span><span class="s">"[DONE] {len(df)} rows saved"</span>)  <span class="c"># → 5,800+ records</span></pre>
+    </div>
+
+    <a href="https://github.com/jihongpark1104-sketch/Scheduling" target="_blank" class="github-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      View full repo on GitHub
+    </a>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- IMPACT -->
+  <section class="section reveal">
+    <span class="sec-anchor">06 — impact</span>
+    <h2 class="sec-heading">What moved the needle</h2>
+
+    <div class="stats-row">
+      <div class="stat-cell">
+        <div class="stat-num">3</div>
+        <div class="stat-desc">Key friction points identified across scheduling, subleasing, and marketplace</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">↑ 35%</div>
+        <div class="stat-desc">Task completion clarity improvement in moderated usability sessions</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">15+</div>
+        <div class="stat-desc">Interactive Figma mockups built to test and refine interaction logic</div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">"The research directly shaped what we built first. Having 100+ sessions worth of data meant we weren't guessing — we knew exactly where users were dropping off and why."</div>
+      <div class="quote-attr">— Product reflection</div>
+    </div>
+
+    <p class="sec-text">The combination of qualitative usability research, rapid Figma prototyping, and real data infrastructure gave the team a validated foundation to build from — compressing the typical research-to-build timeline significantly.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- REFLECTION -->
+  <section class="section reveal">
+    <span class="sec-anchor">07 — reflection</span>
+    <h2 class="sec-heading">What I learned leading 0→1 product research</h2>
+    <p class="sec-text">Working on a startup from zero taught me that <strong>research at the 0→1 stage looks completely different</strong> from research at scale. There's no existing user base to survey, no historical data to reference, and no time for a 6-week discovery sprint. You have to move fast, make smart bets on what to test, and extract signal from every session.</p>
+    <p class="sec-text">The data scraping work also reinforced something important: <strong>the best prototypes use real data</strong>. Seeing "CS 3801 — Algorithms, 9:00 AM, Boyd Hall 201" in a usability test produces completely different (and more reliable) feedback than seeing "Course Name, Time, Location."</p>
+
+    <div class="highlight-box">
+      <p>Key takeaway: In a startup, the PM and researcher roles blur constantly. The ability to move between strategy, research, design, and code in the same week — and know when to switch — is the actual skill.</p>
+    </div>
+  </section>
+
+</div>
+
+<a href="work-tinder.html" class="next-project">
+  <div>
+    <div class="next-label">Next project</div>
+    <div class="next-title">Tinder × Gen Z →</div>
+  </div>
+  <span class="next-arrow">↗</span>
+</a>
+
+<footer>
+  <div class="ft-left">© 2025 Daniel Park</div>
+  <div class="ft-links">
+    <a href="#">LinkedIn</a>
+    <a href="#">Resume</a>
+    <a href="mailto:daniel@email.com">Email</a>
+  </div>
+</footer>
+
+<script>
+  const cur = document.getElementById('cur');
+  const curb = document.getElementById('curb');
+  let mx=0,my=0,bx=0,by=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+  (function loop(){ bx+=(mx-bx)*0.1; by+=(my-by)*0.1; curb.style.left=bx+'px'; curb.style.top=by+'px'; requestAnimationFrame(loop); })();
+  const revs = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.08});
+  revs.forEach(r=>io.observe(r));
+</script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Work — Daniel Park</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           #ffffff;
+      --bg2:          #f5f7ff;
+      --border:       #e2e6f3;
+      --border2:      #cdd3ee;
+      --text:         #0f1120;
+      --muted:        #8a92b2;
+      --muted2:       #c5cadf;
+      --accent:       #2563eb;
+      --accent-light: #eff3ff;
+      --accent-mid:   #93aef5;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif; font-weight: 300;
+      overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none;
+    }
+
+    /* CURSOR */
+    .cursor { position: fixed; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+    .cursor-box { position: fixed; width: 26px; height: 26px; border: 1.5px solid var(--accent-mid); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); opacity: 0.5; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 52px; border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); z-index: 100;
+    }
+    .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--accent); font-weight: 500; text-decoration: none; }
+    .nav-back { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--muted); display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back span { transition: transform 0.2s; }
+    .nav-back:hover span { transform: translateX(-3px); }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 120px 52px 64px;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: 0.3; pointer-events: none;
+    }
+    .page-header::after {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header-inner { position: relative; max-width: 1100px; margin: 0 auto; }
+
+    .header-eyebrow {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 20px;
+      opacity: 0; animation: fadeIn 0.5s 0.1s forwards;
+    }
+    .header-eyebrow::before { content: '// '; opacity: 0.4; }
+
+    .page-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(40px, 6vw, 88px);
+      font-weight: 400; line-height: 0.95; letter-spacing: -0.03em;
+      opacity: 0; transform: translateY(30px);
+      animation: up 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+    }
+    .page-title .blue { color: var(--accent); }
+
+    .header-bottom {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--border);
+      opacity: 0; animation: fadeIn 0.5s 0.6s forwards;
+    }
+    .header-count {
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      color: var(--muted); letter-spacing: 0.08em;
+    }
+    .header-count span { color: var(--accent); }
+
+    /* FILTER TAGS */
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-btn {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.06em; padding: 6px 14px;
+      border: 1px solid var(--border2); color: var(--muted);
+      background: var(--bg); cursor: none;
+      transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      border-color: var(--accent); color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    /* MAIN GRID */
+    .works-page { padding: 64px 52px 100px; max-width: 1100px; margin: 0 auto; }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* CARD */
+    .card {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      overflow: hidden; cursor: none;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+    .card:hover {
+      border-color: var(--accent-mid);
+      box-shadow: 0 8px 40px rgba(37,99,235,0.1);
+      transform: translateY(-4px);
+    }
+
+    /* card image area */
+    .card-img {
+      width: 100%; aspect-ratio: 16/9; overflow: hidden;
+      position: relative;
+    }
+    .card-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .card:hover .card-img img { transform: scale(1.04); }
+
+    /* colored placeholder */
+    .card-ph {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .card:hover .card-ph { transform: scale(1.03); }
+    .ph-tinder   { background: linear-gradient(135deg, #1a0a0f 0%, #2d0a18 100%); }
+    .ph-gym      { background: linear-gradient(135deg, #052e16 0%, #14532d 100%); }
+    .ph-campus   { background: linear-gradient(135deg, #0d0f1a 0%, #1a1c38 100%); }
+    .ph-ey       { background: linear-gradient(135deg, #1a1508 0%, #2a2010 100%); }
+
+    .ph-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 400; letter-spacing: -0.03em; line-height: 1;
+    }
+
+    /* coming soon overlay */
+    .card-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: flex-start; justify-content: flex-end;
+      padding: 16px;
+    }
+    .overlay-badge {
+      font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 5px 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .overlay-badge.soon {
+      background: rgba(255,230,0,0.15);
+      border: 1px solid rgba(255,230,0,0.4);
+      color: #ffe600;
+    }
+    .overlay-badge.wip {
+      background: rgba(37,99,235,0.15);
+      border: 1px solid rgba(37,99,235,0.4);
+      color: #93aef5;
+    }
+    .ob-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    /* card body */
+    .card-body { padding: 24px 26px 28px; }
+    .card-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px;
+    }
+    .card-num {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      color: var(--muted2); letter-spacing: 0.06em;
+    }
+    .card-year {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      color: var(--muted); letter-spacing: 0.06em;
+    }
+    .card-title {
+      font-size: 20px; font-weight: 400; color: var(--text);
+      margin-bottom: 6px; line-height: 1.2;
+      transition: color 0.2s;
+    }
+    .card:hover .card-title { color: var(--accent); }
+    .card-company {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      color: var(--muted); letter-spacing: 0.04em; margin-bottom: 14px;
+    }
+    .card-desc {
+      font-size: 13px; line-height: 1.75; color: var(--muted);
+      font-weight: 300; margin-bottom: 20px;
+    }
+    .card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ctag {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.04em; padding: 3px 9px;
+      border: 1px solid var(--border2); color: var(--muted);
+      background: var(--bg2); transition: all 0.2s;
+    }
+    .card:hover .ctag { border-color: var(--accent-mid); color: var(--accent); background: var(--accent-light); }
+    .card-arrow {
+      font-size: 15px; color: var(--muted2);
+      transition: color 0.2s, transform 0.2s;
+    }
+    .card:hover .card-arrow { color: var(--accent); transform: translate(3px,-3px); }
+
+    /* accent line on top per project */
+    .card-line { height: 3px; width: 100%; }
+
+    /* FOOTER */
+    footer { padding: 28px 52px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .ft-left { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+    .ft-links { display: flex; gap: 28px; }
+    .ft-links a { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .ft-links a:hover { color: var(--accent); }
+
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes up { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .page-header { padding: 100px 24px 48px; }
+      .works-page { padding: 40px 24px 80px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-box" id="curb"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">dp.portfolio</a>
+  <a href="index.html" class="nav-back"><span>←</span> home</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="header-inner">
+    <div class="header-eyebrow">selected_work</div>
+    <h1 class="page-title">All<br><span class="blue">Work_</span></h1>
+    <div class="header-bottom">
+      <div class="header-count"><span>04</span> projects · 2024–2026</div>
+      <div class="filters">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">UX Research</button>
+        <button class="filter-btn">Product</button>
+        <button class="filter-btn">Data</button>
+        <button class="filter-btn">Consulting</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- CARDS -->
+<main class="works-page">
+  <div class="cards-grid">
+
+    <!-- 01 — Campus Connect -->
+    <a href="work-campus.html" class="card reveal">
+      <div class="card-line" style="background:#6c63ff;"></div>
+      <div class="card-img">
+        <!-- Replace with: <img src="images/campus-darkmode.png" alt="Campus Connect" /> -->
+        <div class="card-ph ph-campus">
+          <span class="ph-label" style="color:#6c63ff;">campus.</span>
+        </div>
+        <div class="card-overlay">
+          <div class="overlay-badge wip"><div class="ob-dot"></div>In Progress</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-num">01 / 04</span>
+          <span class="card-year">2025 – Present</span>
+        </div>
+        <div class="card-title">Campus Connect</div>
+        <div class="card-company">Startup · Berkeley, CA</div>
+        <div class="card-desc">Product & UX Research Lead building the all-in-one campus platform — marketplace, rides, housing, community. 100+ usability tests, 15+ Figma mockups, 5,800+ course records scraped.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Product</span>
+            <span class="ctag">UX Research</span>
+            <span class="ctag">Figma</span>
+            <span class="ctag">Python</span>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- 02 — EY Han Young -->
+    <a href="work-ey.html" class="card reveal" style="transition-delay:0.1s">
+      <div class="card-line" style="background:#ffe600;"></div>
+      <div class="card-img">
+        <!-- Replace with: <img src="images/ey-cover.jpg" alt="EY Han Young" /> -->
+        <div class="card-ph ph-ey">
+          <span class="ph-label" style="color:#ffe600;">EY</span>
+        </div>
+        <div class="card-overlay">
+          <div class="overlay-badge soon"><div class="ob-dot"></div>Coming Soon</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-num">02 / 04</span>
+          <span class="card-year">2025</span>
+        </div>
+        <div class="card-title">EY Han Young</div>
+        <div class="card-company">Ernst & Young Korea · Seoul, South Korea</div>
+        <div class="card-desc">Consulting Intern building AWS data pipelines for Samsung MX — consolidating Amazon Ads/AMC data across 5+ global markets, redesigning QuickSight dashboards, and classifying 500+ Similarweb domains.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">AWS</span>
+            <span class="ctag">QuickSight</span>
+            <span class="ctag">Data Pipeline</span>
+            <span class="ctag">Consulting</span>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- 03 — Tinder × Gen Z -->
+    <a href="work-tinder.html" class="card reveal" style="transition-delay:0.2s">
+      <div class="card-line" style="background:#fe3c72;"></div>
+      <div class="card-img">
+        <!-- Replace with: <img src="images/tinder-hero.jpg" alt="Tinder x Gen Z" /> -->
+        <div class="card-ph ph-tinder">
+          <span class="ph-label" style="color:#fe3c72;">tinder.</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-num">03 / 04</span>
+          <span class="card-year">Spring 2026</span>
+        </div>
+        <div class="card-title">Tinder × Gen Z</div>
+        <div class="card-company">Berkeley Innovation · Berkeley, CA</div>
+        <div class="card-desc">Ideation Lead on a semester-long UX research engagement with Tinder — 115 surveys, 20 interviews, 6 focus groups, and a diary study to understand how Gen Z defines dating and where Tinder loses relevance.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">UX Research</span>
+            <span class="ctag">Ideation</span>
+            <span class="ctag">Affinity Mapping</span>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- 04 — Revitalizing Third Spaces -->
+    <a href="work-gym.html" class="card reveal" style="transition-delay:0.3s">
+      <div class="card-line" style="background:#16a34a;"></div>
+      <div class="card-img">
+        <!-- Replace with: <img src="images/gym-hero.jpg" alt="Revitalizing Third Spaces" /> -->
+        <div class="card-ph ph-gym">
+          <span class="ph-label" style="color:#4ade80;">gym.</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-num">04 / 04</span>
+          <span class="card-year">2025</span>
+        </div>
+        <div class="card-title">Revitalizing Third Spaces</div>
+        <div class="card-company">Berkeley Innovation · Design Challenge</div>
+        <div class="card-desc">Solo 1-week end-to-end design challenge — researching why people avoid gyms, mapping the emotional journey, and prototyping a system that makes gym interactions predictable and opt-in.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Product Design</span>
+            <span class="ctag">Prototyping</span>
+            <span class="ctag">User Testing</span>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  <div class="ft-left">© 2025 Daniel Park</div>
+  <div class="ft-links">
+    <a href="#">LinkedIn</a>
+    <a href="#">Resume</a>
+    <a href="mailto:daniel@email.com">Email</a>
+  </div>
+</footer>
+
+<script>
+  // cursor
+  const cur = document.getElementById('cur');
+  const curb = document.getElementById('curb');
+  let mx=0,my=0,bx=0,by=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+  (function loop(){ bx+=(mx-bx)*0.1; by+=(my-by)*0.1; curb.style.left=bx+'px'; curb.style.top=by+'px'; requestAnimationFrame(loop); })();
+
+  // scroll reveal
+  const revs = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.08});
+  revs.forEach(r=>io.observe(r));
+
+  // filter buttons (visual only for now)
+  const btns = document.querySelectorAll('.filter-btn');
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+  }));
+</script>
+</body>
+</html>
