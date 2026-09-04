@@ -3,8 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function () {
+      var DEFAULT_COLOR = '#2563eb';
+      var WORK_COLORS = [
+        { match: /work-campus/, color: '#6c63ff' },
+        { match: /work-gym/, color: '#16a34a' },
+        { match: /work-ey/, color: '#ffe600' },
+        { match: /(?:^|\/)tinder(?:\/|$)/, color: '#FF4458' }
+      ];
+      function colorForPath(pathname) {
+        for (var i = 0; i < WORK_COLORS.length; i++) {
+          if (WORK_COLORS[i].match.test(pathname)) return WORK_COLORS[i].color;
+        }
+        return DEFAULT_COLOR;
+      }
+      function drawCircle(color) {
+        var size = 64;
+        var canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        var ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        return canvas.toDataURL('image/png');
+      }
+      function apply() {
+        var href = drawCircle(colorForPath(location.pathname));
+        var link = document.querySelector('link[rel="icon"]');
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          link.type = 'image/png';
+          document.head.appendChild(link);
+        }
+        if (link.getAttribute('href') !== href) link.setAttribute('href', href);
+      }
+      apply();
+      addEventListener('pageshow', apply);
+    })();
+  </script>
   <title>Tinder × Gen Z — Daniel Park</title>
-  <link rel="icon" href="../favicon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
