@@ -9,7 +9,7 @@
       var WORK_COLORS = [
         { match: /work-campus/, color: '#6c63ff' },
         { match: /work-gym/, color: '#16a34a' },
-        { match: /work-ey/, color: '#ffe600' },
+        { match: /work-vibe/, color: '#9b8fc4' },
         { match: /(?:^|\/)tinder(?:\/|$)/, color: '#FF4458' }
       ];
       function colorForPath(pathname) {
@@ -256,12 +256,15 @@
       width: 100%; aspect-ratio: 16/10; overflow: hidden;
       background: var(--surface); position: relative;
     }
-    .card-img img {
+    .card-img img,
+    .card-img video {
       width: 100%; height: 100%; object-fit: cover;
       transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
       display: block;
+      pointer-events: none;
     }
-    .card:hover .card-img img { transform: scale(1.05); }
+    .card:hover .card-img img,
+    .card:hover .card-img video { transform: scale(1.05); }
     .card-img img.is-logo {
       object-fit: contain;
       object-position: center;
@@ -493,7 +496,7 @@
       </div>
       <div class="card-body">
         <div class="card-meta">
-          <span class="card-num">01 / 03</span>
+          <span class="card-num">01 / 04</span>
           <span class="card-year">2026</span>
         </div>
         <div class="card-title">Tinder: Gen Z Dating Experience Research & Product Strategy</div>
@@ -514,7 +517,7 @@
       </div>
       <div class="card-body">
         <div class="card-meta">
-          <span class="card-num">02 / 03</span>
+          <span class="card-num">02 / 04</span>
           <span class="card-year">2026</span>
         </div>
         <div class="card-title">Revitalizing Third Spaces - Gym Interaction Case Study</div>
@@ -535,7 +538,7 @@
       </div>
       <div class="card-body">
         <div class="card-meta">
-          <span class="card-num">03 / 03</span>
+          <span class="card-num">03 / 04</span>
           <span class="card-year">2025</span>
         </div>
         <div class="card-title">Campus Connect</div>
@@ -544,6 +547,27 @@
           <div class="card-tags">
             <span class="ctag">Research</span>
             <span class="ctag">Design</span>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="work-vibe.html" class="card" style="text-decoration:none">
+      <div class="card-img" style="background:#1a1628;">
+        <video src="photos/thumbnails/vibe.mov" muted autoplay loop playsinline preload="metadata" aria-label="Vibe app preview"></video>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-num">04 / 04</span>
+          <span class="card-year">2026</span>
+        </div>
+        <div class="card-title">Vibe — Visual Identity Board</div>
+        <div class="card-desc">Designed an AI-powered app that turns a Gen Z user's digital footprint into a shareable aesthetic board, pivoting after interviews disproved the original concept.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">UX Research</span>
+            <span class="ctag">Product Design</span>
           </div>
           <span class="card-arrow">↗</span>
         </div>

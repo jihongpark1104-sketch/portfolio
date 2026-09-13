@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function () {
+      var DEFAULT_COLOR = '#2563eb';
+      var WORK_COLORS = [
+        { match: /work-campus/, color: '#6c63ff' },
+        { match: /work-gym/, color: '#16a34a' },
+        { match: /work-vibe/, color: '#9b8fc4' },
+        { match: /(?:^|\/)tinder(?:\/|$)/, color: '#FF4458' }
+      ];
+      function colorForPath(pathname) {
+        for (var i = 0; i < WORK_COLORS.length; i++) {
+          if (WORK_COLORS[i].match.test(pathname)) return WORK_COLORS[i].color;
+        }
+        return DEFAULT_COLOR;
+      }
+      function drawCircle(color) {
+        var size = 64;
+        var canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        var ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        return canvas.toDataURL('image/png');
+      }
+      function apply() {
+        var href = drawCircle(colorForPath(location.pathname));
+        var link = document.querySelector('link[rel="icon"]');
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          link.type = 'image/png';
+          document.head.appendChild(link);
+        }
+        if (link.getAttribute('href') !== href) link.setAttribute('href', href);
+      }
+      apply();
+      addEventListener('pageshow', apply);
+    })();
+  </script>
+  <title>Vibe — Daniel Park</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #ffffff;
+      --bg2:          #faf8f5;
+      --border:       #e8e4de;
+      --border2:      #d4cfc8;
+      --text:         #0f0e0c;
+      --muted:        #8a8478;
+      --muted2:       #c8c2ba;
+      /* Vibe palette — pulled from Screen 5's real palette tags */
+      --clay:         #c4856a;
+      --sage:         #7a9e8a;
+      --lavender:     #9b8fc4;
+      --gold:         #c4a44a;
+      /* primary accent = lavender */
+      --accent:       #9b8fc4;
+      --accent-light: #f5f3fc;
+      --accent-mid:   #c8c0e8;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif; font-weight: 300;
+      overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none;
+    }
+
+    /* CURSOR */
+    .cursor { position: fixed; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+    .cursor-box { position: fixed; width: 26px; height: 26px; border: 1.5px solid var(--accent-mid); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); opacity: 0.5; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 52px; border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); z-index: 100;
+    }
+    .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--accent); font-weight: 500; text-decoration: none; }
+    .nav-back { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--muted); display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back span { transition: transform 0.2s; }
+    .nav-back:hover span { transform: translateX(-3px); }
+
+    /* HERO */
+    .case-hero {
+      padding: 120px 52px 80px; border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .case-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: 0.25; pointer-events: none;
+    }
+    .case-hero::after {
+      content: ''; position: absolute; top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(155,143,196,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; max-width: 960px; }
+
+    .breadcrumb {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 32px; display: flex; align-items: center; gap: 10px;
+      opacity: 0; animation: fadeIn 0.5s 0.1s forwards;
+    }
+    .breadcrumb span { color: var(--accent); }
+    .breadcrumb::before { content: '// '; opacity: 0.4; }
+
+    .case-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(52px, 8vw, 110px);
+      font-weight: 400; line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 12px;
+      opacity: 0; transform: translateY(30px);
+      animation: up 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+    }
+    .case-title .lav { color: var(--accent); }
+
+    .case-subtitle-line {
+      font-family: 'IBM Plex Mono', monospace; font-size: clamp(13px, 1.8vw, 17px);
+      font-weight: 300; color: var(--muted); letter-spacing: -0.01em; margin-bottom: 36px;
+      opacity: 0; animation: fadeIn 0.6s 0.4s forwards;
+    }
+
+    .hero-desc {
+      font-size: 16px; line-height: 1.8; color: #5a5650;
+      max-width: 640px; margin-bottom: 48px;
+      opacity: 0; animation: fadeIn 0.6s 0.5s forwards;
+    }
+    .hero-desc strong { color: var(--text); font-weight: 400; }
+
+    /* palette swatches inline in hero */
+    .palette-row {
+      display: flex; gap: 10px; align-items: center;
+      margin-bottom: 36px;
+      opacity: 0; animation: fadeIn 0.6s 0.55s forwards;
+    }
+    .pdot {
+      display: inline-block;
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+
+    .case-meta {
+      display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--border);
+      opacity: 0; animation: fadeIn 0.6s 0.65s forwards;
+    }
+    .meta-cell { padding: 16px 28px; border-right: 1px solid var(--border); }
+    .meta-cell:last-child { border-right: none; }
+    .meta-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .meta-val { font-size: 14px; color: var(--text); font-weight: 400; }
+    .meta-val.lav { color: var(--accent); }
+
+    /* DARK COVER */
+    .cover {
+      background: #0f0d0a; border-bottom: 1px solid #1e1a14;
+      padding: 80px 52px;
+      display: flex; flex-direction: column; align-items: center; gap: 28px;
+    }
+    .cover-wordmark {
+      font-family: 'IBM Plex Mono', monospace; font-size: clamp(56px, 10vw, 120px);
+      font-weight: 300; letter-spacing: -0.04em; color: #fff; line-height: 1;
+      font-style: italic;
+    }
+    .cover-wordmark span { color: var(--accent); }
+    .cover-sub {
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.2);
+    }
+    .cover-chips {
+      display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 8px;
+    }
+    .cover-chip {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+      padding: 6px 16px; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.4);
+    }
+
+    /* PHOTO SLOTS */
+    .photo-slot {
+      width: 100%; background: var(--bg2);
+      border: 2px dashed var(--border2);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    }
+    .photo-slot.landscape  { aspect-ratio: 16/9; }
+    .photo-slot.wide       { aspect-ratio: 21/9; }
+    .photo-slot.square     { aspect-ratio: 1/1; }
+    .photo-slot.phone      { aspect-ratio: 9/18; }
+    .photo-slot.short      { aspect-ratio: 3/1; }
+    .photo-slot.tall       { aspect-ratio: 4/5; }
+    .photo-slot-tag {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--accent); background: var(--accent-light);
+      padding: 4px 12px; border: 1px solid var(--accent-mid);
+    }
+    .photo-slot-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--muted); text-align: center; padding: 0 20px; }
+    .photo-slot-hint { font-size: 11px; color: var(--muted2); text-align: center; padding: 0 20px; font-family: 'IBM Plex Mono', monospace; }
+    .photo-caption { padding: 12px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: var(--muted); border-top: 1px solid var(--border); background: var(--bg); }
+    .photo-wrap { border: 1px solid var(--border); overflow: hidden; margin: 28px 0; }
+    .photo-wrap.no-margin { margin: 0; }
+    .photo-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+    .photo-grid-2 .photo-wrap { margin: 0; }
+    .photo-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 28px 0; }
+    .photo-grid-5 .photo-wrap { margin: 0; }
+
+    /* BODY */
+    .case-body { max-width: 860px; margin: 0 auto; padding: 80px 52px; }
+    .section { margin-bottom: 72px; }
+    .sec-anchor { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block; }
+    .sec-anchor::before { content: '// '; opacity: 0.4; color: var(--muted); }
+    .sec-heading { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 400; letter-spacing: -0.01em; color: var(--text); margin-bottom: 20px; line-height: 1.2; }
+    .sec-text { font-size: 15px; line-height: 1.9; color: #5a5650; font-weight: 300; margin-bottom: 16px; }
+    .sec-text strong { color: var(--text); font-weight: 400; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 56px 0; }
+
+    /* PIVOT BLOCK — the key narrative beat */
+    .pivot-block {
+      border: 1px solid var(--border); overflow: hidden; margin: 32px 0;
+    }
+    .pivot-row {
+      display: grid; grid-template-columns: 1fr 48px 1fr;
+      align-items: stretch;
+    }
+    .pivot-side {
+      padding: 28px 28px;
+    }
+    .pivot-side.before { background: var(--bg2); }
+    .pivot-side.after { background: var(--accent-light); }
+    .pivot-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .pivot-label.before { color: var(--muted); text-decoration: line-through; }
+    .pivot-label.after { color: var(--accent); }
+    .pivot-name {
+      font-size: 18px; font-weight: 400; color: var(--text); margin-bottom: 10px;
+    }
+    .pivot-desc { font-size: 13px; line-height: 1.7; color: var(--muted); font-weight: 300; }
+    .pivot-arrow {
+      background: var(--text); display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 18px;
+    }
+    .pivot-insight {
+      padding: 16px 28px; border-top: 1px solid var(--border);
+      background: var(--bg);
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      letter-spacing: 0.04em; color: var(--accent); line-height: 1.6;
+    }
+    .pivot-insight::before { content: '→ '; opacity: 0.5; }
+
+    /* NEEDS STATEMENT EVOLUTION */
+    .needs-list { display: flex; flex-direction: column; gap: 0; margin: 28px 0; border: 1px solid var(--border); }
+    .needs-item { padding: 20px 24px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 80px 1fr; gap: 16px; align-items: start; }
+    .needs-item:last-child { border-bottom: none; }
+    .needs-version {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted2); margin-top: 3px;
+    }
+    .needs-text { font-size: 14px; line-height: 1.75; color: #5a5650; font-style: italic; }
+    .needs-item.final .needs-text { color: var(--text); font-weight: 400; font-style: normal; }
+    .needs-item.final .needs-version { color: var(--accent); }
+
+    /* INSIGHT CARDS */
+    .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 28px 0; }
+    .insight-card { border: 1px solid var(--border); padding: 22px; background: var(--bg2); transition: border-color 0.2s; }
+    .insight-card:hover { border-color: var(--accent-mid); }
+    .insight-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .insight-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
+    .insight-body { font-size: 13px; line-height: 1.7; color: var(--muted); font-weight: 300; }
+    .insight-quote { font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.7; color: var(--accent); font-style: italic; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box { border: 1px solid var(--accent-mid); background: var(--accent-light); padding: 24px 28px; margin: 28px 0; }
+    .highlight-box p { font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--accent); letter-spacing: 0.01em; }
+
+    /* QUOTE */
+    .quote-block { border-left: 3px solid var(--accent); padding: 16px 24px; margin: 24px 0; background: var(--accent-light); }
+    .quote-text { font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--accent); font-style: italic; }
+    .quote-attr { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+
+    /* 5 SCREENS */
+    .screen-list { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); margin: 28px 0; }
+    .screen-row { display: grid; grid-template-columns: 180px 1fr; border-bottom: 1px solid var(--border); }
+    .screen-row:last-child { border-bottom: none; }
+    .screen-row.hero-screen { background: var(--accent-light); }
+    .screen-num {
+      padding: 20px 20px; border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 6px; justify-content: center;
+    }
+    .screen-n { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .screen-name { font-size: 14px; font-weight: 400; color: var(--text); }
+    .screen-body { padding: 20px 24px; }
+    .screen-copy { font-size: 13px; line-height: 1.7; color: var(--muted); font-weight: 300; margin-bottom: 8px; }
+    .screen-principle { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.04em; }
+    .screen-principle::before { content: 'Principle: '; opacity: 0.5; color: var(--muted); }
+
+    /* TEST RESULT ROWS */
+    .test-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+    .test-card { border: 1px solid var(--border); padding: 22px; background: var(--bg2); }
+    .test-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .test-title { font-size: 14px; font-weight: 400; color: var(--text); margin-bottom: 8px; }
+    .test-body { font-size: 13px; line-height: 1.7; color: var(--muted); font-weight: 300; }
+
+    /* PHASE 2 */
+    .phase2-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+    .phase2-table th { text-align: left; padding: 10px 14px; background: var(--text); color: #fff; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .phase2-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--muted); line-height: 1.5; vertical-align: top; }
+    .phase2-table tr:nth-child(even) td { background: var(--bg2); }
+
+    /* CASE LIST */
+    .case-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+    .case-list li { font-size: 14px; line-height: 1.7; color: #5a5650; font-weight: 300; display: flex; gap: 12px; }
+    .case-list li::before { content: '→'; color: var(--accent); font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 3px; flex-shrink: 0; }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.04em; padding: 5px 12px; border: 1px solid var(--border2); color: var(--muted); background: var(--bg2); }
+
+    /* STATS ROW */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); margin: 28px 0; }
+    .stat-cell { padding: 24px; border-right: 1px solid var(--border); }
+    .stat-cell:last-child { border-right: none; }
+    .stat-num { font-family: 'IBM Plex Mono', monospace; font-size: 36px; font-weight: 400; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 6px; }
+    .stat-desc { font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.5; }
+
+    /* NEXT / FOOTER */
+    .next-project { border-top: 1px solid var(--border); padding: 64px 52px; display: flex; justify-content: space-between; align-items: center; background: var(--bg2); text-decoration: none; transition: background 0.2s; }
+    .next-project:hover { background: var(--accent-light); }
+    .next-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .next-title { font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 400; color: var(--text); transition: color 0.2s; }
+    .next-project:hover .next-title { color: var(--accent); }
+    .next-arrow { font-size: 32px; color: var(--muted2); transition: color 0.2s, transform 0.2s; }
+    .next-project:hover .next-arrow { color: var(--accent); transform: translate(6px,-6px); }
+    footer { padding: 28px 52px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .ft-left { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+    .ft-links { display: flex; gap: 28px; }
+    .ft-links a { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .ft-links a:hover { color: var(--accent); }
+
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes up { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .case-hero { padding: 100px 24px 60px; }
+      .case-body { padding: 60px 24px; }
+      .pivot-row { grid-template-columns: 1fr; }
+      .pivot-arrow { display: none; }
+      .insight-grid, .test-grid, .photo-grid-2 { grid-template-columns: 1fr; }
+      .screen-row { grid-template-columns: 1fr; }
+      .screen-num { border-right: none; border-bottom: 1px solid var(--border); }
+      .stats-row { grid-template-columns: 1fr; }
+      .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
+      footer { padding: 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
+      .next-project { padding: 48px 24px; }
+      .photo-grid-5 { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+  <link rel="stylesheet" href="responsive.css" />
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-box" id="curb"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">dp.portfolio</a>
+  <a href="index.html#works" class="nav-back"><span>←</span> back to work</a>
+</nav>
+
+<!-- HERO -->
+<section class="case-hero">
+  <div class="hero-inner">
+    <div class="breadcrumb">Work <span>/</span> Product Design · UC Berkeley CogSci 112</div>
+    <h1 class="case-title">vibe<span class="lav">_</span></h1>
+    <div class="case-subtitle-line">Your aesthetic, in one board — AI product design, solo, 4 weeks</div>
+    <p class="hero-desc">
+      An AI-powered mobile app that turns a Gen Z user's fragmented digital footprint — camera roll, Spotify, saved posts — into a single, shareable visual identity board. Built for <strong>Cognitive Science 112</strong> at UC Berkeley. The project started as "Identity OS" and pivoted entirely after two interviews proved the core assumption wrong.
+    </p>
+    <div class="palette-row">
+      <span class="pdot" style="background:var(--clay);"></span>
+      <span class="pdot" style="background:var(--sage);"></span>
+      <span class="pdot" style="background:var(--lavender);"></span>
+      <span class="pdot" style="background:var(--gold);"></span>
+      <span class="pdot" style="background:#a06080;"></span>
+      <span class="pdot" style="background:#6090b0;"></span>
+    </div>
+    <div class="case-meta">
+      <div class="meta-cell"><div class="meta-label">Role</div><div class="meta-val lav">Solo — Research, Design, Testing</div></div>
+      <div class="meta-cell"><div class="meta-label">Timeline</div><div class="meta-val">4 weeks · Summer 2026</div></div>
+      <div class="meta-cell"><div class="meta-label">Course</div><div class="meta-val">CogSci 112 · UC Berkeley</div></div>
+      <div class="meta-cell"><div class="meta-label">Tools</div><div class="meta-val">Figma Make · Miro · User Interviews</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HERO VIDEO — replace this block with your video -->
+<!-- <video src="your-video.mp4" autoplay loop muted playsinline style="width:100%;display:block;"></video> -->
+<div class="photo-wrap" style="margin:0;border-left:none;border-right:none;">
+  <div class="photo-slot" style="aspect-ratio:16/7;background:#0f0d0a;border:2px dashed #2a2630;">
+    <span class="photo-slot-tag">🎬 Hero Video</span>
+    <div class="photo-slot-label" style="color:#6a6070;">Drop your video here</div>
+    <div class="photo-slot-hint" style="color:#3a3040;">Replace this block with a &lt;video&gt; tag</div>
+  </div>
+</div>
+
+<div class="case-body">
+
+  <!-- OVERVIEW -->
+  <section class="section reveal">
+    <span class="sec-anchor">01 — overview</span>
+    <h2 class="sec-heading">What is Vibe?</h2>
+    <p class="sec-text">
+      <strong>Vibe</strong> is an AI-powered mobile app concept that consolidates a person's fragmented digital taste data — camera roll, Spotify listening history, saved posts — into a single, shareable visual identity board. Think Spotify Wrapped, but for your entire aesthetic.
+    </p>
+    <p class="sec-text">
+      This was a solo project for <strong>Cognitive Science 112: Uncovering the Cognitive Science Behind the User Experience</strong> at UC Berkeley. Every phase — from interview planning to prototype testing — was completed in 4 weeks.
+    </p>
+
+    <div class="stats-row">
+      <div class="stat-cell"><div class="stat-num">2</div><div class="stat-desc">Structured 1:1 interviews that disproved the original hypothesis</div></div>
+      <div class="stat-cell"><div class="stat-num">5</div><div class="stat-desc">UI screens designed and usability tested end-to-end</div></div>
+      <div class="stat-cell"><div class="stat-num">3×</div><div class="stat-desc">User needs statement revised — each time grounded in new research</div></div>
+    </div>
+
+    <div class="tag-list">
+      <span class="tag">UX Research</span>
+      <span class="tag">Empathy Mapping</span>
+      <span class="tag">Journey Mapping</span>
+      <span class="tag">Interview Design</span>
+      <span class="tag">Usability Testing</span>
+      <span class="tag">Figma Make</span>
+      <span class="tag">AI Product Design</span>
+      <span class="tag">Norman's Design Principles</span>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- THE PROBLEM -->
+  <section class="section reveal">
+    <span class="sec-anchor">02 — problem</span>
+    <h2 class="sec-heading">Text can't carry a vibe</h2>
+    <p class="sec-text">
+      <strong>Target user:</strong> Trend-conscious Gen Z digital natives (18–26) who actively curate visual taste across Pinterest, Instagram, TikTok, Spotify, and their camera roll — but struggle when asked to describe their own aesthetic in words.
+    </p>
+
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="insight-num">Pain Point 01</div>
+        <div class="insight-title">Taste data is fragmented across 5+ places</div>
+        <div class="insight-body">Screenshots, Notes app, Instagram saved collections, TikTok likes, Spotify playlists — never consolidated anywhere, impossible to see the whole picture at once.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Pain Point 02</div>
+        <div class="insight-title">Language fails to carry a vibe</div>
+        <div class="insight-body">One interviewee used the Korean word "청순하다" — the closest English equivalent is "innocent and pure," but that translation loses exactly what makes the word work.</div>
+        <div class="insight-quote">"Without visuals, it's hard to explain my style."</div>
+      </div>
+    </div>
+
+    <p class="sec-text">Taste also evolves over time — shaped by algorithmic feedback loops, celebrity influence, and friend feedback — which text-based self-description can't capture. One interviewee noted her taste evolution is driven by platform algorithms ("the algorithm changes based on what I save/like") rather than organic change alone.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- THE PIVOT — key narrative beat -->
+  <section class="section reveal">
+    <span class="sec-anchor">03 — the pivot</span>
+    <h2 class="sec-heading">Two interviews changed everything</h2>
+    <p class="sec-text">
+      This is the most important beat of this case study. The project <strong>did not start as Vibe.</strong> It started as <strong>Identity OS</strong> — built on an assumption that turned out to be wrong.
+    </p>
+
+    <div class="pivot-block">
+      <div class="pivot-row">
+        <div class="pivot-side before">
+          <div class="pivot-label before">Before — Identity OS</div>
+          <div class="pivot-name">Help users discover their identity</div>
+          <div class="pivot-desc">Original hypothesis: users are confused about who they are. They need a tool to synthesize their scattered data and surface patterns they don't already see about themselves.</div>
+        </div>
+        <div class="pivot-arrow">→</div>
+        <div class="pivot-side after">
+          <div class="pivot-label after">After — Vibe</div>
+          <div class="pivot-name">Help users express who they already know they are</div>
+          <div class="pivot-desc">What interviews revealed: both interviewees immediately named their aesthetic ("clean girl," "chic, girlish"). They weren't confused about their identity — they just couldn't express it. The problem was expression, not discovery.</div>
+        </div>
+      </div>
+      <div class="pivot-insight">Two interviews were enough to rename the product, rewrite the user needs statement, and redirect the entire feature set.</div>
+    </div>
+
+    <!-- needs statement evolution -->
+    <p class="sec-text" style="margin-top:32px;">The user needs statement evolved three times as research sharpened the problem:</p>
+    <div class="needs-list">
+      <div class="needs-item">
+        <div class="needs-version">v1 — initial</div>
+        <div class="needs-text">A self-curating Gen Z digital curator needs to synthesize and identify underlying patterns across their scattered digital data to deeply understand and articulate their personal aesthetic identity to others.</div>
+      </div>
+      <div class="needs-item">
+        <div class="needs-version">v2 — post interviews</div>
+        <div class="needs-text">A trend-conscious Gen Z digital native needs a way to consolidate their fragmented digital footprint into a singular visual output, because relying on text descriptions and rigid labels fails to capture the true essence of their personal identity.</div>
+      </div>
+      <div class="needs-item final">
+        <div class="needs-version">v3 — final</div>
+        <div class="needs-text">A trend-conscious Gen Z digital native needs a way to turn their fragmented saved content into a shareable cultural object that represents who they are — because text labels and rigid algorithms fail to capture the true essence of their personal style, and there's no satisfying way to present it socially.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- RESEARCH -->
+  <section class="section reveal">
+    <span class="sec-anchor">04 — research</span>
+    <h2 class="sec-heading">Interviews, empathy mapping, journey mapping</h2>
+    <p class="sec-text">
+      Structured 1:1 interviews following a formal interview plan (target audience, recruitment approach, 5 core hypotheses, warm-up script) per the CogSci 112 UX research framework.
+    </p>
+
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="insight-num">Interviewee #1</div>
+        <div class="insight-title">23, female, UC Berkeley alumna, works at Amazon</div>
+        <div class="insight-body">Describes aesthetic as "Kimjiwon / chic, girlish." Saves via screenshots, Instagram, notes app. Taste driven by algorithmic feedback and celebrity references. Said: "Without visuals, it's hard."</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Interviewee #2</div>
+        <div class="insight-title">23, female, college student, digital native</div>
+        <div class="insight-body">Describes aesthetic as "clean girl, classy vibe." Uses TikTok and IG saves. Frustrated by language barriers: "청순하다" → "innocent" loses the meaning. Thinks contextually about style (TPO: Time, Place, Occasion).</div>
+      </div>
+    </div>
+
+    <p class="sec-text">Three key insights synthesized from interviews:</p>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="insight-num">Insight 01</div>
+        <div class="insight-title">Fragmented curation</div>
+        <div class="insight-body">Both relied on scattered, unorganized methods: screenshots, iPhone Notes app, Instagram saved, TikTok likes — never in one place.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Insight 02</div>
+        <div class="insight-title">Failure of textual description</div>
+        <div class="insight-body">A major pain point. Severe limitation in expressing aesthetic identity through words alone. Language fails where visuals succeed.</div>
+      </div>
+    </div>
+    <div class="insight-grid" style="margin-top:12px">
+      <div class="insight-card" style="grid-column:1/-1">
+        <div class="insight-num">Insight 03</div>
+        <div class="insight-title">Taste evolution — driven externally, not just internally</div>
+        <div class="insight-body">Personal style shifts over time through curiosity, celebrity influence, and friend feedback — but also through algorithmic feedback loops. One interviewee's taste was explicitly shaped by what the platform's algorithm chose to show her based on her saves and likes, not just her own organic preferences.</div>
+      </div>
+    </div>
+
+    <!-- empathy map photo slot -->
+    <div class="photo-wrap">
+      <div class="photo-slot landscape">
+        <span class="photo-slot-tag">📷 Empathy Map</span>
+        <div class="photo-slot-label">Empathy map — Gen Z digital native</div>
+        <div class="photo-slot-hint">empathy-map.png · export from Miro/FigJam</div>
+      </div>
+      <div class="photo-caption">Empathy map — Says / Thinks / Does / Feels across the Gen Z aesthetic curator persona</div>
+    </div>
+
+    <!-- journey map photo slot -->
+    <div class="photo-wrap">
+      <div class="photo-slot landscape">
+        <span class="photo-slot-tag">📷 Journey Map</span>
+        <div class="photo-slot-label">Journey map — Mia's full flow (Trigger → Returns)</div>
+        <div class="photo-slot-hint">journey-map.png · 9 steps: Trigger, Onboard, Choose Inputs, Connect Spotify, See Vibe Board, Refine, Share, Friend reacts, Returns</div>
+      </div>
+      <div class="photo-caption">Journey map — Doing / Thinking / Feeling / Opportunities across each stage</div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- PRODUCT: 5-SCREEN FLOW -->
+  <section class="section reveal">
+    <span class="sec-anchor">05 — product</span>
+    <h2 class="sec-heading">The UI flow — 5 screens</h2>
+    <p class="sec-text">
+      The interface was generated using <strong>Figma Make</strong> (AI-generated UI) and tested with real users. Each screen was designed around a specific cognitive science or UX principle derived from research.
+    </p>
+
+    <!-- 5 phone screens -->
+    <div class="photo-grid-5">
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot phone">
+          <span class="photo-slot-tag">📷 S1</span>
+          <div class="photo-slot-label">Home / Start</div>
+          <div class="photo-slot-hint">screen-1.png</div>
+        </div>
+        <div class="photo-caption">Home · "What's your vibe?"</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot phone">
+          <span class="photo-slot-tag">📷 S2</span>
+          <div class="photo-slot-label">Choose Inputs</div>
+          <div class="photo-slot-hint">screen-2.png</div>
+        </div>
+        <div class="photo-caption">Inputs · Camera roll + Spotify</div>
+      </div>
+      <div class="photo-wrap no-margin" style="border-color:var(--accent)">
+        <div class="photo-slot phone" style="background:var(--accent-light)">
+          <span class="photo-slot-tag" style="background:#fff">📷 S3 ★</span>
+          <div class="photo-slot-label">Permission & Scan</div>
+          <div class="photo-slot-hint">screen-3.png · KEY SCREEN</div>
+        </div>
+        <div class="photo-caption" style="color:var(--accent)">★ Key design decision</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot phone">
+          <span class="photo-slot-tag">📷 S4</span>
+          <div class="photo-slot-label">Loading</div>
+          <div class="photo-slot-hint">screen-4.png</div>
+        </div>
+        <div class="photo-caption">Loading · Feedback loop</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot phone">
+          <span class="photo-slot-tag">📷 S5</span>
+          <div class="photo-slot-label">Vibe Board</div>
+          <div class="photo-slot-hint">screen-5.png</div>
+        </div>
+        <div class="photo-caption">Reveal · The vibe board</div>
+      </div>
+    </div>
+
+    <div class="screen-list">
+      <div class="screen-row">
+        <div class="screen-num">
+          <div class="screen-n">Screen 01</div>
+          <div class="screen-name">Home / Start</div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-copy">Empty state. Headline: "What's your vibe?" One circular "+" button — Create your vibe. A row of recent boards below.</div>
+          <div class="screen-principle">Norman's discoverability — one question, one clear action, no unnecessary decisions at the entry point.</div>
+        </div>
+      </div>
+      <div class="screen-row">
+        <div class="screen-num">
+          <div class="screen-n">Screen 02</div>
+          <div class="screen-name">Choose Your Inputs</div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-copy">Two tappable cards: Camera Roll & Screenshots, Connect Spotify. Sources are combinable. "More inputs = more accurate vibe. We never store your data."</div>
+          <div class="screen-principle">Clear affordances — designed because research showed taste data is never in one place.</div>
+        </div>
+      </div>
+      <div class="screen-row hero-screen">
+        <div class="screen-num">
+          <div class="screen-n" style="color:var(--accent)">Screen 03 ★</div>
+          <div class="screen-name">Permission & Scan Mode</div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-copy">"How should we read your vibe?" Two choices: ✨ Let AI decide (RECOMMENDED) — full camera roll scan; 🖼 I'll pick my own — manual selection. Reassurance: "We only analyze. We never store your photos."</div>
+          <div class="screen-principle">The key design decision: AI scan is recommended because manual self-selection introduces bias — people consciously pick what they think represents them, not what actually does. The camera roll captures real lifestyle, not a curated version.</div>
+        </div>
+      </div>
+      <div class="screen-row">
+        <div class="screen-num">
+          <div class="screen-n">Screen 04</div>
+          <div class="screen-name">Loading State</div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-copy">"Reading your vibe... Mapping your visual mood." Animation with progress micro-copy.</div>
+          <div class="screen-principle">Norman's feedback principle — transparency about what the system is doing builds trust and manages wait anxiety. Ambiguity is the stressor, not the wait time itself.</div>
+        </div>
+      </div>
+      <div class="screen-row">
+        <div class="screen-num">
+          <div class="screen-n">Screen 05</div>
+          <div class="screen-name">Vibe Board Reveal</div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-copy">Aesthetic label ("Soft Minimalist + Vintage Warmth"), color palette, stat row (94% match, 12 photos, 4 songs), Refine / Share My Vibe buttons.</div>
+          <div class="screen-principle">Designed as a "moment," not a results page — worth keeping and sharing. Natural mapping: palette from photos, keywords from playlists.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- full UI flow photo -->
+    <div class="photo-wrap">
+      <div class="photo-slot short">
+        <span class="photo-slot-tag">📷 Full UI Flow</span>
+        <div class="photo-slot-label">All 5 screens side by side — the complete flow</div>
+        <div class="photo-slot-hint">ui-flow-all-screens.png · from your Figma Make file</div>
+      </div>
+      <div class="photo-caption">Complete UI flow: Home → Choose Inputs → Scan Mode → Loading → Vibe Board</div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- USER TESTING -->
+  <section class="section reveal">
+    <span class="sec-anchor">06 — testing</span>
+    <h2 class="sec-heading">What usability testing actually found</h2>
+    <p class="sec-text">
+      Moderated usability tests with 2 participants — each given realistic task scenarios (e.g. "You want to use the app but your camera roll has personal photos in it — what do you do?"). Think-aloud protocol throughout.
+    </p>
+
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="test-label">Finding 01 — Validated</div>
+        <div class="test-title">The privacy divide matched the hypothesis exactly</div>
+        <div class="test-body">User 1 chose manual upload: "It feels invasive. I have too many personal photos that don't reflect my aesthetic." User 2 chose AI full scan without hesitation: "I trust AI. If I'm concerned about privacy, I wouldn't use AI at all."</div>
+      </div>
+      <div class="test-card">
+        <div class="test-label">Finding 02 — Validated</div>
+        <div class="test-title">The reveal worked — both users responded emotionally</div>
+        <div class="test-body">User 1 smiled and said "I like how it grouped songs to certain aesthetics. I want to save it and show it to people." User 2 liked the design elements and immediately thought about sharing ("link in bio").</div>
+      </div>
+      <div class="test-card">
+        <div class="test-label">Finding 03 — Assumption debunked</div>
+        <div class="test-title">Loading patience was about feedback, not time</div>
+        <div class="test-body">Predicted: users lose patience after 5 seconds. Reality: User 2 was willing to wait because she understood she'd uploaded "tons of information." A generic spinner caused confusion ("Is it frozen?") — step-by-step copy like "Scanning Spotify playlists…" resolves it.</div>
+      </div>
+      <div class="test-card">
+        <div class="test-label">Finding 04 — New signal</div>
+        <div class="test-title">Swap/edit feature was immediately requested</div>
+        <div class="test-body">User 2: "I want to swap a few things if the AI pulled out information that doesn't really represent me." This points to a missing feature: per-element replacement without redoing the whole scan.</div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">"Knowing the app is actively analyzing my data makes the wait feel intentional instead of broken."</div>
+      <div class="quote-attr">— Pattern from both user tests · confirmed Norman's feedback principle</div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- REFLECTION -->
+  <section class="section reveal">
+    <span class="sec-anchor">07 — reflection</span>
+    <h2 class="sec-heading">The central lesson</h2>
+    <p class="sec-text">
+      The original assumption was wrong. Users don't need help <em>discovering</em> who they are — they need better ways to <em>express</em> who they already are. <strong>Two interviews were enough to rename the product and redirect the entire feature set.</strong>
+    </p>
+
+    <div class="highlight-box">
+      <p>The pivot from Identity OS → Vibe is the most direct demonstration of what research is actually for: not confirming what you already think, but finding the version of the problem that's actually true.</p>
+    </div>
+
+    <p class="sec-text">Three concrete next steps if this were to continue:</p>
+    <ul class="case-list">
+      <li>Let users <strong>replace individual elements</strong> the AI got wrong — restoring control without redoing the whole scan</li>
+      <li>Add a <strong>preview of exactly what the AI will analyze</strong> before the scan begins, for privacy-conscious users</li>
+      <li><strong>Expand inputs</strong> beyond photos and Spotify to Pinterest and Notes app, for a richer aesthetic read</li>
+    </ul>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- PHASE 2 — VIBE EVERYWHERE -->
+  <section class="section reveal">
+    <span class="sec-anchor">08 — phase 2 vision</span>
+    <h2 class="sec-heading">Vibe Everywhere — design exploration <span style="font-size:13px;color:var(--muted);font-weight:300;">(not yet user-validated)</span></h2>
+    <p class="sec-text">
+      Vibe already tells a user who they are. The next question: what if that same profile became a layer that <em>other</em> software adapts to — not just Vibe's own interface, but apps like Claude or Instagram, adjusted per person?
+    </p>
+    <p class="sec-text">
+      This connects to a real research lineage in HCI: <strong>adaptive interfaces</strong> — historically built for accessibility (motor-ability differences). Vibe Everywhere applies the same underlying logic to a different axis: aesthetic and personality fit. Cognitive science grounding: <strong>person-environment fit</strong> — satisfaction improves when an environment matches a person's traits.
+    </p>
+
+    <div class="highlight-box">
+      <p>Architecture: a Profiler AI reads the Vibe profile and translates it into interface-relevant axes (directness ↔ warmth, information density ↔ spaciousness). A Stylist AI takes those axes and produces concrete UI decisions. Kept deliberately separate: "what this person is like" stays distinct from "what the interface should do about it."</p>
+    </div>
+
+    <p class="sec-text" style="margin-top:24px;">Three personas used to prototype the concept:</p>
+    <table class="phase2-table">
+      <tr>
+        <th>Persona</th>
+        <th>Warmth</th>
+        <th>Density</th>
+        <th>Wants</th>
+      </tr>
+      <tr>
+        <td>The Direct Minimalist</td>
+        <td>Low</td>
+        <td>Low</td>
+        <td>Fewest words, most white space, function over friendliness</td>
+      </tr>
+      <tr>
+        <td>The Warm Expressive</td>
+        <td>High</td>
+        <td>Med–High</td>
+        <td>Encouragement, context, a sense of being accompanied</td>
+      </tr>
+      <tr>
+        <td>The Efficient Power User</td>
+        <td>Low–Neutral</td>
+        <td>High</td>
+        <td>Everything visible at once, no hand-holding, speed over comfort</td>
+      </tr>
+    </table>
+
+    <!-- phase 2 mockup slots -->
+    <div class="photo-grid-2" style="margin-top:24px;">
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot landscape">
+          <span class="photo-slot-tag">📷 Claude × 3 Personas</span>
+          <div class="photo-slot-label">Claude new-chat screen — 3 persona variants</div>
+          <div class="photo-slot-hint">vibe-everywhere-claude.png</div>
+        </div>
+        <div class="photo-caption">Claude empty state — Direct Minimalist / Warm Expressive / Efficient Power User</div>
+      </div>
+      <div class="photo-wrap no-margin">
+        <div class="photo-slot landscape">
+          <span class="photo-slot-tag">📷 Instagram × 3 Personas</span>
+          <div class="photo-slot-label">Instagram home feed — 3 persona variants</div>
+          <div class="photo-slot-hint">vibe-everywhere-instagram.png</div>
+        </div>
+        <div class="photo-caption">Instagram feed — same functionality, different density / tone / spacing</div>
+      </div>
+    </div>
+
+    <p class="sec-text" style="margin-top:8px; font-style:italic; color:var(--muted)">
+      "Vibe already tells users who they are. Vibe Everywhere asks: what if the software they use every day could adapt to that answer — not by generating a new interface from scratch, but by selecting the right expression of it for each person?"
+    </p>
+  </section>
+
+</div>
+
+<a href="tinder" class="next-project">
+  <div>
+    <div class="next-label">Next project</div>
+    <div class="next-title">Tinder × Gen Z →</div>
+  </div>
+  <span class="next-arrow">↗</span>
+</a>
+
+<footer>
+  <div class="ft-left">© 2026 Daniel Park</div>
+  <div class="ft-links">
+    <a href="https://www.linkedin.com/in/daniel-park1104" target="_blank">LinkedIn</a>
+    <a href="#">Resume</a>
+    <a href="mailto:jihongpark1104@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+  const cur = document.getElementById('cur');
+  const curb = document.getElementById('curb');
+  let mx=0,my=0,bx=0,by=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+  (function loop(){ bx+=(mx-bx)*0.1; by+=(my-by)*0.1; curb.style.left=bx+'px'; curb.style.top=by+'px'; requestAnimationFrame(loop); })();
+  const revs = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.08});
+  revs.forEach(r=>io.observe(r));
+</script>
+</body>
+</html>
