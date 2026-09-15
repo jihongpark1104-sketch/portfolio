@@ -57,8 +57,8 @@
       --border:       #e2e6f3;
       --border2:      #cdd3ee;
       --text:         #0f1120;
-      --muted:        #8a92b2;
-      --muted2:       #c5cadf;
+      --muted:        #5a6180;
+      --muted2:       #7d849c;
       --accent:       #2563eb;
       --accent-light: #eff3ff;
       --accent-mid:   #93aef5;
@@ -66,7 +66,7 @@
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg); color: var(--text);
-      font-family: 'IBM Plex Sans', sans-serif; font-weight: 300;
+      font-family: 'IBM Plex Sans', sans-serif; font-weight: 400;
       overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none;
     }
 
@@ -81,8 +81,8 @@
       padding: 18px 52px; border-bottom: 1px solid var(--border);
       background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); z-index: 100;
     }
-    .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--accent); font-weight: 500; text-decoration: none; }
-    .nav-back { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--muted); display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+    .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--accent); font-weight: 500; text-decoration: none; }
+    .nav-back { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--muted); display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
     .nav-back:hover { color: var(--accent); }
     .nav-back span { transition: transform 0.2s; }
     .nav-back:hover span { transform: translateX(-3px); }
@@ -109,7 +109,7 @@
     .header-inner { position: relative; max-width: 1100px; margin: 0 auto; }
 
     .header-eyebrow {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
       margin-bottom: 20px;
       opacity: 0; animation: fadeIn 0.5s 0.1s forwards;
@@ -139,7 +139,7 @@
     /* FILTER TAGS */
     .filters { display: flex; gap: 8px; flex-wrap: wrap; }
     .filter-btn {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.06em; padding: 6px 14px;
       border: 1px solid var(--border2); color: var(--muted);
       background: var(--bg); cursor: none;
@@ -187,6 +187,7 @@
     }
     .card:hover .card-img img,
     .card:hover .card-img video { transform: scale(1.04); }
+    .card-img video.is-portrait { object-fit: contain; }
 
     /* colored placeholder */
     .card-ph {
@@ -212,7 +213,7 @@
       padding: 16px;
     }
     .overlay-badge {
-      font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.16em; text-transform: uppercase;
       padding: 5px 10px;
       display: flex; align-items: center; gap: 6px;
@@ -232,11 +233,11 @@
       margin-bottom: 12px;
     }
     .card-num {
-      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       color: var(--muted2); letter-spacing: 0.06em;
     }
     .card-year {
-      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       color: var(--muted); letter-spacing: 0.06em;
     }
     .card-title {
@@ -246,12 +247,12 @@
     }
     .card:hover .card-title { color: var(--accent); }
     .card-company {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       color: var(--muted); letter-spacing: 0.04em; margin-bottom: 14px;
     }
     .card-desc {
-      font-size: 13px; line-height: 1.75; color: var(--muted);
-      font-weight: 300; margin-bottom: 20px;
+      font-size: 14px; line-height: 1.75; color: #3d4463;
+      font-weight: 400; margin-bottom: 20px;
     }
     .card-footer {
       display: flex; justify-content: space-between; align-items: center;
@@ -259,7 +260,7 @@
     }
     .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
     .ctag {
-      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.04em; padding: 3px 9px;
       border: 1px solid var(--border2); color: var(--muted);
       background: var(--bg2); transition: all 0.2s;
@@ -276,9 +277,9 @@
 
     /* FOOTER */
     footer { padding: 28px 52px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-    .ft-left { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+    .ft-left { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
     .ft-links { display: flex; gap: 28px; }
-    .ft-links a { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .ft-links a { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s; }
     .ft-links a:hover { color: var(--accent); }
 
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
@@ -391,11 +392,8 @@
     <!-- 03 — Revitalizing Third Spaces -->
     <a href="work-gym.html" class="card reveal" style="transition-delay:0.2s">
       <div class="card-line" style="background:#16a34a;"></div>
-      <div class="card-img">
-        <!-- Replace with: <img src="images/gym-hero.jpg" alt="Revitalizing Third Spaces" /> -->
-        <div class="card-ph ph-gym">
-          <span class="ph-label" style="color:#4ade80;">gym.</span>
-        </div>
+      <div class="card-img" style="background:#052e16;">
+        <video src="photos/gym/hifi_video.mp4" class="is-portrait" muted autoplay loop playsinline preload="metadata" aria-label="Gym prototype preview"></video>
       </div>
       <div class="card-body">
         <div class="card-meta">

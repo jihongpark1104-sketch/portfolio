@@ -60,8 +60,8 @@
       --border:       #e2e6f3;
       --border2:      #cdd3ee;
       --text:         #0f1120;
-      --muted:        #8a92b2;
-      --muted2:       #c5cadf;
+      --muted:        #5a6180;
+      --muted2:       #7d849c;
       --accent:       #2563eb;
       --accent-light: #eff3ff;
       --accent-mid:   #93aef5;
@@ -74,7 +74,7 @@
       background: var(--bg);
       color: var(--text);
       font-family: 'IBM Plex Sans', sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       cursor: none;
@@ -108,17 +108,17 @@
     }
     .nav-logo {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px; color: var(--accent); letter-spacing: 0.03em; font-weight: 500;
+      font-size: 14px; color: var(--accent); letter-spacing: 0.03em; font-weight: 500;
     }
     .nav-links { display: flex; gap: 36px; list-style: none; }
     .nav-links a {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.1em; text-transform: uppercase;
       text-decoration: none; color: var(--muted); transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--accent); }
     .nav-status {
-      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       color: var(--muted); display: flex; align-items: center; gap: 8px;
     }
     .dot {
@@ -158,7 +158,7 @@
     .hero-top { flex: 1; display: flex; flex-direction: column; justify-content: center; position: relative; }
 
     .eyebrow {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
       margin-bottom: 36px;
       opacity: 0; animation: fadeIn 0.5s 0.3s forwards;
@@ -186,7 +186,7 @@
       opacity: 0; animation: fadeIn 0.5s 1s forwards;
     }
     .role {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.06em; padding: 6px 14px;
       border: 1px solid var(--border2); color: var(--muted);
       background: var(--bg); transition: all 0.2s;
@@ -206,10 +206,10 @@
     .hf-cell { padding: 24px 0; }
     .hf-cell + .hf-cell { padding-left: 32px; border-left: 1px solid var(--border); }
     .hf-label {
-      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
     }
-    .hf-val { font-size: 14px; color: var(--text); line-height: 1.65; font-weight: 300; }
+    .hf-val { font-size: 14px; color: var(--text); line-height: 1.65; font-weight: 400; }
 
     /* ── WORKS ── */
     .works { padding: 80px 52px; }
@@ -219,12 +219,12 @@
       margin-bottom: 48px;
     }
     .sec-label {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
     }
     .sec-label::before { content: '01. '; color: var(--accent); }
     .all-link {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.08em; color: var(--muted); text-decoration: none;
       display: flex; align-items: center; gap: 6px; transition: color 0.2s;
     }
@@ -244,16 +244,20 @@
       background: var(--bg);
       overflow: hidden;
       cursor: none;
+      text-decoration: none;
+      display: block;
       transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
     }
     .card:hover {
       border-color: var(--accent-mid);
-      box-shadow: 0 8px 32px rgba(37,99,235,0.1);
+      box-shadow: 0 8px 40px rgba(37,99,235,0.1);
       transform: translateY(-4px);
     }
 
+    .card-line { height: 3px; width: 100%; }
+
     .card-img {
-      width: 100%; aspect-ratio: 16/10; overflow: hidden;
+      width: 100%; aspect-ratio: 16/9; overflow: hidden;
       background: var(--surface); position: relative;
     }
     .card-img img,
@@ -264,7 +268,8 @@
       pointer-events: none;
     }
     .card:hover .card-img img,
-    .card:hover .card-img video { transform: scale(1.05); }
+    .card:hover .card-img video { transform: scale(1.04); }
+    .card-img video.is-portrait { object-fit: contain; }
     .card-img img.is-logo {
       object-fit: contain;
       object-position: center;
@@ -303,31 +308,53 @@
       color: rgba(37,99,235,0.2); letter-spacing: -0.03em;
     }
 
-    .card-body { padding: 22px 24px 26px; }
+    .card-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: flex-start; justify-content: flex-end;
+      padding: 16px;
+    }
+    .overlay-badge {
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 5px 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .overlay-badge.wip {
+      background: rgba(37,99,235,0.15);
+      border: 1px solid rgba(37,99,235,0.4);
+      color: #93aef5;
+    }
+    .ob-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: blink 1.5s infinite; }
+
+    .card-body { padding: 24px 26px 28px; }
 
     .card-meta {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 12px;
     }
     .card-num {
-      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       color: var(--muted2); letter-spacing: 0.06em;
     }
     .card-year {
-      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       color: var(--muted); letter-spacing: 0.06em;
     }
 
     .card-title {
-      font-size: 16px; font-weight: 400; color: var(--text);
-      margin-bottom: 8px; line-height: 1.3;
+      font-size: 20px; font-weight: 400; color: var(--text);
+      margin-bottom: 6px; line-height: 1.2;
       transition: color 0.2s;
     }
     .card:hover .card-title { color: var(--accent); }
+    .card-company {
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      color: var(--muted); letter-spacing: 0.04em; margin-bottom: 14px;
+    }
 
     .card-desc {
-      font-size: 13px; line-height: 1.7; color: var(--muted);
-      font-weight: 300; margin-bottom: 18px;
+      font-size: 14px; line-height: 1.75; color: #3d4463;
+      font-weight: 400; margin-bottom: 20px;
     }
 
     .card-footer {
@@ -336,7 +363,7 @@
     }
     .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
     .ctag {
-      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.04em; padding: 3px 9px;
       border: 1px solid var(--border2); color: var(--muted);
       background: var(--bg2); transition: all 0.2s;
@@ -356,23 +383,23 @@
     }
     .about-left { position: sticky; top: 90px; }
     .about-sec-label {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
     }
     .about-sec-label::before { content: '02. '; color: var(--accent); }
     .skill-list { margin-top: 32px; display: flex; flex-direction: column; }
     .sk {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted);
       padding: 9px 0; border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 10px;
     }
-    .sk::before { content: '—'; color: var(--accent); font-size: 9px; }
+    .sk::before { content: '—'; color: var(--accent); font-size: 12px; }
 
     .about-body p {
-      font-size: 15px; line-height: 1.9; color: #5a6080; font-weight: 300; margin-bottom: 20px;
+      font-size: 16px; line-height: 1.85; color: #3d4463; font-weight: 400; margin-bottom: 20px;
     }
     .about-body strong { color: var(--text); font-weight: 400; }
-    .about-body .mono { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--accent); }
+    .about-body .mono { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--accent); }
 
     .about-grid {
       margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr;
@@ -380,10 +407,10 @@
     }
     .ag-cell { padding: 18px 22px; border: 1px solid var(--border); background: var(--bg); }
     .ag-label {
-      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
     }
-    .ag-val { font-size: 14px; color: var(--text); font-weight: 300; }
+    .ag-val { font-size: 14px; color: var(--text); font-weight: 400; }
     .ag-val.blue { color: var(--accent); }
 
     /* ── BANNER ── */
@@ -401,7 +428,7 @@
     .banner-text em { font-style: italic; opacity: 0.7; }
     .banner-btn {
       flex-shrink: 0;
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.12em; text-transform: uppercase;
       padding: 14px 28px;
       border: 1.5px solid rgba(255,255,255,0.5);
@@ -417,10 +444,10 @@
       display: flex; justify-content: space-between; align-items: center;
       background: var(--bg);
     }
-    .ft-left { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+    .ft-left { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
     .ft-links { display: flex; gap: 28px; }
     .ft-links a {
-      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
       letter-spacing: 0.08em; text-transform: uppercase;
       text-decoration: none; color: var(--muted); transition: color 0.2s;
     }
@@ -490,84 +517,100 @@
   </div>
   <div class="cards-grid reveal">
 
-    <a href="tinder" class="card" style="text-decoration:none">
+    <a href="tinder" class="card">
+      <div class="card-line" style="background:#fe3c72;"></div>
       <div class="card-img">
-        <img src="photos/thumbnails/unnamed.jpg" alt="Project One preview" />
+        <img src="photos/thumbnails/unnamed.jpg" alt="Tinder x Gen Z preview" />
       </div>
       <div class="card-body">
         <div class="card-meta">
           <span class="card-num">01 / 04</span>
-          <span class="card-year">2026</span>
+          <span class="card-year">Spring 2026</span>
         </div>
-        <div class="card-title">Tinder: Gen Z Dating Experience Research & Product Strategy</div>
-        <div class="card-desc">Conducted UX research on Gen Z dating behaviors, safety perceptions, and app usage to identify key insights and inform product opportunities for Tinder.</div>
+        <div class="card-title">Tinder × Gen Z</div>
+        <div class="card-company">Berkeley Innovation · Berkeley, CA</div>
+        <div class="card-desc">Ideation Lead on a semester-long UX research engagement with Tinder — 115 surveys, 20 interviews, 6 focus groups, and a diary study to understand how Gen Z defines dating and where Tinder loses relevance.</div>
         <div class="card-footer">
           <div class="card-tags">
             <span class="ctag">UX Research</span>
-            <span class="ctag">Product</span>
+            <span class="ctag">Ideation</span>
+            <span class="ctag">Affinity Mapping</span>
           </div>
           <span class="card-arrow">↗</span>
         </div>
       </div>
     </a>
 
-    <a href="work-gym.html" class="card" style="text-decoration:none">
-      <div class="card-img">
-        <img src="photos/thumbnails/Frame 25.png" alt="Project Two preview image" class="is-frame-preview" />
+    <a href="work-gym.html" class="card">
+      <div class="card-line" style="background:#16a34a;"></div>
+      <div class="card-img" style="background:#052e16;">
+        <video src="photos/gym/hifi_video.mp4" class="is-portrait" muted autoplay loop playsinline preload="metadata" aria-label="Gym prototype preview"></video>
       </div>
       <div class="card-body">
         <div class="card-meta">
           <span class="card-num">02 / 04</span>
-          <span class="card-year">2026</span>
+          <span class="card-year">2025</span>
         </div>
-        <div class="card-title">Revitalizing Third Spaces - Gym Interaction Case Study</div>
-        <div class="card-desc">Designed a system to reduce social friction in gyms through queueing, availability, and interaction controls.</div>
+        <div class="card-title">Revitalizing Third Spaces</div>
+        <div class="card-company">Berkeley Innovation · Design Challenge</div>
+        <div class="card-desc">Solo 1-week end-to-end design challenge — researching why people avoid gyms, mapping the emotional journey, and prototyping a system that makes gym interactions predictable and opt-in.</div>
         <div class="card-footer">
           <div class="card-tags">
-            <span class="ctag">UI/UX</span>
-            <span class="ctag">PM</span>
+            <span class="ctag">Product Design</span>
+            <span class="ctag">Prototyping</span>
+            <span class="ctag">User Testing</span>
           </div>
           <span class="card-arrow">↗</span>
         </div>
       </div>
     </a>
 
-    <a href="work-campus.html" class="card" style="text-decoration:none">
+    <a href="work-campus.html" class="card">
+      <div class="card-line" style="background:#6c63ff;"></div>
       <div class="card-img">
-        <img src="photos/thumbnails/iPhone 16 Pro.png" alt="Project Three preview image" class="is-blue-bg" />
+        <img src="photos/thumbnails/iPhone 16 Pro.png" alt="Campus Connect preview" class="is-blue-bg" />
+        <div class="card-overlay">
+          <div class="overlay-badge wip"><div class="ob-dot"></div>In Progress</div>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-meta">
           <span class="card-num">03 / 04</span>
-          <span class="card-year">2025</span>
+          <span class="card-year">2025 – Present</span>
         </div>
         <div class="card-title">Campus Connect</div>
-        <div class="card-desc">Led UX research and prototyping for a campus platform, synthesizing 100+ user tests into high-fidelity Figma designs that improved core workflows and task clarity.</div>
+        <div class="card-company">Startup · Berkeley, CA</div>
+        <div class="card-desc">Product & UX Research Lead building the all-in-one campus platform — marketplace, rides, housing, community. 100+ usability tests, 15+ Figma mockups, 5,800+ course records scraped.</div>
         <div class="card-footer">
           <div class="card-tags">
-            <span class="ctag">Research</span>
-            <span class="ctag">Design</span>
+            <span class="ctag">Product</span>
+            <span class="ctag">UX Research</span>
+            <span class="ctag">Figma</span>
+            <span class="ctag">Python</span>
           </div>
           <span class="card-arrow">↗</span>
         </div>
       </div>
     </a>
 
-    <a href="work-vibe.html" class="card" style="text-decoration:none">
+    <a href="work-vibe.html" class="card">
+      <div class="card-line" style="background:#9b8fc4;"></div>
       <div class="card-img" style="background:#1a1628;">
         <video src="photos/thumbnails/vibe.mov?v=2" muted autoplay loop playsinline preload="metadata" aria-label="Vibe app preview"></video>
       </div>
       <div class="card-body">
         <div class="card-meta">
           <span class="card-num">04 / 04</span>
-          <span class="card-year">2026</span>
+          <span class="card-year">Summer 2026</span>
         </div>
-        <div class="card-title">Vibe — Visual Identity Board</div>
-        <div class="card-desc">Designed an AI-powered app that turns a Gen Z user's digital footprint into a shareable aesthetic board, pivoting after interviews disproved the original concept.</div>
+        <div class="card-title">Vibe</div>
+        <div class="card-company">CogSci 112 · UC Berkeley</div>
+        <div class="card-desc">Solo AI product design — turning camera roll, Spotify, and saved posts into a shareable visual identity board. Pivoted from Identity OS after research disproved the original assumption.</div>
         <div class="card-footer">
           <div class="card-tags">
             <span class="ctag">UX Research</span>
             <span class="ctag">Product Design</span>
+            <span class="ctag">Figma</span>
           </div>
           <span class="card-arrow">↗</span>
         </div>

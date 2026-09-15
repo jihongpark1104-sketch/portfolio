@@ -215,7 +215,7 @@ pre, code, .code-block, .code-wrap {
   .sec-heading { font-size: 20px; }
 
   .code-block {
-    font-size: 11px;
+    font-size: 12px;
     padding: 16px;
     -webkit-overflow-scrolling: touch;
   }
@@ -250,12 +250,12 @@ pre, code, .code-block, .code-wrap {
   }
   .nav-links { gap: 12px; }
   .nav-links a {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.08em;
   }
-  .nav-logo { font-size: 12px; }
+  .nav-logo { font-size: 14px; }
   .nav-back {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.06em;
   }
 
@@ -314,7 +314,7 @@ pre, code, .code-block, .code-wrap {
   .ey-role { font-size: 12px; }
   .ey-company {
     letter-spacing: 0.12em;
-    font-size: 10px;
+    font-size: 12px;
     padding: 0 8px;
   }
 
