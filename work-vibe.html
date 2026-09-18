@@ -156,13 +156,14 @@
     }
 
     .case-meta {
-      display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--border);
+      display: flex; flex-wrap: nowrap; gap: 0; border: 1px solid var(--border);
+      max-width: 100%;
       opacity: 0; animation: fadeIn 0.6s 0.65s forwards;
     }
-    .meta-cell { padding: 16px 28px; border-right: 1px solid var(--border); }
+    .meta-cell { padding: 16px 28px; border-right: 1px solid var(--border); min-width: 0; }
     .meta-cell:last-child { border-right: none; }
     .meta-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-    .meta-val { font-size: 14px; color: var(--text); font-weight: 400; }
+    .meta-val { font-size: 14px; color: var(--text); font-weight: 400; overflow-wrap: break-word; }
     .meta-val.lav { color: var(--accent); }
 
     /* DARK COVER */
