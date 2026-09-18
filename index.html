@@ -198,18 +198,27 @@
 
     /* hero footer bar */
     .hero-footer {
-      display: grid; grid-template-columns: 1fr 1fr 1fr;
-      border-top: 1px solid var(--border); margin-top: 64px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border: 1px solid var(--border);
+      margin-top: 64px;
       opacity: 0; animation: fadeIn 0.5s 1.2s forwards;
       position: relative;
     }
-    .hf-cell { padding: 24px 0; }
-    .hf-cell + .hf-cell { padding-left: 32px; border-left: 1px solid var(--border); }
+    .hf-cell {
+      padding: 16px 28px;
+      border-right: 1px solid var(--border);
+      min-width: 0;
+    }
+    .hf-cell:last-child { border-right: none; }
     .hf-label {
       font-family: 'IBM Plex Mono', monospace; font-size: 12px;
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
     }
-    .hf-val { font-size: 14px; color: var(--text); line-height: 1.65; font-weight: 400; }
+    .hf-val {
+      font-size: 14px; color: var(--text); line-height: 1.65; font-weight: 400;
+      overflow-wrap: break-word;
+    }
 
     /* ── WORKS ── */
     .works { padding: 80px 52px; }

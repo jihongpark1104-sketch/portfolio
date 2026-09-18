@@ -211,10 +211,19 @@
     .photo-caption { padding: 12px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--muted); border-top: 1px solid var(--border); background: var(--bg); }
     .photo-wrap { border: 1px solid var(--border); overflow: hidden; margin: 28px 0; }
     .photo-wrap.no-margin { margin: 0; }
-    .hero-video-wrap {
+    .hero-video-band {
+      width: 100%;
+      max-width: none;
       margin: 0;
-      border-left: none;
-      border-right: none;
+      padding: 48px 24px;
+      background: #0f0d0a;
+      display: flex;
+      justify-content: center;
+    }
+    .hero-video-wrap {
+      width: min(520px, 56vw);
+      margin: 0;
+      border: none;
       background: #0f0d0a;
     }
     .hero-video-wrap video {
@@ -380,6 +389,8 @@
       footer { padding: 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
       .next-project { padding: 48px 24px; }
       .photo-grid-5 { grid-template-columns: repeat(3, 1fr); }
+      .hero-video-band { padding: 32px 16px; }
+      .hero-video-wrap { width: min(360px, 78vw); }
     }
   </style>
   <link rel="stylesheet" href="responsive.css" />
@@ -420,8 +431,10 @@
   </div>
 </section>
 
-<div class="photo-wrap hero-video-wrap">
-  <video src="photos/thumbnails/vibe.mov?v=2" muted autoplay loop playsinline preload="metadata" aria-label="Vibe app preview"></video>
+<div class="hero-video-band">
+  <div class="photo-wrap hero-video-wrap">
+    <video src="photos/thumbnails/vibe.mov?v=2" muted autoplay loop playsinline preload="metadata" aria-label="Vibe app preview"></video>
+  </div>
 </div>
 
 <div class="case-body">

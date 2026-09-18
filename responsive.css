@@ -71,6 +71,17 @@ pre, code, .code-block, .code-wrap {
     gap: 40px;
   }
   .about-left { position: static; }
+
+  .hero-footer {
+    grid-template-columns: 1fr;
+    margin-top: 48px;
+  }
+  .hf-cell {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+  }
+  .hf-cell:last-child { border-bottom: none; }
 }
 
 /* ── Mobile / small tablet ── */
@@ -110,17 +121,6 @@ pre, code, .code-block, .code-wrap {
   .next-project {
     padding-left: 20px;
     padding-right: 20px;
-  }
-
-  .hero-footer {
-    grid-template-columns: 1fr;
-    margin-top: 40px;
-  }
-  .hf-cell { padding: 18px 0; }
-  .hf-cell + .hf-cell {
-    padding-left: 0;
-    border-left: none;
-    border-top: 1px solid var(--border);
   }
 
   .cards-grid { grid-template-columns: 1fr; gap: 16px; }
