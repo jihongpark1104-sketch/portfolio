@@ -211,6 +211,7 @@
     .photo-slot-hint { font-size: 12px; color: var(--muted2); text-align: center; padding: 0 20px; font-family: 'Space Mono', monospace; }
     .photo-caption { padding: 12px 16px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--muted); border-top: 1px solid var(--border); background: var(--bg); }
     .photo-wrap { border: 1px solid var(--border); overflow: hidden; margin: 28px 0; }
+    .photo-wrap img { width: 100%; height: auto; display: block; background: #fff; }
     .photo-wrap.no-margin { margin: 0; }
     .hero-video-band {
       width: 100%;
@@ -313,21 +314,63 @@
     .quote-text { font-family: 'Space Mono', monospace; font-size: 14px; line-height: 1.8; color: var(--accent); font-style: italic; }
     .quote-attr { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
 
-    /* 5 SCREENS */
-    .screen-list { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); margin: 28px 0; }
-    .screen-row { display: grid; grid-template-columns: 180px 1fr; border-bottom: 1px solid var(--border); }
-    .screen-row:last-child { border-bottom: none; }
-    .screen-row.hero-screen { background: var(--accent-light); }
-    .screen-num {
-      padding: 20px 20px; border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; gap: 6px; justify-content: center;
+    /* Screen + description, alternating sides */
+    .screen-split { border: 1px solid var(--border); margin: 36px 0 8px; }
+    .screen-split-row {
+      display: grid;
+      grid-template-columns: 248px 1fr;
+      align-items: stretch;
+      border-bottom: 1px solid var(--border);
     }
-    .screen-n { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-    .screen-name { font-size: 14px; font-weight: 400; color: var(--text); }
-    .screen-body { padding: 20px 24px; }
-    .screen-copy { font-size: 14px; line-height: 1.7; color: var(--muted); font-weight: 400; margin-bottom: 8px; }
-    .screen-principle { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.04em; }
-    .screen-principle::before { content: 'Principle: '; opacity: 0.5; color: var(--muted); }
+    .screen-split-row:last-child { border-bottom: none; }
+    .screen-split-row.reverse { grid-template-columns: 1fr 248px; }
+    .screen-split-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 22px;
+    }
+    .screen-split-row.reverse .screen-split-visual { order: 2; }
+    .screen-split-visual video {
+      width: 100%;
+      max-width: 196px;
+      height: auto;
+      display: block;
+    }
+    .screen-split-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 28px 32px;
+      gap: 0;
+      transition: background 0.2s;
+    }
+    .screen-split-row:hover .screen-split-copy { background: var(--accent-light); }
+    .screen-split-kicker {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .screen-split-kicker::before { content: '// '; opacity: 0.4; color: var(--muted); }
+    .screen-split-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .screen-split-copy p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .screen-split-copy p + p { margin-top: 12px; }
+    .screen-split-copy p strong { color: var(--text); font-weight: 400; }
 
     /* TEST RESULT ROWS */
     .test-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
@@ -383,8 +426,6 @@
       .pivot-row { grid-template-columns: 1fr; }
       .pivot-arrow { display: none; }
       .insight-grid, .test-grid, .photo-grid-2 { grid-template-columns: 1fr; }
-      .screen-row { grid-template-columns: 1fr; }
-      .screen-num { border-right: none; border-bottom: 1px solid var(--border); }
       .stats-row { grid-template-columns: 1fr; }
       .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
       footer { padding: 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
@@ -585,23 +626,13 @@
       </div>
     </div>
 
-    <!-- empathy map photo slot -->
     <div class="photo-wrap">
-      <div class="photo-slot landscape">
-        <span class="photo-slot-tag">📷 Empathy Map</span>
-        <div class="photo-slot-label">Empathy map — Gen Z digital native</div>
-        <div class="photo-slot-hint">empathy-map.png · export from Miro/FigJam</div>
-      </div>
+      <img src="photos/vibe/empathy-map.png" alt="Empathy map — Says, Thinks, Does, and Feels for the Gen Z aesthetic curator" />
       <div class="photo-caption">Empathy map — Says / Thinks / Does / Feels across the Gen Z aesthetic curator persona</div>
     </div>
 
-    <!-- journey map photo slot -->
     <div class="photo-wrap">
-      <div class="photo-slot landscape">
-        <span class="photo-slot-tag">📷 Journey Map</span>
-        <div class="photo-slot-label">Journey map — Mia's full flow (Trigger → Returns)</div>
-        <div class="photo-slot-hint">journey-map.png · 9 steps: Trigger, Onboard, Choose Inputs, Connect Spotify, See Vibe Board, Refine, Share, Friend reacts, Returns</div>
-      </div>
+      <img src="photos/vibe/journey-map.png" alt="Journey map — Mia's flow from Trigger to Returns" />
       <div class="photo-caption">Journey map — Doing / Thinking / Feeling / Opportunities across each stage</div>
     </div>
   </section>
@@ -616,110 +647,70 @@
       The interface was generated using <strong>Figma Make</strong> (AI-generated UI) and tested with real users. Each screen was designed around a specific cognitive science or UX principle derived from research.
     </p>
 
-    <!-- 5 phone screens -->
-    <div class="photo-grid-5">
-      <div class="photo-wrap no-margin">
-        <div class="photo-slot phone">
-          <span class="photo-slot-tag">📷 S1</span>
-          <div class="photo-slot-label">Home / Start</div>
-          <div class="photo-slot-hint">screen-1.png</div>
+    <div class="screen-split">
+      <div class="screen-split-row">
+        <div class="screen-split-visual">
+          <video src="photos/vibe/screen1.mov" muted autoplay loop playsinline preload="metadata" aria-label="Home / Start screen"></video>
         </div>
-        <div class="photo-caption">Home · "What's your vibe?"</div>
-      </div>
-      <div class="photo-wrap no-margin">
-        <div class="photo-slot phone">
-          <span class="photo-slot-tag">📷 S2</span>
-          <div class="photo-slot-label">Choose Inputs</div>
-          <div class="photo-slot-hint">screen-2.png</div>
+        <div class="screen-split-copy">
+          <div class="screen-split-kicker">01</div>
+          <div class="screen-split-name">Home / Start</div>
+          <p>Empty state. Headline: "What's your vibe?" One circular "+" button — Create your vibe. A row of recent boards below.</p>
+          <p>Norman's discoverability — one question, one clear action, no unnecessary decisions at the entry point.</p>
         </div>
-        <div class="photo-caption">Inputs · Camera roll + Spotify</div>
       </div>
-      <div class="photo-wrap no-margin" style="border-color:var(--accent)">
-        <div class="photo-slot phone" style="background:var(--accent-light)">
-          <span class="photo-slot-tag" style="background:#fff">📷 S3 ★</span>
-          <div class="photo-slot-label">Permission & Scan</div>
-          <div class="photo-slot-hint">screen-3.png · KEY SCREEN</div>
-        </div>
-        <div class="photo-caption" style="color:var(--accent)">★ Key design decision</div>
-      </div>
-      <div class="photo-wrap no-margin">
-        <div class="photo-slot phone">
-          <span class="photo-slot-tag">📷 S4</span>
-          <div class="photo-slot-label">Loading</div>
-          <div class="photo-slot-hint">screen-4.png</div>
-        </div>
-        <div class="photo-caption">Loading · Feedback loop</div>
-      </div>
-      <div class="photo-wrap no-margin">
-        <div class="photo-slot phone">
-          <span class="photo-slot-tag">📷 S5</span>
-          <div class="photo-slot-label">Vibe Board</div>
-          <div class="photo-slot-hint">screen-5.png</div>
-        </div>
-        <div class="photo-caption">Reveal · The vibe board</div>
-      </div>
-    </div>
 
-    <div class="screen-list">
-      <div class="screen-row">
-        <div class="screen-num">
-          <div class="screen-n">Screen 01</div>
-          <div class="screen-name">Home / Start</div>
+      <div class="screen-split-row reverse">
+        <div class="screen-split-visual">
+          <video src="photos/vibe/screen2.mov" muted autoplay loop playsinline preload="metadata" aria-label="Choose Your Inputs screen"></video>
         </div>
-        <div class="screen-body">
-          <div class="screen-copy">Empty state. Headline: "What's your vibe?" One circular "+" button — Create your vibe. A row of recent boards below.</div>
-          <div class="screen-principle">Norman's discoverability — one question, one clear action, no unnecessary decisions at the entry point.</div>
-        </div>
-      </div>
-      <div class="screen-row">
-        <div class="screen-num">
-          <div class="screen-n">Screen 02</div>
-          <div class="screen-name">Choose Your Inputs</div>
-        </div>
-        <div class="screen-body">
-          <div class="screen-copy">Two tappable cards: Camera Roll & Screenshots, Connect Spotify. Sources are combinable. "More inputs = more accurate vibe. We never store your data."</div>
-          <div class="screen-principle">Clear affordances — designed because research showed taste data is never in one place.</div>
+        <div class="screen-split-copy">
+          <div class="screen-split-kicker">02</div>
+          <div class="screen-split-name">Choose Your Inputs</div>
+          <p>Two tappable cards: Camera Roll & Screenshots, Connect Spotify. Sources are combinable. "More inputs = more accurate vibe. We never store your data."</p>
+          <p>Clear affordances — designed because research showed taste data is never in one place.</p>
         </div>
       </div>
-      <div class="screen-row hero-screen">
-        <div class="screen-num">
-          <div class="screen-n" style="color:var(--accent)">Screen 03 ★</div>
-          <div class="screen-name">Permission & Scan Mode</div>
+
+      <div class="screen-split-row">
+        <div class="screen-split-visual">
+          <video src="photos/vibe/screen3.mov" muted autoplay loop playsinline preload="metadata" aria-label="Permission and Scan Mode screen"></video>
         </div>
-        <div class="screen-body">
-          <div class="screen-copy">"How should we read your vibe?" Two choices: ✨ Let AI decide (RECOMMENDED) — full camera roll scan; 🖼 I'll pick my own — manual selection. Reassurance: "We only analyze. We never store your photos."</div>
-          <div class="screen-principle">The key design decision: AI scan is recommended because manual self-selection introduces bias — people consciously pick what they think represents them, not what actually does. The camera roll captures real lifestyle, not a curated version.</div>
-        </div>
-      </div>
-      <div class="screen-row">
-        <div class="screen-num">
-          <div class="screen-n">Screen 04</div>
-          <div class="screen-name">Loading State</div>
-        </div>
-        <div class="screen-body">
-          <div class="screen-copy">"Reading your vibe... Mapping your visual mood." Animation with progress micro-copy.</div>
-          <div class="screen-principle">Norman's feedback principle — transparency about what the system is doing builds trust and manages wait anxiety. Ambiguity is the stressor, not the wait time itself.</div>
+        <div class="screen-split-copy">
+          <div class="screen-split-kicker">03 · key screen</div>
+          <div class="screen-split-name">Permission & Scan Mode</div>
+          <p>"How should we read your vibe?" Two choices: Let AI decide (recommended) — full camera roll scan; or I'll pick my own — manual selection. Reassurance: "We only analyze. We never store your photos."</p>
+          <p><strong>The key design decision:</strong> AI scan is recommended because manual self-selection introduces bias — people consciously pick what they think represents them, not what actually does. The camera roll captures real lifestyle, not a curated version.</p>
         </div>
       </div>
-      <div class="screen-row">
-        <div class="screen-num">
-          <div class="screen-n">Screen 05</div>
-          <div class="screen-name">Vibe Board Reveal</div>
+
+      <div class="screen-split-row reverse">
+        <div class="screen-split-visual">
+          <video src="photos/vibe/screen4.mov" muted autoplay loop playsinline preload="metadata" aria-label="Loading State screen"></video>
         </div>
-        <div class="screen-body">
-          <div class="screen-copy">Aesthetic label ("Soft Minimalist + Vintage Warmth"), color palette, stat row (94% match, 12 photos, 4 songs), Refine / Share My Vibe buttons.</div>
-          <div class="screen-principle">Designed as a "moment," not a results page — worth keeping and sharing. Natural mapping: palette from photos, keywords from playlists.</div>
+        <div class="screen-split-copy">
+          <div class="screen-split-kicker">04</div>
+          <div class="screen-split-name">Loading State</div>
+          <p>"Reading your vibe... Mapping your visual mood." Animation with progress micro-copy.</p>
+          <p>Norman's feedback principle — transparency about what the system is doing builds trust and manages wait anxiety. Ambiguity is the stressor, not the wait time itself.</p>
+        </div>
+      </div>
+
+      <div class="screen-split-row">
+        <div class="screen-split-visual">
+          <video src="photos/vibe/screen5.mov" muted autoplay loop playsinline preload="metadata" aria-label="Vibe Board Reveal screen"></video>
+        </div>
+        <div class="screen-split-copy">
+          <div class="screen-split-kicker">05</div>
+          <div class="screen-split-name">Vibe Board Reveal</div>
+          <p>Aesthetic label ("Soft Minimalist + Vintage Warmth"), color palette, stat row (94% match, 12 photos, 4 songs), Refine / Share My Vibe buttons.</p>
+          <p>Designed as a "moment," not a results page — worth keeping and sharing. Natural mapping: palette from photos, keywords from playlists.</p>
         </div>
       </div>
     </div>
 
-    <!-- full UI flow photo -->
     <div class="photo-wrap">
-      <div class="photo-slot short">
-        <span class="photo-slot-tag">📷 Full UI Flow</span>
-        <div class="photo-slot-label">All 5 screens side by side — the complete flow</div>
-        <div class="photo-slot-hint">ui-flow-all-screens.png · from your Figma Make file</div>
-      </div>
+      <img src="photos/vibe/full%20ui%20flow.png" alt="Complete UI flow: Home, Choose Inputs, Photo Selection, Loading, and Vibe Board" />
       <div class="photo-caption">Complete UI flow: Home → Choose Inputs → Scan Mode → Loading → Vibe Board</div>
     </div>
   </section>
