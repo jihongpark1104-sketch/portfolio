@@ -231,6 +231,64 @@
     .photo-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 28px 0; }
     .photo-grid-4 .photo-wrap { margin: 0; }
 
+    /* Hi-fi screen + description, alternating sides */
+    .screen-split { border: 1px solid var(--border); margin: 36px 0 8px; }
+    .screen-split-row {
+      display: grid;
+      grid-template-columns: 248px 1fr;
+      align-items: stretch;
+      border-bottom: 1px solid var(--border);
+    }
+    .screen-split-row:last-child { border-bottom: none; }
+    .screen-split-row.reverse { grid-template-columns: 1fr 248px; }
+    .screen-split-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 22px;
+    }
+    .screen-split-row.reverse .screen-split-visual { order: 2; }
+    .screen-split-visual img,
+    .screen-split-visual video { width: 100%; max-width: 196px; height: auto; display: block; }
+    .screen-split-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 28px 32px;
+      gap: 0;
+      transition: background 0.2s;
+    }
+    .screen-split-row:hover .screen-split-copy { background: var(--accent-light); }
+    .screen-split-item + .screen-split-item {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .screen-split-kicker {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .screen-split-kicker::before { content: '// '; opacity: 0.4; color: var(--muted); }
+    .screen-split-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .screen-split-copy p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .screen-split-copy p strong { color: var(--text); font-weight: 400; }
+
     /* BODY */
     .case-body { max-width: 860px; margin: 0 auto; padding: 80px 52px; }
 
@@ -562,52 +620,73 @@
       <div class="photo-caption">Hi-fi prototype overview — Before workout & Start workout flows</div>
     </div>
 
-    <!-- Individual screen close-ups in a 4-grid -->
-    <div class="photo-grid-4">
-      <div class="photo-wrap no-margin">
-        <img src="photos/gym/Landing page.png" alt="Hi-fi — equipment availability landing screen" style="width:100%;display:block;" />
-        <div class="photo-caption">Equipment availability list</div>
+    <div class="screen-split">
+      <div class="screen-split-row">
+        <div class="screen-split-visual">
+          <img src="photos/gym/Landing page.png?v=3" alt="Hi-fi — equipment availability landing screen" />
+        </div>
+        <div class="screen-split-copy">
+          <div class="screen-split-item">
+            <div class="screen-split-kicker">01</div>
+            <div class="screen-split-name">Equipment availability list</div>
+            <p>Addresses anxiety before approaching. Users mentally prepare for discomfort before entering — surfacing availability early lets them plan without physical exposure.</p>
+          </div>
+        </div>
       </div>
-      <div class="photo-wrap no-margin">
-        <img src="photos/gym/Available workout.png" alt="Hi-fi — available workout, machine detail and join queue" style="width:100%;display:block;" />
-        <div class="photo-caption">Machine detail — queue, mode, sets</div>
-      </div>
-      <div class="photo-wrap no-margin">
-        <img src="photos/gym/Queue confirmation.png" alt="Hi-fi — queue confirmation screen" style="width:100%;display:block;" />
-        <div class="photo-caption">Queue confirmation — position + time</div>
-      </div>
-      <div class="photo-wrap no-margin">
-        <img src="photos/gym/Using the machine.png" alt="Hi-fi — using the machine, workout with DND" style="width:100%;display:block;" />
-        <div class="photo-caption">Workout screen — DND activated</div>
-      </div>
-    </div>
 
-    <p class="sec-text">Key design decisions and their research rationale:</p>
+      <div class="screen-split-row reverse">
+        <div class="screen-split-visual">
+          <img src="photos/gym/Unavailable workout.png" alt="Hi-fi — occupied machine with queue, mode, and remaining sets" />
+        </div>
+        <div class="screen-split-copy">
+          <div class="screen-split-item">
+            <div class="screen-split-kicker">02</div>
+            <div class="screen-split-name">Available machine</div>
+            <p>When the equipment is free, the detail screen says so and the only action is to start. You know you can walk up without negotiating with whoever might be nearby.</p>
+          </div>
+          <div class="screen-split-item">
+            <div class="screen-split-name">Remaining sets indicator</div>
+            <p>Makes progress visible and predictable for people waiting — directly reduces the pressure of standing nearby.</p>
+          </div>
+        </div>
+      </div>
 
-    <div class="feature-list">
-      <div class="feature-row">
-        <div class="feature-name">Equipment availability list</div>
-        <div class="feature-why">Addresses anxiety before approaching. Users mentally prepare for discomfort before entering — surfacing availability early lets them plan without physical exposure.</div>
+      <div class="screen-split-row">
+        <div class="screen-split-visual">
+          <video autoplay muted loop playsinline preload="metadata">
+            <source src="photos/gym/queue confirmation.mov" type="video/mp4" />
+          </video>
+        </div>
+        <div class="screen-split-copy">
+          <div class="screen-split-item">
+            <div class="screen-split-kicker">03</div>
+            <div class="screen-split-name">Join Queue button</div>
+            <p>Replaces verbal interaction. Interviews showed users hesitate to ask "how many sets?" even when it's socially acceptable — fear of disrupting or being judged.</p>
+          </div>
+          <div class="screen-split-item">
+            <div class="screen-split-name">Queue confirmation screen</div>
+            <p><strong>Ambiguity, not waiting, is the stressor.</strong> Showing position + time estimate replaces uncertainty with reassurance.</p>
+          </div>
+        </div>
       </div>
-      <div class="feature-row">
-        <div class="feature-name">Join Queue button</div>
-        <div class="feature-why">Replaces verbal interaction. Interviews showed users hesitate to ask "how many sets?" even when it's socially acceptable — fear of disrupting or being judged.</div>
-      </div>
-      <div class="feature-row">
-        <div class="feature-name">Queue confirmation screen</div>
-        <div class="feature-why"><strong>Ambiguity, not waiting, is the stressor.</strong> Showing position + time estimate replaces uncertainty with reassurance.</div>
-      </div>
-      <div class="feature-row">
-        <div class="feature-name">DND / Open to Collaborate</div>
-        <div class="feature-why">Externalizes social intent. Both user types benefit — awkward users avoid unwanted interruptions; confident users signal openness to interaction.</div>
-      </div>
-      <div class="feature-row">
-        <div class="feature-name">Remaining sets indicator</div>
-        <div class="feature-why">Makes progress visible and predictable for people waiting — directly reduces the pressure of standing nearby.</div>
-      </div>
-      <div class="feature-row">
-        <div class="feature-name">Tutorial access on machine</div>
-        <div class="feature-why">Lack of confidence, not lack of interest, stops users from trying new equipment. Low-pressure in-context tutorials remove that barrier.</div>
+
+      <div class="screen-split-row reverse">
+        <div class="screen-split-visual">
+          <video autoplay muted loop playsinline preload="metadata">
+            <source src="photos/gym/using the machine.mov" type="video/mp4" />
+          </video>
+        </div>
+        <div class="screen-split-copy">
+          <div class="screen-split-item">
+            <div class="screen-split-kicker">04</div>
+            <div class="screen-split-name">DND / Open to Collaborate</div>
+            <p>Externalizes social intent. Both user types benefit — awkward users avoid unwanted interruptions; confident users signal openness to interaction.</p>
+          </div>
+          <div class="screen-split-item">
+            <div class="screen-split-name">Tutorial access on machine</div>
+            <p>Lack of confidence, not lack of interest, stops users from trying new equipment. Low-pressure in-context tutorials remove that barrier.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -622,7 +701,7 @@
     <p class="sec-text">This revealed a gap in my original solution: while the design reduced discomfort <em>inside</em> the gym, it didn't sufficiently support decision-making <em>before entering</em> the space.</p>
 
     <div class="highlight-box">
-      <p><strong>Key reframe: Revitalization isn't about managing awkward moments — it's about empowering users with predictability and control. Social anxiety in third spaces often begins in anticipation, not in the moment of interaction.</strong></p>
+      <p><strong>Key reframe</strong>: Revitalization isn't about managing awkward moments — it's about <strong>empowering users with predictability and control</strong>. Social anxiety in third spaces often begins in <strong>anticipation</strong>, not in the moment of interaction.</p>
     </div>
 
     <p class="sec-text">If I were to iterate further, I'd extend the experience to include historical crowd data and peak-time indicators — letting users choose when to go rather than react once they arrive. This project reinforced that <strong>human-centered design must address both emotional preparation and real-time interaction.</strong></p>
@@ -639,7 +718,7 @@
 </a>
 
 <footer>
-  <div class="ft-left">© 2025 Daniel Park</div>
+  <div class="ft-left">© 2026 Daniel Park</div>
   <div class="ft-links">
     <a href="https://www.linkedin.com/in/daniel-park1104" target="_blank">LinkedIn</a>
     <a href="#">Resume</a>
@@ -656,6 +735,13 @@
   const revs = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.08});
   revs.forEach(r=>io.observe(r));
+
+  document.querySelectorAll('.screen-split video').forEach(video => {
+    const speedUp = () => { video.playbackRate = 1.5; };
+    speedUp();
+    video.addEventListener('loadedmetadata', speedUp);
+    video.addEventListener('play', speedUp);
+  });
 
   // Keep "Next project" in sync with homepage card 3
   fetch('index.html')
