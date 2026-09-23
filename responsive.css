@@ -43,10 +43,7 @@ pre, code, .code-block, .code-wrap {
 
   .hero,
   .works,
-  .about,
   .banner,
-  .page-header,
-  .works-page,
   .case-hero,
   .case-body,
   .cover,
@@ -65,12 +62,6 @@ pre, code, .code-block, .code-wrap {
   .team-grid { grid-template-columns: repeat(3, 1fr); }
   .methods-grid { grid-template-columns: 1fr 1fr; }
   .friction-grid { grid-template-columns: 1fr 1fr; }
-
-  .about {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  .about-left { position: static; }
 
   .hero-footer {
     grid-template-columns: 1fr;
@@ -95,10 +86,7 @@ pre, code, .code-block, .code-wrap {
 
   .hero,
   .works,
-  .about,
   .banner,
-  .page-header,
-  .works-page,
   .case-hero,
   .case-body,
   .cover,
@@ -110,9 +98,8 @@ pre, code, .code-block, .code-wrap {
 
   .hero { padding-top: 108px; padding-bottom: 48px; }
   .case-hero { padding-top: 108px; padding-bottom: 56px; }
-  .page-header { padding-top: 108px; padding-bottom: 40px; }
   .case-body { padding-top: 48px; padding-bottom: 48px; }
-  .works, .about, .preview { padding-top: 48px; padding-bottom: 48px; }
+  .works, .preview { padding-top: 48px; padding-bottom: 48px; }
   .banner { padding-top: 40px; padding-bottom: 40px; }
   .cover { padding-top: 48px; padding-bottom: 48px; }
   .ey-hero { padding-top: 108px; padding-bottom: 72px; }
@@ -124,9 +111,6 @@ pre, code, .code-block, .code-wrap {
   }
 
   .cards-grid { grid-template-columns: 1fr; gap: 16px; }
-
-  .about { gap: 28px; }
-  .about-grid { grid-template-columns: 1fr; }
 
   .banner {
     flex-direction: column;
@@ -261,10 +245,7 @@ pre, code, .code-block, .code-wrap {
 
   .hero,
   .works,
-  .about,
   .banner,
-  .page-header,
-  .works-page,
   .case-hero,
   .case-body,
   .cover,

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Daniel Park</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           #ffffff;
+      --bg2:          #f5f7ff;
+      --border:       #e2e6f3;
+      --border2:      #cdd3ee;
+      --text:         #0f1120;
+      --muted:        #8a92b2;
+      --muted2:       #c5cadf;
+      --accent:       #2563eb;
+      --accent-light: #eff3ff;
+      --accent-mid:   #93aef5;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif; font-weight: 400;
+      overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none;
+    }
+
+    /* CURSOR */
+    .cursor { position: fixed; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+    .cursor-box { position: fixed; width: 26px; height: 26px; border: 1.5px solid var(--accent-mid); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); opacity: 0.5; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 52px; border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); z-index: 100;
+    }
+    .nav-logo { font-family: 'Space Mono', monospace; font-size: 14px; color: var(--accent); font-weight: 500; text-decoration: none; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; color: var(--muted); transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-status { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 120px 52px 72px;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 64px;
+      align-items: start;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: 0.25; pointer-events: none;
+    }
+    .hero::after {
+      content: ''; position: absolute; top: -60px; right: 280px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* left col */
+    .hero-left { position: relative; z-index: 1; }
+
+    .eyebrow {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 24px;
+      opacity: 0; animation: fadeIn 0.5s 0.1s forwards;
+    }
+    .eyebrow::before { content: '// '; opacity: 0.35; }
+
+    .hero-name {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(40px, 5.5vw, 72px);
+      font-weight: 400; line-height: 1.0; letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      opacity: 0; transform: translateY(24px);
+      animation: up 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+    }
+    .hero-name .blue { color: var(--accent); }
+
+    .hero-bio {
+      font-size: 16px; line-height: 1.85; color: #3d4463;
+      max-width: 500px; margin-bottom: 36px;
+      opacity: 0; animation: fadeIn 0.6s 0.5s forwards;
+    }
+    .hero-bio strong { color: var(--text); font-weight: 400; }
+
+    /* right col — photo */
+    .hero-right {
+      position: relative; z-index: 1;
+      opacity: 0; animation: fadeIn 0.7s 0.4s forwards;
+    }
+    .photo-frame {
+      width: 100%; aspect-ratio: 3/4;
+      border: 1px solid var(--border); overflow: hidden;
+      background: var(--bg2);
+    }
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-ph {
+      width: 100%; height: 100%;
+      background: var(--bg2); border: 2px dashed var(--border2);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    }
+    .photo-ph-tag {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--accent); background: var(--accent-light);
+      padding: 4px 12px; border: 1px solid var(--accent-mid);
+    }
+    .photo-ph-hint { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted2); }
+
+    .photo-meta {
+      border: 1px solid var(--border); border-top: none;
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .pm-cell { padding: 10px 14px; border-right: 1px solid var(--border); }
+    .pm-cell:nth-child(2) { border-right: none; }
+    .pm-cell:nth-child(3), .pm-cell:nth-child(4) { border-top: 1px solid var(--border); }
+    .pm-cell:nth-child(4) { border-right: none; }
+    .pm-label { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+    .pm-val { font-size: 14px; color: var(--text); font-weight: 400; }
+    .pm-val.blue { color: var(--accent); font-family: 'Space Mono', monospace; font-size: 12px; }
+
+    /* ── CONTENT ── */
+    .content { max-width: 1000px; margin: 0 auto; padding: 0 52px; }
+
+    /* inline exp + skills inside hero left */
+    .inline-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .inline-block { }
+    .inline-label {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .inline-label::before { content: '//'; opacity: 0.35; }
+
+    .exp-list { display: flex; flex-direction: column; border: 1px solid var(--border); }
+    .exp-item { padding: 11px 14px; border-bottom: 1px solid var(--border); }
+    .exp-item:last-child { border-bottom: none; }
+    .exp-role { font-size: 13px; font-weight: 400; color: var(--text); margin-bottom: 2px; }
+    .exp-org { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); }
+    .exp-org span { color: var(--muted); }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .stag {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      padding: 4px 10px;
+      border: 1px solid var(--border2); color: var(--muted); background: var(--bg2);
+    }
+
+    .sec-label {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+    }
+    .sec-label::before { content: '//'; opacity: 0.35; }
+
+    /* ── BACKGROUND + INTERESTS ── */
+    .bottom-section {
+      padding: 52px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .bottom-section:last-of-type { border-bottom: none; }
+
+    .bg-text { font-size: 16px; line-height: 1.85; color: #3d4463; font-weight: 400; }
+    .bg-text strong { color: var(--text); font-weight: 400; }
+    .bg-text .mono { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); }
+
+    .interest-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .int-chip {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      letter-spacing: 0.03em; padding: 7px 14px;
+      border: 1px solid var(--border2); color: var(--muted);
+      background: var(--bg2); display: flex; align-items: center; gap: 8px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .int-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .int-chip span { font-size: 14px; }
+
+    /* FOOTER */
+    footer { padding: 28px 52px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .ft-left { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); }
+    .ft-links { display: flex; gap: 28px; }
+    .ft-links a { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .ft-links a:hover { color: var(--accent); }
+
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes up { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .hero { grid-template-columns: 1fr; padding: 100px 24px 52px; gap: 40px; }
+      .hero-right { max-width: 260px; }
+      .content { padding: 0 24px; }
+      .two-col { grid-template-columns: 1fr; }
+      .col-block:first-child { padding-right: 0; border-right: none; border-bottom: 1px solid var(--border); }
+      .col-block:last-child { padding-left: 0; }
+      footer { padding: 24px; flex-direction: column; gap: 14px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-box" id="curb"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">dp.portfolio</a>
+  <ul class="nav-links">
+    <li><a href="index.html#works">work</a></li>
+    <li><a href="about.html" class="active">about</a></li>
+    <li><a href="mailto:daniel@email.com">contact</a></li>
+  </ul>
+  <div class="nav-status"><div class="dot"></div>available for roles</div>
+</nav>
+
+<!-- HERO — everything in one section -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="eyebrow">about_me</div>
+    <h1 class="hero-name">Daniel<br><span class="blue">Park_</span></h1>
+    <p class="hero-bio">
+      <strong>Cognitive Science + Data Science</strong> at UC Berkeley. I study how people think, decide, and interact — then design products grounded in how cognition actually works.
+    </p>
+
+    <!-- EXPERIENCE + SKILLS side by side -->
+    <div class="inline-row">
+      <div class="inline-block">
+        <div class="inline-label">Experience</div>
+        <div class="exp-list">
+          <div class="exp-item">
+            <div class="exp-role">Product & UX Research Lead</div>
+            <div class="exp-org">Campus Connect · <span>2025–Present</span></div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-role">Consulting Intern</div>
+            <div class="exp-org">EY Han Young · <span>2025 · Seoul</span></div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-role">Consultant & Lead</div>
+            <div class="exp-org">Berkeley Innovation · <span>Ongoing</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="inline-block">
+        <div class="inline-label">Skills</div>
+        <div class="tag-row">
+          <span class="stag">Figma</span>
+          <span class="stag">User Research</span>
+          <span class="stag">Usability Testing</span>
+          <span class="stag">Python</span>
+          <span class="stag">SQL</span>
+          <span class="stag">AWS</span>
+          <span class="stag">Product Strategy</span>
+          <span class="stag">0→1</span>
+          <span class="stag">Affinity Mapping</span>
+          <span class="stag">BeautifulSoup</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Replace with: <img src="images/daniel.jpg" alt="Daniel Park" /> -->
+    <div class="photo-frame">
+      <div class="photo-ph">
+        <span class="photo-ph-tag">📷 Photo</span>
+        <span class="photo-ph-hint">daniel.jpg</span>
+      </div>
+    </div>
+    <div class="photo-meta">
+      <div class="pm-cell">
+        <div class="pm-label">Location</div>
+        <div class="pm-val">Berkeley, CA</div>
+      </div>
+      <div class="pm-cell">
+        <div class="pm-label">Status</div>
+        <div class="pm-val blue">Open to roles</div>
+      </div>
+      <div class="pm-cell">
+        <div class="pm-label">School</div>
+        <div class="pm-val">UC Berkeley</div>
+      </div>
+      <div class="pm-cell">
+        <div class="pm-label">Major</div>
+        <div class="pm-val">CogSci + DS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BACKGROUND + INTERESTS -->
+<div class="content">
+  <div class="bottom-section reveal">
+    <div class="sec-label">Background</div>
+    <p class="bg-text">
+      My background sits at a rare intersection — studying <strong>how the mind works</strong> while also learning how to build and analyze the data systems that shape human experience. I'm drawn to the gap between what people say they want and what they actually do, and how well-designed products can close it. A lot of my work lives at the intersection of <span class="mono">consumer behavior</span>, <span class="mono">brand identity</span>, and <span class="mono">technology</span> — especially how Gen Z expresses identity through digital platforms.
+    </p>
+  </div>
+  <div class="bottom-section reveal">
+    <div class="sec-label">Interests</div>
+    <div class="interest-row">
+      <div class="int-chip"><span>🎵</span> Music & K-pop</div>
+      <div class="int-chip"><span>👗</span> Fashion & aesthetics</div>
+      <div class="int-chip"><span>📱</span> Consumer tech</div>
+      <div class="int-chip"><span>🧠</span> Behavioral economics</div>
+      <div class="int-chip"><span>🎨</span> Brand identity</div>
+      <div class="int-chip"><span>🛍️</span> Retail experience</div>
+      <div class="int-chip"><span>✍️</span> Writing & essays</div>
+      <div class="int-chip"><span>🌏</span> Korean-American culture</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-left">© 2025 Daniel Park</div>
+  <div class="ft-links">
+    <a href="#">LinkedIn</a>
+    <a href="#">Resume</a>
+    <a href="mailto:daniel@email.com">Email</a>
+  </div>
+</footer>
+
+<script>
+  const cur = document.getElementById('cur');
+  const curb = document.getElementById('curb');
+  let mx=0,my=0,bx=0,by=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+  (function loop(){ bx+=(mx-bx)*0.1; by+=(my-by)*0.1; curb.style.left=bx+'px'; curb.style.top=by+'px'; requestAnimationFrame(loop); })();
+  const revs = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.08});
+  revs.forEach(r=>io.observe(r));
+</script>
+</body>
+</html>
