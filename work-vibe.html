@@ -380,10 +380,29 @@
     .test-body { font-size: 14px; line-height: 1.7; color: var(--muted); font-weight: 400; }
 
     /* PHASE 2 */
-    .phase2-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-family: 'Space Mono', monospace; font-size: 12px; }
-    .phase2-table th { text-align: left; padding: 10px 14px; background: var(--text); color: #fff; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
-    .phase2-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--muted); line-height: 1.5; vertical-align: top; }
+    .phase2-scroll { overflow-x: auto; margin: 24px 0; }
+    .phase2-table { width: 100%; border-collapse: collapse; min-width: 640px; table-layout: fixed; }
+    .phase2-table th { text-align: center; padding: 10px 14px; background: var(--text); color: #fff; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; }
+    .phase2-table td { padding: 16px 14px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
     .phase2-table tr:nth-child(even) td { background: var(--bg2); }
+    .phase2-table td:first-child { width: 34%; font-size: 15px; line-height: 1.65; color: var(--muted); }
+    .phase2-table th:nth-child(2),
+    .phase2-table th:nth-child(3),
+    .phase2-table td:nth-child(2),
+    .phase2-table td:nth-child(3) { width: 33%; }
+    .phase2-table td strong { color: var(--text); font-weight: 500; }
+    .ui-shot { display: flex; flex-direction: column; }
+    .phase2-table .photo-slot { width: 100%; aspect-ratio: 4/5; overflow: hidden; flex: none; }
+    .ui-caption {
+      min-height: 52px;
+      margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      text-align: center;
+    }
 
     /* CASE LIST */
     .case-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
@@ -433,6 +452,27 @@
       .photo-grid-5 { grid-template-columns: repeat(3, 1fr); }
       .hero-video-band { padding: 32px 16px; }
       .hero-video-wrap { width: min(360px, 78vw); }
+
+      .phase2-scroll { overflow: visible; }
+      .phase2-table { display: block; min-width: 0; }
+      .phase2-table tr:first-child { display: none; }
+      .phase2-table tr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border: 1px solid var(--border);
+        margin-bottom: 20px;
+      }
+      .phase2-table tr:nth-child(even) { background: var(--bg2); }
+      .phase2-table tr:nth-child(even) td { background: transparent; }
+      .phase2-table td,
+      .phase2-table td:first-child,
+      .phase2-table td:nth-child(2),
+      .phase2-table td:nth-child(3) {
+        display: block;
+        width: auto;
+        border-bottom: none;
+      }
+      .phase2-table td:first-child { grid-column: 1 / -1; padding-bottom: 4px; }
     }
   </style>
   <link rel="stylesheet" href="responsive.css" />
@@ -790,55 +830,81 @@
     </p>
 
     <div class="highlight-box">
-      <p>Architecture: a Profiler AI reads the Vibe profile and translates it into interface-relevant axes (directness ↔ warmth, information density ↔ spaciousness). A Stylist AI takes those axes and produces concrete UI decisions. Kept deliberately separate: "what this person is like" stays distinct from "what the interface should do about it."</p>
+      <p>The project has two distinct layers. The <strong>Profiler AI</strong>, what this project has covered so far, handles reading a person's taste data and translating it into interface-relevant axes. The <strong>Stylist AI</strong>, which is this Phase 2 vision, handles taking those axes and deciding what the interface actually does with them.</p>
     </div>
 
     <p class="sec-text" style="margin-top:24px;">Three personas used to prototype the concept:</p>
-    <table class="phase2-table">
-      <tr>
-        <th>Persona</th>
-        <th>Warmth</th>
-        <th>Density</th>
-        <th>Wants</th>
-      </tr>
-      <tr>
-        <td>The Direct Minimalist</td>
-        <td>Low</td>
-        <td>Low</td>
-        <td>Fewest words, most white space, function over friendliness</td>
-      </tr>
-      <tr>
-        <td>The Warm Expressive</td>
-        <td>High</td>
-        <td>Med–High</td>
-        <td>Encouragement, context, a sense of being accompanied</td>
-      </tr>
-      <tr>
-        <td>The Efficient Power User</td>
-        <td>Low–Neutral</td>
-        <td>High</td>
-        <td>Everything visible at once, no hand-holding, speed over comfort</td>
-      </tr>
-    </table>
-
-    <!-- phase 2 mockup slots -->
-    <div class="photo-grid-2" style="margin-top:24px;">
-      <div class="photo-wrap no-margin">
-        <div class="photo-slot landscape">
-          <span class="photo-slot-tag">📷 Claude × 3 Personas</span>
-          <div class="photo-slot-label">Claude new-chat screen — 3 persona variants</div>
-          <div class="photo-slot-hint">vibe-everywhere-claude.png</div>
-        </div>
-        <div class="photo-caption">Claude empty state — Direct Minimalist / Warm Expressive / Efficient Power User</div>
-      </div>
-      <div class="photo-wrap no-margin">
-        <div class="photo-slot landscape">
-          <span class="photo-slot-tag">📷 Instagram × 3 Personas</span>
-          <div class="photo-slot-label">Instagram home feed — 3 persona variants</div>
-          <div class="photo-slot-hint">vibe-everywhere-instagram.png</div>
-        </div>
-        <div class="photo-caption">Instagram feed — same functionality, different density / tone / spacing</div>
-      </div>
+    <div class="phase2-scroll">
+      <table class="phase2-table">
+        <tr>
+          <th>Persona</th>
+          <th>Claude UI</th>
+          <th>Instagram UI</th>
+        </tr>
+        <tr>
+          <td><strong>The Direct Minimalist</strong> — Low warmth, low density. Fewest words, most white space, function over friendliness.</td>
+          <td>
+            <div class="ui-shot">
+              <div class="photo-slot">
+                <span class="photo-slot-tag">Claude</span>
+                <div class="photo-slot-label">Direct Minimalist</div>
+              </div>
+              <div class="ui-caption"></div>
+            </div>
+          </td>
+          <td>
+            <div class="ui-shot">
+              <div class="photo-slot">
+                <span class="photo-slot-tag">Instagram</span>
+                <div class="photo-slot-label">Direct Minimalist</div>
+              </div>
+              <div class="ui-caption"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>The Warm Expressive</strong> — High warmth, med–high density. Encouragement, context, a sense of being accompanied.</td>
+          <td>
+            <div class="ui-shot">
+              <div class="photo-slot">
+                <span class="photo-slot-tag">Claude</span>
+                <div class="photo-slot-label">Warm Expressive</div>
+              </div>
+              <div class="ui-caption"></div>
+            </div>
+          </td>
+          <td>
+            <div class="ui-shot">
+              <div class="photo-slot">
+                <span class="photo-slot-tag">Instagram</span>
+                <div class="photo-slot-label">Warm Expressive</div>
+              </div>
+              <div class="ui-caption"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>The Efficient Power User</strong> — Low–neutral warmth, high density. Everything visible at once, no hand-holding, speed over comfort.</td>
+          <td>
+            <div class="ui-shot">
+              <div class="photo-slot">
+                <span class="photo-slot-tag">Claude</span>
+                <div class="photo-slot-label">Power User</div>
+              </div>
+              <div class="ui-caption"></div>
+            </div>
+          </td>
+          <td>
+            <div class="ui-shot">
+              <div class="photo-slot">
+                <span class="photo-slot-tag">Instagram</span>
+                <div class="photo-slot-label">Power User</div>
+              </div>
+              <div class="ui-caption"></div>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <p class="sec-text" style="margin-top:8px; font-style:italic; color:var(--muted)">
