@@ -214,19 +214,76 @@
     .eyebrow::before { content: '// '; opacity: 0.35; }
 
     h1 {
+      position: relative;
+      width: max-content;
+      max-width: 100%;
       font-family: 'Space Mono', monospace;
       font-size: clamp(56px, 9vw, 120px);
       font-weight: 400; line-height: 0.95; letter-spacing: -0.03em;
     }
+    h1::before {
+      content: '';
+      position: absolute;
+      left: -8%; top: 28%;
+      width: 118%; height: 82%;
+      background: radial-gradient(ellipse at 38% 72%, rgba(147, 197, 253, 0.42), rgba(37, 99, 235, 0.08) 46%, transparent 72%);
+      filter: blur(14px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    h1 .l1, h1 .l2 {
+      position: relative; z-index: 1;
+      display: block;
+      width: max-content;
+      max-width: 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
     h1 .l1 {
-      display: block; color: var(--text);
+      background-image: linear-gradient(180deg, #9aa3bb 0%, #2c3348 10%, #141722 36%, #0f1120 100%);
+      color: var(--text);
       opacity: 0; transform: translateY(50px);
       animation: up 0.85s cubic-bezier(0.16,1,0.3,1) 0.4s forwards;
+      filter: drop-shadow(0 12px 18px rgba(37, 99, 235, 0.05));
     }
     h1 .l2 {
-      display: block; color: var(--accent);
+      background-image: linear-gradient(180deg, #e8f1ff 0%, #60a5fa 7%, #2563eb 18%, #1d4ed8 100%);
+      color: var(--accent);
       opacity: 0; transform: translateY(50px);
       animation: up 0.85s cubic-bezier(0.16,1,0.3,1) 0.55s forwards;
+      filter:
+        drop-shadow(0 0 12px rgba(147, 197, 253, 0.4))
+        drop-shadow(0 16px 28px rgba(37, 99, 235, 0.1));
+    }
+    h1 .l1::after, h1 .l2::after {
+      position: absolute; left: 0; top: 0;
+      background-image: linear-gradient(
+        108deg,
+        transparent 36%,
+        rgba(255, 255, 255, 0.08) 46%,
+        rgba(255, 255, 255, 0.72) 50%,
+        rgba(255, 255, 255, 0.08) 54%,
+        transparent 64%
+      );
+      background-size: 240% 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      pointer-events: none;
+      animation: gleam 8.5s ease-in-out infinite;
+    }
+    h1 .l1::after { content: 'Daniel'; animation-delay: 1.15s; opacity: 0.45; }
+    h1 .l2::after { content: 'Park_'; animation-delay: 1.4s; }
+    @keyframes gleam {
+      0%, 64% { background-position: 120% 0; }
+      84% { background-position: -20% 0; }
+      100% { background-position: -20% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      h1 .l1::after, h1 .l2::after { animation: none; opacity: 0; }
     }
 
     .roles {
