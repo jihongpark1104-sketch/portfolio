@@ -273,13 +273,21 @@
       -webkit-text-fill-color: transparent;
       color: transparent;
       pointer-events: none;
-      animation: gleam 8.5s ease-in-out infinite;
+      animation-duration: 2.2s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-delay: 1.2s;
     }
-    h1 .l1::after { content: 'Daniel'; animation-delay: 1.15s; opacity: 0.45; }
-    h1 .l2::after { content: 'Park_'; animation-delay: 1.4s; }
-    @keyframes gleam {
-      0%, 64% { background-position: 120% 0; }
-      84% { background-position: -20% 0; }
+    h1 .l1::after { content: 'Daniel'; opacity: 0.45; animation-name: gleam-daniel; }
+    h1 .l2::after { content: 'Park_'; animation-name: gleam-park; }
+    @keyframes gleam-daniel {
+      0%, 6% { background-position: 120% 0; }
+      40% { background-position: -20% 0; }
+      100% { background-position: -20% 0; }
+    }
+    @keyframes gleam-park {
+      0%, 46% { background-position: 120% 0; }
+      80% { background-position: -20% 0; }
       100% { background-position: -20% 0; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -697,7 +705,7 @@
 
 <!-- BANNER -->
 <div class="banner reveal">
-  <div class="banner-text">Let's build something<br><em>people actually love.</em></div>
+  <div class="banner-text">Let's build products<br><em>people actually love.</em></div>
   <a href="mailto:jihongpark1104@gmail.com" class="banner-btn">Get in touch →</a>
 </div>
 
