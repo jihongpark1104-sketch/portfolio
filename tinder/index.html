@@ -226,24 +226,225 @@
     .divider { border: none; border-top: 1px solid var(--border); margin: 56px 0; }
 
     .highlight-box { border: 1px solid var(--tinder-mid); background: var(--tinder-light); padding: 24px 28px; margin: 28px 0; }
-    .highlight-box p { font-family: 'Space Mono', monospace; font-size: 14px; line-height: 1.8; color: var(--tinder-rose); letter-spacing: 0.01em; }
+    .highlight-box p { font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; line-height: 1.8; color: var(--tinder-rose); letter-spacing: normal; }
+    .highlight-box p.hmw { font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; font-size: 18px; line-height: 1.6; letter-spacing: normal; }
+    @media (max-width: 768px) {
+      .highlight-box p.hmw { font-size: 16px; }
+    }
     .highlight-box.blue { border-color: var(--accent-mid); background: var(--accent-light); }
-    .highlight-box.blue p { color: var(--accent); }
+    .highlight-box.blue p { font-family: 'Space Mono', monospace; letter-spacing: 0.01em; color: var(--accent); }
 
     .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); margin: 28px 0; }
+    .solution-slot { min-height: 220px; margin-top: 8px; }
+    .proto-frame { position: relative; width: 100%; aspect-ratio: 9 / 19.5; overflow: hidden; background: transparent; border: none; border-radius: 0; cursor: auto; container-type: inline-size; }
+    .proto-frame iframe { position: absolute; top: 0; left: 0; width: 544px; height: 1176px; border: 0; display: block; background: transparent; transform-origin: top left; }
+    .concept-hero { display: grid; grid-template-columns: minmax(240px, 340px) 1fr; gap: 48px; align-items: center; margin: 40px 0; }
+    .concept-label { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--tinder-rose); margin-bottom: 10px; }
+    .concept-heading { font-family: 'Space Mono', monospace; font-size: 22px; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 14px; }
+    .decision-box { border-left: 2px solid var(--tinder-rose); background: var(--tinder-light); padding: 16px 20px; margin-top: 20px; }
+    .decision-label { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--tinder-rose); margin-bottom: 6px; }
+    .decision-box p { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; line-height: 1.7; color: var(--text); }
+    .concept-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 560px; margin: 48px auto 12px; }
+    .concept-caption { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--muted); text-align: center; }
+    .proto-link { font-family: 'Space Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); display: block; text-align: center; margin-top: 32px; text-decoration: none; }
+    .proto-link:hover { text-decoration: underline; }
+    .concept-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 28px; }
+    .concept-row .concept-label { margin-top: 16px; }
+    .concept-row-title { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; font-weight: 500; margin: 6px 0; }
+    .concept-row-line { font-size: 14px; line-height: 1.6; color: var(--muted); }
+    @media (max-width: 720px) {
+      .concept-hero { grid-template-columns: 1fr; }
+      .concept-hero .proto-frame { max-width: 280px; margin: 0 auto; }
+      .concept-pair { gap: 12px; }
+      .concept-row { grid-template-columns: 1fr; }
+      .concept-row .proto-frame { max-width: 260px; margin: 0 auto; }
+    }
     .stat-cell { padding: 24px; border-right: 1px solid var(--border); }
     .stat-cell:last-child { border-right: none; }
     .stat-num { font-family: 'Space Mono', monospace; font-size: 36px; font-weight: 400; color: var(--tinder); letter-spacing: -0.02em; margin-bottom: 6px; }
     .stat-num.blue { color: var(--accent); }
     .stat-desc { font-size: 14px; color: var(--muted); font-weight: 400; line-height: 1.5; }
 
-    .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+    #insights .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0; }
     .insight-card { border: 1px solid var(--border); padding: 24px; background: var(--bg2); transition: border-color 0.2s; }
     .insight-card:hover { border-color: var(--tinder-mid); }
+
+    .flip-card {
+      position: relative;
+      perspective: 1200px;
+      cursor: pointer;
+    }
+    .flip-card:focus { outline: none; }
+    .flip-card:focus-visible { outline: 2px solid var(--tinder-rose); outline-offset: 4px; }
+    .flip-inner {
+      display: grid;
+      min-height: 380px;
+      height: 100%;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 700ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+    .flip-face {
+      grid-area: 1 / 1;
+      min-height: 380px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      box-shadow: 0 18px 44px rgba(20,16,22,0.16), 0 6px 16px rgba(20,16,22,0.08);
+      transition: box-shadow 700ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+    .flip-front {
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(1px);
+      background: var(--bg2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .flip-hint {
+      margin-top: auto;
+      padding-top: 18px;
+      align-self: flex-end;
+      text-align: right;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(20,16,22,0.72);
+    }
+    .hint-tap { display: none; }
+    .flip-back {
+      position: relative;
+      overflow: hidden;
+      transform: rotateY(180deg);
+      padding: 24px;
+      background: var(--text);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+    .flip-back::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+    .flip-back > * { position: relative; }
+    .flip-back .insight-body { color: rgba(255,255,255,0.78); }
+    .flip-back .insight-quote { color: rgba(255,255,255,0.75); border-top-color: rgba(255,255,255,0.16); }
+    .flip-back-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-mid);
+    }
+    .flip-back-label::before { content: '// '; opacity: 0.4; }
+    .flip-back-headline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin: 0;
+    }
+    .flip-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .flip-stat-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 44px;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      background: linear-gradient(90deg, var(--tinder), var(--tinder-rose) 60%, var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .flip-stat-desc { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--muted); margin-top: 8px; }
+    .flip-back-quote {
+      font-family: 'Space Mono', monospace;
+      font-style: normal;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.75);
+      border-left: 2px solid var(--tinder-rose);
+      padding-left: 14px;
+      margin: 0;
+    }
+    .flip-back-quote.hero { font-size: 20px; line-height: 1.35; color: #fff; }
+    .flip-card:hover,
+    .flip-card:focus-visible,
+    .flip-card.is-flipped { z-index: 5; }
+    .flip-card:hover .flip-face,
+    .flip-card:focus-visible .flip-face,
+    .flip-card.is-flipped .flip-face {
+      box-shadow: 0 28px 60px rgba(20,16,22,0.22), 0 8px 18px rgba(20,16,22,0.1);
+    }
+    .flip-card:hover .flip-inner,
+    .flip-card:focus-visible .flip-inner,
+    .flip-card.is-flipped .flip-inner { transform: rotateY(180deg) scale(1.08); }
+
+    @media (max-width: 720px) {
+      #insights .insight-grid { grid-template-columns: 1fr; }
+      .flip-card:hover .flip-inner,
+      .flip-card:focus-visible .flip-inner,
+      .flip-card.is-flipped .flip-inner { transform: rotateY(180deg) scale(1.03); }
+    }
+    @media (hover: none) {
+      .flip-card:hover:not(.is-flipped) { z-index: auto; }
+      .flip-card:hover:not(.is-flipped) .flip-face {
+        box-shadow: 0 18px 44px rgba(20,16,22,0.16), 0 6px 16px rgba(20,16,22,0.08);
+      }
+      .flip-card:hover:not(.is-flipped) .flip-inner { transform: none; }
+      .hint-hover { display: none; }
+      .hint-tap { display: inline; }
+    }
+    @media (hover: none) and (max-width: 720px) {
+      .flip-card.is-flipped .flip-inner,
+      .flip-card:focus-visible .flip-inner { transform: rotateY(180deg) scale(1.03); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .flip-inner { transition: none; transform: none !important; }
+      .flip-back { transform: none; opacity: 0; pointer-events: none; transition: opacity 250ms; }
+      .flip-front { transition: opacity 250ms; }
+      .flip-card:hover .flip-back,
+      .flip-card:focus-visible .flip-back,
+      .flip-card.is-flipped .flip-back { opacity: 1; pointer-events: auto; }
+      .flip-card:hover .flip-front,
+      .flip-card:focus-visible .flip-front,
+      .flip-card.is-flipped .flip-front { opacity: 0; }
+    }
     .insight-num { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tinder-rose); margin-bottom: 10px; }
     .insight-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
     .insight-body { font-size: 14px; line-height: 1.7; color: var(--muted); font-weight: 400; }
     .insight-quote { font-family: 'Space Mono', monospace; font-size: 12px; line-height: 1.7; color: var(--muted); font-style: italic; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .insight-link { margin-top: auto; padding-top: 14px; font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-mid); }
+    .flip-front-quote {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text);
+      border-left: 2px solid var(--tinder-rose);
+      padding-left: 16px;
+      margin: 0;
+    }
+    .flip-front-quote::after {
+      content: '— Interview participant';
+      display: block;
+      margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted2);
+    }
 
     .methods-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
     .method-card { border: 1px solid var(--border); padding: 20px; background: var(--bg); }
@@ -349,7 +550,7 @@
   <div class="hero-inner">
     <div class="breadcrumb">Work <span>/</span> UX Research · Berkeley Innovation</div>
     <h1 class="case-title">Tinder <span class="red">×</span> Gen Z</h1>
-    <div class="case-subtitle-line">Rebuilding relevance, trust, and connection for Gen Z</div>
+    <div class="case-subtitle-line">Gen Z wants love, but not on Tinder</div>
     <p class="hero-desc">
       A semester-long UX research project with <strong>Berkeley Innovation</strong>, partnered with Tinder to understand how Gen Z defines dating today, what safety means for Gen Z women, and how Tinder competes in an evolving landscape.
     </p>
@@ -363,12 +564,6 @@
   </div>
 </section>
 
-<!-- ─── HERO IMAGE ─── -->
-<div class="photo-wrap hero-banner">
-  <img src="../photos/thumbnails/Title%20Slide.png" alt="Tinder × Gen Z — title slide" />
-  <div class="photo-caption">Presentation title slide</div>
-</div>
-
 <!-- BODY -->
 <div class="case-body">
   <main class="content">
@@ -376,7 +571,7 @@
     <!-- OVERVIEW -->
     <section class="section reveal" id="overview">
       <span class="sec-anchor">01 — overview</span>
-      <h2 class="sec-heading">What was this project?</h2>
+      <h2 class="sec-heading">Tinder is losing its next generation</h2>
       <div class="role-badge">
         <span class="role-badge-label">My Role</span>
         <span class="role-badge-val">03 — Ideation Lead</span>
@@ -403,10 +598,10 @@
     <!-- PROBLEM -->
     <section class="section reveal" id="problem">
       <span class="sec-anchor">02 — problem</span>
-      <h2 class="sec-heading">What problem were we solving?</h2>
+      <h2 class="sec-heading">Lonely, but still deleting dating apps</h2>
       <p class="sec-text">Tinder is the world's most popular dating app, but its relevance with Gen Z is slipping. Gen Z — the next generation of daters — is facing a <strong>loneliness epidemic</strong> while simultaneously rejecting the very platforms designed to help them connect.</p>
       <div class="highlight-box">
-        <p>"How might we explore how Gen Z defines dating today, what safety looks like for Gen Z women, and how Tinder is perceived among competing dating apps?"</p>
+        <p class="hmw">"How might we explore how Gen Z defines dating today, what safety looks like for Gen Z women, and how Tinder is perceived among competing dating apps?"</p>
       </div>
       <p class="sec-text">Our competitive analysis surfaced a broader industry shift — away from swipe-based, profile-first interactions toward IRL-first, experience-driven connection:</p>
       <ul class="case-list">
@@ -415,6 +610,33 @@
         <li>Reduced emphasis on profiles, messaging, and browsing</li>
         <li>Rising demand for authentic, low-pressure connection</li>
       </ul>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- SOLUTION -->
+    <section class="section reveal" id="solution">
+      <span class="sec-anchor">solution</span>
+      <h2 class="sec-heading">Less swiping, clearer intentions</h2>
+      <p class="sec-text">Our lead concept tackles the biggest gap we found: people want something serious but won't say it. The other three concepts are further down the page.</p>
+      <div class="concept-hero">
+        <div class="proto-frame"><iframe src="https://oil-save-59923561.figma.site/?demo=1A" title="Concept 01 — choosing an intention, live prototype" loading="lazy"></iframe></div>
+        <div class="concept-text">
+          <div class="concept-label">Concept 01 · answers Insight 01</div>
+          <h3 class="concept-heading">Intentions, locked in</h3>
+          <p class="sec-text">Users choose what they're looking for and swipe in a dedicated space with people who want the same thing. Switching spaces is limited: a 48-hour lock and 2 switches a month.</p>
+          <div class="decision-box">
+            <div class="decision-label">Design decision</div>
+            <p>Why add friction to a swipe app? If an intention is free to change, it means nothing. The lock turns "long-term" into a signal people can trust. Trade-off: someone who really changes their mind has to wait.</p>
+          </div>
+        </div>
+      </div>
+      <div class="concept-pair">
+        <div class="proto-frame"><iframe src="https://oil-save-59923561.figma.site/?demo=1C" title="Concept 01 — switching intention spaces, live prototype" loading="lazy"></iframe></div>
+        <div class="proto-frame"><iframe src="https://oil-save-59923561.figma.site/?demo=1B" title="Concept 01 — locked switch, live prototype" loading="lazy"></iframe></div>
+      </div>
+      <p class="concept-caption">Switching is allowed, just never impulsive.</p>
+      <a class="proto-link" href="https://oil-save-59923561.figma.site/?demo=gallery" target="_blank" rel="noopener">Open full prototype ↗</a>
     </section>
 
     <hr class="divider" />
@@ -489,7 +711,7 @@
       </div>
 
       <div class="highlight-box blue">
-        <p>Key finding: Participants valued open-ended prompts enabling more authentic self-expression beyond traditional dating app constraints. They expressed identity through personal interests, aesthetics, and visuals — creating more unique and personalized profiles.</p>
+        <p>Key finding:<br>Participants valued open-ended prompts enabling more authentic self-expression beyond traditional dating app constraints. They expressed identity through personal interests, aesthetics, and visuals — creating more unique and personalized profiles.</p>
       </div>
     </section>
 
@@ -526,31 +748,70 @@
     <section class="section reveal" id="insights">
       <span class="sec-anchor">07 — insights</span>
       <h2 class="sec-heading">What did we find?</h2>
-      <p class="sec-text">From 115 survey responses, 20 interviews, and 6 focus groups, we synthesized <strong>4 key insights</strong> that shaped our ideation direction.</p>
       <div class="insight-grid">
-        <div class="insight-card">
-          <div class="insight-num">Insight 01 — Motivations</div>
-          <div class="insight-title">The Intention vs. Behavior Gap</div>
-          <div class="insight-body">52.4% of users want long-term relationships, but 56.5% perceive Tinder as casual. A fundamental misalignment between user intent and platform perception.</div>
-          <div class="insight-quote">"An unspoken rule is that people avoid locking in(to) a relationship at all costs"</div>
+        <div class="flip-card" tabindex="0" aria-label="Insight 01: They want serious, but Tinder feels casual.">
+          <div class="flip-inner">
+            <div class="flip-face flip-front" aria-hidden="false">
+              <h3 class="flip-back-headline">They want serious, but Tinder feels casual</h3>
+              <div class="flip-stats">
+                <div class="flip-stat"><div class="flip-stat-num">52.4%</div><div class="flip-stat-desc">want a long-term relationship</div></div>
+                <div class="flip-stat"><div class="flip-stat-num">56.5%</div><div class="flip-stat-desc">see Tinder as casual</div></div>
+              </div>
+              <div class="flip-front-quote">"An unspoken rule is that people avoid locking in(to) a relationship at all costs."</div>
+              <p class="flip-hint">↻ <span class="hint-hover">Hover</span><span class="hint-tap">Tap</span> to reveal</p>
+            </div>
+            <div class="flip-face flip-back" aria-hidden="true">
+              <div class="insight-num">Insight 01 — Motivations</div>
+              <div class="insight-body">Gen Z wants commitment, but saying so feels risky. Unspoken rules like not double texting and not showing too much interest make people hide their intentions, which leads to mixed signals.</div>
+              <div class="insight-link">→ Led to Concept 01: Intention Spaces</div>
+            </div>
+          </div>
         </div>
-        <div class="insight-card">
-          <div class="insight-num">Insight 02 — Connection</div>
-          <div class="insight-title">Attraction Through Shared Activity</div>
-          <div class="insight-body">A major driver for Gen Z to make connections is the desire to spend time together over shared activities — not profile browsing or text-based chat.</div>
-          <div class="insight-quote">"I'm interested in getting to know someone with a shared interest because it is easier to connect"</div>
+        <div class="flip-card" tabindex="0" aria-label="Insight 02: The app is plan B">
+          <div class="flip-inner">
+            <div class="flip-face flip-front" aria-hidden="false">
+              <h3 class="flip-back-headline">The app is plan B</h3>
+              <div class="flip-stats">
+                <div class="flip-stat"><div class="flip-stat-num">87.8%</div><div class="flip-stat-desc">prefer meeting at in-person events</div></div>
+                <div class="flip-stat"><div class="flip-stat-num">9.6%</div><div class="flip-stat-desc">prefer dating apps</div></div>
+              </div>
+              <div class="flip-front-quote">"An in-person meeting is the best, at an event that is a common interest of both of us."</div>
+              <p class="flip-hint">↻ <span class="hint-hover">Hover</span><span class="hint-tap">Tap</span> to reveal</p>
+            </div>
+            <div class="flip-face flip-back" aria-hidden="true">
+              <div class="insight-num">Insight 02 — Discovery</div>
+              <div class="insight-body">87.8% prefer meeting at in-person events and 81.7% through mutual friends; only 9.6% prefer apps. Connection comes easiest over a shared activity, because it gives people something real to talk about besides a profile.</div>
+              <div class="insight-link">→ Led to Concept 02: Groups + Events</div>
+            </div>
+          </div>
         </div>
-        <div class="insight-card">
-          <div class="insight-num">Insight 03 — Discovery</div>
-          <div class="insight-title">In-Person Is the Default</div>
-          <div class="insight-body">87.8% prefer meeting at in-person events, 81.7% through mutual friends. Only 9.6% prefer dating apps. Apps are a fallback, not a first choice.</div>
-          <div class="insight-quote">"An in-person meeting is the best, at an event that is a common interest of both of us."</div>
+        <div class="flip-card" tabindex="0" aria-label="Insight 03: Matching is easy. Meeting isn't.">
+          <div class="flip-inner">
+            <div class="flip-face flip-front" aria-hidden="false">
+              <h3 class="flip-back-headline">Matching is easy. Meeting isn't.</h3>
+              <div class="flip-front-quote">"People act like they want more but like not doing anything."</div>
+              <p class="flip-hint">↻ <span class="hint-hover">Hover</span><span class="hint-tap">Tap</span> to reveal</p>
+            </div>
+            <div class="flip-face flip-back" aria-hidden="true">
+              <div class="insight-num">Insight 03 — Friction</div>
+              <div class="insight-body">The drop-off happens between the match and the date. Without reciprocal effort, interest fades fast and ghosting fills the silence.</div>
+              <div class="insight-link">→ Led to Concept 03: Re-engagement Prompts</div>
+            </div>
+          </div>
         </div>
-        <div class="insight-card">
-          <div class="insight-num">Insight 04 — Friction</div>
-          <div class="insight-title">Closing the Gap Is the Hardest Part</div>
-          <div class="insight-body">The biggest frustration isn't finding a match — it's the gap between matching and dating. Commitment issues and poor communication block progression.</div>
-          <div class="insight-quote">"People act like they want more but like not doing anything."</div>
+        <div class="flip-card" tabindex="0" aria-label="Insight 04: Too much, too soon">
+          <div class="flip-inner">
+            <div class="flip-face flip-front" aria-hidden="false">
+              <h3 class="flip-back-headline">Too much, too soon</h3>
+              <div class="flip-front-quote">"Pressure into actions makes me uncomfortable, like if things are brand new and the conversation of intimacy is brought up."</div>
+              <p class="flip-hint">↻ <span class="hint-hover">Hover</span><span class="hint-tap">Tap</span> to reveal</p>
+            </div>
+            <div class="flip-face flip-back" aria-hidden="true">
+              <div class="insight-num">Insight 04 — Safety</div>
+              <div class="insight-body">The boundary most often crossed when meeting someone new is being pushed toward intimacy before trust exists. Tinder's casual reputation makes that pressure feel expected, so women go in guarded from the start.</div>
+              <div class="insight-link">→ Led to Concept 04: Respect Onboarding</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -569,7 +830,7 @@
       </div>
 
       <div class="highlight-box">
-        <p>Key pattern: Trust doesn't build on Tinder — it builds off-platform. Moving to Instagram is the real trust signal. Consistency in communication signals genuine intent. Even good dates lead to second-guessing.</p>
+        <p>Key pattern:<br><strong style="font-weight:500">79.1%</strong> look up their matches on social media, and <strong style="font-weight:500">81.7%</strong> want identity verification. Trust doesn't build on Tinder. It builds off-platform, and moving to Instagram is the real trust signal. Even good dates lead to second-guessing.</p>
       </div>
     </section>
 
@@ -579,12 +840,40 @@
     <section class="section reveal" id="ideation">
       <span class="sec-anchor">09 — ideation</span>
       <h2 class="sec-heading">What did we propose?</h2>
-      <p class="sec-text">As Ideation Lead, I synthesized our research into <strong>4 product concepts</strong> for Tinder to explore. Each concept directly addresses a specific insight cluster from our research.</p>
+      <p class="sec-text">As Ideation Lead, I synthesized our research into <strong>4 product concepts</strong> for Tinder to explore. Each concept answers one insight, in the same order: Insight 01 led to Concept 01, and so on.</p>
       <div class="concept-list">
-        <div class="concept-card"><span class="concept-num">01</span><div><div class="concept-title">Dating Intentions Setting</div><div class="concept-desc">Allow users to select dating intentions upfront — helping tailor matches and creating a more aligned, comfortable experience. Directly addresses the intention vs. behavior gap.</div></div></div>
-        <div class="concept-card"><span class="concept-num">02</span><div><div class="concept-title">Tinder Groups + Events</div><div class="concept-desc">Interest-based group spaces where users connect over shared hobbies in moderated, low-pressure environments. Groups integrate with events, shifting from profile-first to experience-first.</div></div></div>
-        <div class="concept-card"><span class="concept-num">03</span><div><div class="concept-title">Timed Re-engagement Prompts</div><div class="concept-desc">Prompts introduced after conversation inactivity to spark new topics, helping re-engage users and reduce ghosting — addressing the drop-off between matching and meeting.</div></div></div>
-        <div class="concept-card"><span class="concept-num">04</span><div><div class="concept-title">Tinder Education Onboarding</div><div class="concept-desc">Brief onboarding content around respectful behavior and communication, setting clear expectations early — helping rebuild Tinder's perception among Gen Z women who cited safety as a top concern.</div></div></div>
+        <div class="concept-card"><span class="concept-num">01</span><div><div class="concept-title">Intention Spaces</div><div class="concept-desc">Allow users to select dating intentions upfront — helping tailor matches and creating a more aligned, comfortable experience. Directly addresses the intention vs. behavior gap.</div></div></div>
+        <div class="concept-card"><span class="concept-num">02</span><div><div class="concept-title">Groups + Events</div><div class="concept-desc">Interest-based group spaces where users connect over shared hobbies in moderated, low-pressure environments. Groups integrate with events, shifting from profile-first to experience-first.</div></div></div>
+        <div class="concept-card"><span class="concept-num">03</span><div><div class="concept-title">Re-engagement Prompts</div><div class="concept-desc">Prompts introduced after conversation inactivity to spark new topics, helping re-engage users and reduce ghosting — addressing the drop-off between matching and meeting.</div></div></div>
+        <div class="concept-card"><span class="concept-num">04</span><div><div class="concept-title">Respect Onboarding</div><div class="concept-desc">Brief onboarding content around respectful behavior and communication, setting clear expectations early — helping rebuild Tinder's perception among Gen Z women who cited safety as a top concern.</div></div></div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- MORE CONCEPTS -->
+    <section class="section reveal" id="more-concepts">
+      <span class="sec-anchor">07 — more concepts</span>
+      <h2 class="sec-heading">Three more ways to close the gap</h2>
+      <div class="concept-row">
+        <div>
+          <div class="proto-frame"><iframe src="https://oil-save-59923561.figma.site/?demo=2" title="Concept 02 — groups and events, live prototype" loading="lazy"></iframe></div>
+          <div class="concept-label">Concept 02 · answers Insight 02</div>
+          <div class="concept-row-title">Groups + Events</div>
+          <p class="concept-row-line">Interest-based groups with real events, so people meet over something to do.</p>
+        </div>
+        <div>
+          <div class="proto-frame"><iframe src="https://oil-save-59923561.figma.site/?demo=3" title="Concept 03 — re-engagement prompt, live prototype" loading="lazy"></iframe></div>
+          <div class="concept-label">Concept 03 · answers Insight 03</div>
+          <div class="concept-row-title">Re-engagement Prompts</div>
+          <p class="concept-row-line">When a chat goes quiet, suggested openers help restart it. They're drafted for you, never sent automatically.</p>
+        </div>
+        <div>
+          <div class="proto-frame"><iframe src="https://oil-save-59923561.figma.site/?demo=4" title="Concept 04 — respect onboarding, live prototype" loading="lazy"></iframe></div>
+          <div class="concept-label">Concept 04 · answers Insight 04</div>
+          <div class="concept-row-title">Respect Onboarding</div>
+          <p class="concept-row-line">Three quick screens on respect, clear intentions and safety tools, before the first swipe.</p>
+        </div>
       </div>
     </section>
 
@@ -592,12 +881,12 @@
 
     <!-- REFLECTION -->
     <section class="section reveal" id="reflection">
-      <span class="sec-anchor">10 — reflection</span>
+      <span class="sec-anchor">08 — reflection</span>
       <h2 class="sec-heading">What did I take away?</h2>
       <p class="sec-text">This project pushed our team to slow down and truly understand people's experiences before jumping into solutions. Through all our research, we started to see the real emotions, motivations, and challenges behind how people use these platforms — which made our work feel personal and intentional.</p>
       <p class="sec-text">As <strong>Ideation Lead</strong>, the biggest challenge was resisting the urge to generate ideas too early. The discipline of sitting with the data, finding the real tensions, and only then translating them into concepts was a skill I developed significantly through this project.</p>
       <div class="highlight-box blue">
-        <p>Key learning: The best product ideas don't come from feature brainstorming — they come from understanding what users are actually trying to do vs. what the product currently makes them do. That gap is where the opportunity lives.</p>
+        <p>Key learning:<br>The best product ideas don't come from feature brainstorming — they come from understanding what users are actually trying to do vs. what the product currently makes them do. That gap is where the opportunity lives.</p>
       </div>
       <p class="sec-text" style="margin-top:24px">The team:</p>
       <div class="team-grid">
@@ -621,7 +910,7 @@
 </a>
 
 <footer>
-  <div class="ft-left">© 2025 Daniel Park</div>
+  <div class="ft-left">© 2026 Daniel Park</div>
   <div class="ft-links">
     <a href="https://www.linkedin.com/in/daniel-park1104" target="_blank">LinkedIn</a>
     <a href="#">Resume</a>
@@ -640,9 +929,50 @@
   const curb = document.getElementById('curb');
   let mx=0,my=0,bx=0,by=0;
   document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+  document.querySelectorAll('.proto-frame iframe').forEach(frame => {
+    frame.addEventListener('mouseenter', () => { cur.style.opacity = '0'; curb.style.opacity = '0'; });
+    frame.addEventListener('mouseleave', () => { cur.style.opacity = '1'; curb.style.opacity = '0.5'; });
+  });
+  function fitProtos() {
+    document.querySelectorAll('.proto-frame').forEach(frame => {
+      const iframe = frame.querySelector('iframe');
+      if (!iframe) return;
+      iframe.style.transform = 'scale(' + (frame.clientWidth / 544) + ')';
+    });
+  }
+  fitProtos();
+  window.addEventListener('resize', fitProtos);
   (function loop(){ bx+=(mx-bx)*0.1; by+=(my-by)*0.1; curb.style.left=bx+'px'; curb.style.top=by+'px'; requestAnimationFrame(loop); })();
+  function setFlipped(card, flipped) {
+    card.classList.toggle('is-flipped', flipped);
+    const front = card.querySelector('.flip-front');
+    const back = card.querySelector('.flip-back');
+    if (front) front.setAttribute('aria-hidden', flipped ? 'true' : 'false');
+    if (back) back.setAttribute('aria-hidden', flipped ? 'false' : 'true');
+  }
+  document.querySelectorAll('.flip-card').forEach(card => {
+    card.addEventListener('click', () => {
+      if (!window.matchMedia('(hover: none)').matches) return;
+      setFlipped(card, !card.classList.contains('is-flipped'));
+    });
+    card.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      setFlipped(card, !card.classList.contains('is-flipped'));
+    });
+  });
+  let insightDemoPlayed = false;
   const revs = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.08});
+  const io = new IntersectionObserver(es=>es.forEach(e=>{
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    if (e.target.id !== 'insights' || insightDemoPlayed) return;
+    insightDemoPlayed = true;
+    const first = e.target.querySelector('.flip-card');
+    if (!first) return;
+    setFlipped(first, true);
+    setTimeout(() => setFlipped(first, false), 1500);
+  }), {threshold:0.08});
   revs.forEach(r=>io.observe(r));
 
   // Keep "Next project" in sync with homepage card 2
