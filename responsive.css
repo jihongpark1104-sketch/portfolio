@@ -81,7 +81,6 @@ pre, code, .code-block, .code-wrap {
     padding: 14px 20px;
     gap: 12px;
   }
-  .nav-status { display: none; }
   .nav-links { gap: 16px; }
 
   .hero,
