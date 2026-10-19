@@ -317,3 +317,32 @@ pre, code, .code-block, .code-wrap {
 
   .filters { width: 100%; }
 }
+
+.to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: bottom 0.2s, transform 0.25s, color 0.2s, border-color 0.2s;
+}
+.to-top.is-on {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+.to-top:hover { color: var(--accent); border-color: var(--accent); }
+@media (max-width: 720px) {
+  .to-top { right: 16px; bottom: 16px; padding: 10px 12px; }
+}

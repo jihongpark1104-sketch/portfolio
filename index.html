@@ -382,6 +382,19 @@
     .card:hover .card-img img,
     .card:hover .card-img video { transform: scale(1.04); }
     .card-img video.is-portrait { object-fit: contain; }
+    .thumb-embed {
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: linear-gradient(135deg, #FD297B, #FF5864, #FF7854);
+    }
+    .thumb-embed iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      pointer-events: none;
+    }
     .card-img img.is-logo {
       object-fit: contain;
       object-position: center;
@@ -536,7 +549,7 @@
   </style>
   <link rel="stylesheet" href="responsive.css" />
 </head>
-<body>
+<body id="top">
 
 <div class="cursor" id="cur"></div>
 <div class="cursor-box" id="curb"></div>
@@ -599,8 +612,8 @@
 
     <a href="tinder" class="card">
       <div class="card-line" style="background:#fe3c72;"></div>
-      <div class="card-img">
-        <img src="photos/thumbnails/unnamed.jpg" alt="Tinder x Gen Z preview" />
+      <div class="thumb-embed">
+        <iframe src="https://oil-save-59923561.figma.site/?demo=thumb" title="Tinder × Gen Z concept screens" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
       </div>
       <div class="card-body">
         <div class="card-meta">
@@ -711,6 +724,7 @@
   <div class="ft-left">© 2026 Daniel Park</div>
   <div class="ft-links">
     <a href="https://www.linkedin.com/in/daniel-park1104" target="_blank">LinkedIn</a>
+    <a href="resume.html">Resume</a>
     <a href="mailto:jihongpark1104@gmail.com">Email</a>
   </div>
 </footer>
@@ -750,6 +764,23 @@
       drop.querySelector('.nav-drop-btn').setAttribute('aria-expanded', 'false');
     });
   });
+</script>
+<a href="#top" class="to-top" id="to-top">Back to top</a>
+<script>
+  (function () {
+    var btn = document.getElementById('to-top');
+    if (!btn) return;
+    var footer = document.querySelector('footer');
+    var sync = function () {
+      btn.classList.toggle('is-on', window.scrollY > 480);
+      if (!footer) return;
+      var overlap = window.innerHeight - footer.getBoundingClientRect().top;
+      btn.style.bottom = overlap > 8 ? (overlap + 16) + 'px' : '';
+    };
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+  })();
 </script>
 </body>
 </html>

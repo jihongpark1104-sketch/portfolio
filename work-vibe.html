@@ -477,7 +477,7 @@
   </style>
   <link rel="stylesheet" href="responsive.css" />
 </head>
-<body>
+<body id="top">
 
 <div class="cursor" id="cur"></div>
 <div class="cursor-box" id="curb"></div>
@@ -857,7 +857,7 @@
   <div class="ft-left">© 2026 Daniel Park</div>
   <div class="ft-links">
     <a href="https://www.linkedin.com/in/daniel-park1104" target="_blank">LinkedIn</a>
-    <a href="#">Resume</a>
+    <a href="resume.html">Resume</a>
     <a href="mailto:jihongpark1104@gmail.com">Email</a>
   </div>
 </footer>
@@ -871,6 +871,23 @@
   const revs = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.08});
   revs.forEach(r=>io.observe(r));
+</script>
+<a href="#top" class="to-top" id="to-top">Back to top</a>
+<script>
+  (function () {
+    var btn = document.getElementById('to-top');
+    if (!btn) return;
+    var footer = document.querySelector('footer');
+    var sync = function () {
+      btn.classList.toggle('is-on', window.scrollY > 480);
+      if (!footer) return;
+      var overlap = window.innerHeight - footer.getBoundingClientRect().top;
+      btn.style.bottom = overlap > 8 ? (overlap + 16) + 'px' : '';
+    };
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+  })();
 </script>
 </body>
 </html>

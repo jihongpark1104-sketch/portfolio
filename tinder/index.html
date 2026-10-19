@@ -280,6 +280,7 @@
       display: grid;
       min-height: 380px;
       height: 100%;
+      transform: translateZ(0.01px);
       transform-style: preserve-3d;
       -webkit-transform-style: preserve-3d;
       transition: transform 700ms cubic-bezier(0.34, 1.2, 0.64, 1);
@@ -389,26 +390,19 @@
     }
     .flip-card:hover .flip-inner,
     .flip-card:focus-visible .flip-inner,
-    .flip-card.is-flipped .flip-inner { transform: rotateY(180deg) scale(1.08); }
+    .flip-card.is-flipped .flip-inner { transform: rotateY(180deg); }
 
     @media (max-width: 720px) {
       #insights .insight-grid { grid-template-columns: 1fr; }
-      .flip-card:hover .flip-inner,
-      .flip-card:focus-visible .flip-inner,
-      .flip-card.is-flipped .flip-inner { transform: rotateY(180deg) scale(1.03); }
     }
     @media (hover: none) {
       .flip-card:hover:not(.is-flipped) { z-index: auto; }
       .flip-card:hover:not(.is-flipped) .flip-face {
         box-shadow: 0 18px 44px rgba(20,16,22,0.16), 0 6px 16px rgba(20,16,22,0.08);
       }
-      .flip-card:hover:not(.is-flipped) .flip-inner { transform: none; }
+      .flip-card:hover:not(.is-flipped) .flip-inner { transform: translateZ(0.01px); }
       .hint-hover { display: none; }
       .hint-tap { display: inline; }
-    }
-    @media (hover: none) and (max-width: 720px) {
-      .flip-card.is-flipped .flip-inner,
-      .flip-card:focus-visible .flip-inner { transform: rotateY(180deg) scale(1.03); }
     }
     @media (prefers-reduced-motion: reduce) {
       .flip-inner { transition: none; transform: none !important; }
@@ -535,7 +529,7 @@
   </style>
   <link rel="stylesheet" href="../responsive.css" />
 </head>
-<body>
+<body id="top">
 
 <div class="cursor" id="cur"></div>
 <div class="cursor-box" id="curb"></div>
@@ -913,7 +907,7 @@
   <div class="ft-left">© 2026 Daniel Park</div>
   <div class="ft-links">
     <a href="https://www.linkedin.com/in/daniel-park1104" target="_blank">LinkedIn</a>
-    <a href="#">Resume</a>
+    <a href="../resume.html">Resume</a>
     <a href="mailto:jihongpark1104@gmail.com">Email</a>
   </div>
 </footer>
@@ -961,17 +955,9 @@
       setFlipped(card, !card.classList.contains('is-flipped'));
     });
   });
-  let insightDemoPlayed = false;
   const revs = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver(es=>es.forEach(e=>{
-    if (!e.isIntersecting) return;
-    e.target.classList.add('in');
-    if (e.target.id !== 'insights' || insightDemoPlayed) return;
-    insightDemoPlayed = true;
-    const first = e.target.querySelector('.flip-card');
-    if (!first) return;
-    setFlipped(first, true);
-    setTimeout(() => setFlipped(first, false), 1500);
+    if (e.isIntersecting) e.target.classList.add('in');
   }), {threshold:0.08});
   revs.forEach(r=>io.observe(r));
 
@@ -1023,6 +1009,23 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLb();
     });
+  })();
+</script>
+<a href="#top" class="to-top" id="to-top">Back to top</a>
+<script>
+  (function () {
+    var btn = document.getElementById('to-top');
+    if (!btn) return;
+    var footer = document.querySelector('footer');
+    var sync = function () {
+      btn.classList.toggle('is-on', window.scrollY > 480);
+      if (!footer) return;
+      var overlap = window.innerHeight - footer.getBoundingClientRect().top;
+      btn.style.bottom = overlap > 8 ? (overlap + 16) + 'px' : '';
+    };
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
   })();
 </script>
 </body>
