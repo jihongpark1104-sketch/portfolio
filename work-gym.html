@@ -179,22 +179,6 @@
     }
     .photo-wrap { border: 1px solid var(--border); overflow: hidden; margin: 28px 0; }
     .photo-wrap.no-margin { margin: 0; }
-    .hero-banner {
-      margin: 0;
-      border-left: none;
-      border-right: none;
-      overflow: hidden;
-      background: #c8f5d8;
-    }
-    .hero-banner img {
-      height: 345px;
-      width: auto;
-      max-width: none;
-      display: block;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-    }
     .hifi-video-frame {
       background: #0a0f14;
       display: flex;
@@ -302,8 +286,30 @@
 
     .highlight-box { border: 1px solid var(--accent-mid); background: var(--accent-light); padding: 24px 28px; margin: 28px 0; }
     .highlight-box p { font-family: 'Space Mono', monospace; font-size: 14px; line-height: 1.8; color: var(--accent); letter-spacing: 0.01em; }
+    .highlight-box p.hmw { font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; font-size: 18px; line-height: 1.6; letter-spacing: normal; }
+    @media (max-width: 768px) {
+      .highlight-box p.hmw { font-size: 16px; }
+    }
     .highlight-box.green { border-color: var(--green-mid); background: var(--green-light); }
     .highlight-box.green p { color: var(--green); }
+    .role-badge { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--accent-mid); background: var(--accent-light); padding: 10px 18px; margin-bottom: 28px; }
+    .role-badge-label { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .role-badge-val { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); font-weight: 500; }
+    .concept-hero { display: grid; grid-template-columns: minmax(240px, 340px) 1fr; gap: 48px; align-items: center; margin: 40px 0; }
+    .concept-hero video { width: 100%; max-width: 300px; height: auto; display: block; background: none; }
+    .concept-label { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 10px; }
+    .concept-heading { font-family: 'Space Mono', monospace; font-size: 22px; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 14px; }
+    .decision-box { border-left: 2px solid var(--accent); background: var(--accent-light); padding: 16px 20px; margin-top: 20px; }
+    .decision-label { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 6px; }
+    .decision-box p { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; line-height: 1.7; color: var(--text); }
+    @media (max-width: 720px) {
+      .concept-hero { grid-template-columns: 1fr; }
+      .concept-hero .proto-frame { max-width: 280px; margin: 0 auto; }
+      .concept-hero video { margin: 0 auto; }
+      .concept-pair { gap: 12px; }
+      .concept-row { grid-template-columns: 1fr; }
+      .concept-row .proto-frame { max-width: 260px; margin: 0 auto; }
+    }
     .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); margin: 28px 0; }
     .stat-cell { padding: 24px; border-right: 1px solid var(--border); }
     .stat-cell:last-child { border-right: none; }
@@ -311,6 +317,139 @@
     .stat-desc { font-size: 14px; color: var(--muted); font-weight: 400; line-height: 1.5; }
 
     .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+    #insights .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0; }
+    .flip-card {
+      position: relative;
+      perspective: 1200px;
+      cursor: pointer;
+    }
+    .flip-card:focus { outline: none; }
+    .flip-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .flip-inner {
+      display: grid;
+      min-height: 380px;
+      height: 100%;
+      transform: translateZ(0.01px);
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 700ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+    .flip-face {
+      grid-area: 1 / 1;
+      min-height: 380px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      box-shadow: 0 18px 44px rgba(20,16,22,0.16), 0 6px 16px rgba(20,16,22,0.08);
+      transition: box-shadow 700ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+    .flip-front {
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(1px);
+      background: var(--bg2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .flip-hint {
+      margin-top: auto;
+      padding-top: 18px;
+      align-self: flex-end;
+      text-align: right;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(20,16,22,0.72);
+    }
+    .hint-tap { display: none; }
+    .flip-back {
+      position: relative;
+      overflow: hidden;
+      transform: rotateY(180deg);
+      padding: 24px;
+      background: var(--text);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+    .flip-back::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+    .flip-back > * { position: relative; }
+    .flip-back .insight-body { color: rgba(255,255,255,0.78); }
+    .flip-back-headline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin: 0;
+    }
+    .flip-front-quote {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text);
+      border-left: 2px solid var(--accent);
+      padding-left: 16px;
+      margin: 0;
+    }
+    .flip-front-quote::after {
+      content: '— Interview participant';
+      display: block;
+      margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted2);
+    }
+    .insight-link { margin-top: auto; padding-top: 14px; font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-mid); }
+    .flip-card:hover,
+    .flip-card:focus-visible,
+    .flip-card.is-flipped { z-index: 5; }
+    .flip-card:hover .flip-face,
+    .flip-card:focus-visible .flip-face,
+    .flip-card.is-flipped .flip-face {
+      box-shadow: 0 28px 60px rgba(20,16,22,0.22), 0 8px 18px rgba(20,16,22,0.1);
+    }
+    .flip-card:hover .flip-inner,
+    .flip-card:focus-visible .flip-inner,
+    .flip-card.is-flipped .flip-inner { transform: rotateY(180deg); }
+    @media (max-width: 720px) {
+      #insights .insight-grid { grid-template-columns: 1fr; }
+    }
+    @media (hover: none) {
+      .flip-card:hover:not(.is-flipped) { z-index: auto; }
+      .flip-card:hover:not(.is-flipped) .flip-face {
+        box-shadow: 0 18px 44px rgba(20,16,22,0.16), 0 6px 16px rgba(20,16,22,0.08);
+      }
+      .flip-card:hover:not(.is-flipped) .flip-inner { transform: translateZ(0.01px); }
+      .hint-hover { display: none; }
+      .hint-tap { display: inline; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .flip-inner { transition: none; transform: none !important; }
+      .flip-back { transform: none; opacity: 0; pointer-events: none; transition: opacity 250ms; }
+      .flip-front { transition: opacity 250ms; }
+      .flip-card:hover .flip-back,
+      .flip-card:focus-visible .flip-back,
+      .flip-card.is-flipped .flip-back { opacity: 1; pointer-events: auto; }
+      .flip-card:hover .flip-front,
+      .flip-card:focus-visible .flip-front,
+      .flip-card.is-flipped .flip-front { opacity: 0; }
+    }
     .insight-card { border: 1px solid var(--border); padding: 24px; background: var(--bg2); transition: border-color 0.2s; }
     .insight-card:hover { border-color: var(--accent-mid); }
     .insight-num { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
@@ -357,7 +496,7 @@
   </style>
   <link rel="stylesheet" href="responsive.css" />
 </head>
-<body>
+<body id="top">
 
 <div class="cursor" id="cur"></div>
 <div class="cursor-box" id="curb"></div>
@@ -372,12 +511,12 @@
   <div class="hero-inner">
     <div class="breadcrumb">Work <span>/</span> Product Design · Berkeley Innovation</div>
     <h1 class="case-title">Revitalizing<br><span class="blue">Third Spaces_</span></h1>
-    <div class="case-subtitle-line">Reducing social friction in shared gym spaces — a 1-week design challenge</div>
+    <div class="case-subtitle-line">The hardest part of the gym isn't the workout</div>
     <p class="hero-desc">
       A solo end-to-end design challenge through <strong>Berkeley Innovation</strong>. Starting from a broad prompt — revitalize urban third spaces — I narrowed to gyms, conducted user research, synthesized insights, and prototyped a system that makes gym interactions more predictable and opt-in.
     </p>
     <div class="case-meta">
-      <div class="meta-cell"><div class="meta-label">Type</div><div class="meta-val blue">Solo Design Challenge</div></div>
+      <div class="meta-cell"><div class="meta-label">My Role</div><div class="meta-val blue">Solo Designer</div></div>
       <div class="meta-cell"><div class="meta-label">Timeline</div><div class="meta-val">1 Week</div></div>
       <div class="meta-cell"><div class="meta-label">Org</div><div class="meta-val">Berkeley Innovation</div></div>
       <div class="meta-cell"><div class="meta-label">Focus</div><div class="meta-val green">Prototyping Track</div></div>
@@ -386,23 +525,20 @@
   </div>
 </section>
 
-<!-- HERO IMAGE -->
-<div class="photo-wrap hero-banner">
-  <img src="photos/thumbnails/Frame 25.png?v=3" alt="Revitalizing Third Spaces — gym design challenge" />
-  <div class="photo-caption">Berkeley Innovation · 1-week design challenge</div>
-</div>
-
 <div class="case-body">
 
   <!-- OVERVIEW -->
-  <section class="section reveal">
+  <section class="section reveal" id="overview">
     <span class="sec-anchor">01 — overview</span>
-    <h2 class="sec-heading">The prompt & my focus</h2>
+    <h2 class="sec-heading">One prompt, one week, one gym</h2>
+    <div class="role-badge"><span class="role-badge-label">My Role</span><span class="role-badge-val">Solo — research to hi-fi</span></div>
     <p class="sec-text">The challenge was open-ended: <strong>revitalize third places in urban areas</strong> — cafes, libraries, parks. Rather than picking an obvious space, I asked myself which third places I personally hesitate to visit. The answer was the gym.</p>
     <p class="sec-text">Through early personal observations and conversations, I realized gym avoidance wasn't just my problem. People trying to get fit in urban areas were running into the same invisible wall — not a physical barrier, but a social one.</p>
 
-    <div class="highlight-box">
-      <p>Initial HMW: "How might we reduce awkward interactions in gyms so people feel more comfortable working out?"<br/><br/>→ <strong>Refined to: "How might we make gym interactions more predictable and opt-in, so people with different social comfort levels can all participate comfortably?"</strong></p>
+    <div class="stats-row">
+      <div class="stat-cell"><div class="stat-num">3–4</div><div class="stat-desc">Semi-structured user interviews with solo gym-goers</div></div>
+      <div class="stat-cell"><div class="stat-num">2</div><div class="stat-desc">User types: socially awkward vs. socially confident</div></div>
+      <div class="stat-cell"><div class="stat-num">2</div><div class="stat-desc">Moderated usability tests on the core flow</div></div>
     </div>
 
     <div class="tag-list">
@@ -420,17 +556,52 @@
 
   <hr class="divider" />
 
+  <!-- PROBLEM -->
+  <section class="section reveal" id="problem">
+    <span class="sec-anchor">02 — problem</span>
+    <h2 class="sec-heading">Skipping machines, blaming themselves</h2>
+    <p class="sec-text">The gym is supposed to be a third place, but for a lot of people it's a space they quietly manage instead of enjoy. The barrier isn't physical. It's social: not knowing who's next, how many sets are left, or whether it's okay to ask.</p>
+    <p class="sec-text">So people adapt in silence:</p>
+    <ul class="case-list">
+      <li>Sticking to familiar "safe" machines instead of the ones they planned to use</li>
+      <li>Scrolling their phone to avoid eye contact while waiting</li>
+      <li>Leaving when everything looks occupied</li>
+      <li>Blaming themselves: "I'm just too self-conscious"</li>
+    </ul>
+    <p class="sec-text">I started with a narrow question about awkwardness. Research showed the real issue was agency: people don't hate interaction, they hate not controlling when and how it happens.</p>
+    <div class="highlight-box">
+      <p class="hmw"><span style="color:var(--muted)">Initial: How might we reduce awkward interactions in gyms so people feel more comfortable working out?</span><br/><br/><span style="color:var(--accent)">→ Refined: How might we make gym interactions more predictable and opt-in, so people with different social comfort levels can all participate comfortably?</span></p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- SOLUTION -->
+  <section class="section reveal" id="solution">
+    <span class="sec-anchor">03 — solution</span>
+    <h2 class="sec-heading">Join the line without saying a word</h2>
+    <p class="sec-text">The app makes the gym's unspoken rules visible: what's free, who's next, and who's open to talking. Everything a person used to negotiate out loud becomes something they can check quietly.</p>
+    <div class="concept-hero">
+      <video autoplay muted loop playsinline preload="metadata"><source src="photos/gym/hifi_video.mp4" type="video/mp4" /></video>
+      <div>
+        <div class="concept-label">The system · answers Insights 01–03</div>
+        <h3 class="concept-heading">Know before you walk up</h3>
+        <p class="sec-text">See which machines are free, join a queue with one tap, and signal whether you're open to talking. No hovering, no asking how many sets are left.</p>
+        <div class="decision-box">
+          <div class="decision-label">Design decision</div>
+          <p>Why replace a simple question with a button? Interviews showed people won't ask "how many sets?" even when it's completely normal. A queue makes waiting legitimate without a conversation. Trade-off: fewer chance conversations, which is why the Open to Collaborate toggle exists for people who want them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
   <!-- RESEARCH -->
   <section class="section reveal">
-    <span class="sec-anchor">02 — research</span>
-    <h2 class="sec-heading">Understanding the real barriers</h2>
+    <span class="sec-anchor">04 — research</span>
+    <h2 class="sec-heading">Two kinds of gym-goers, two different walls</h2>
     <p class="sec-text">I intentionally avoided locking into my early assumption ("awkward gym interactions") to reduce confirmation bias. I used a mixed-method approach with a small sample, appropriate for the 1-week timeline.</p>
-
-    <div class="stats-row">
-      <div class="stat-cell"><div class="stat-num">3–4</div><div class="stat-desc">Semi-structured user interviews with solo gym-goers</div></div>
-      <div class="stat-cell"><div class="stat-num">2</div><div class="stat-desc">User types: socially awkward vs. socially confident</div></div>
-      <div class="stat-cell"><div class="stat-num">1</div><div class="stat-desc">Week end-to-end: research → prototype → testing</div></div>
-    </div>
 
     <p class="sec-text">I deliberately recruited both <strong>socially awkward and socially confident</strong> participants to avoid over-indexing on anxiety as the sole factor. This revealed something important: the two groups had very different blockers.</p>
 
@@ -452,8 +623,8 @@
 
   <!-- SYNTHESIS -->
   <section class="section reveal">
-    <span class="sec-anchor">03 — synthesis</span>
-    <h2 class="sec-heading">Affinity mapping the emotional patterns</h2>
+    <span class="sec-anchor">05 — synthesis</span>
+    <h2 class="sec-heading">Discomfort is a pile of small moments</h2>
     <p class="sec-text">I chose affinity mapping because gym discomfort isn't a single pain point — it's a collection of small emotional experiences. I listed each experience as an atomic note, grouped by emotion type, then labeled the theme only after grouping.</p>
 
     <p class="sec-text">Three clusters emerged:</p>
@@ -469,18 +640,15 @@
       <div class="photo-caption">Affinity mapping — three clusters: anticipated judgment, unclear social norms, silent adaptation</div>
     </div>
 
-    <div class="highlight-box green">
-      <p>Key shift: The issue isn't that people hate interaction — it's that interaction is unpredictable. The real problem is a lack of agency over when and how interaction occurs.</p>
-    </div>
   </section>
 
   <hr class="divider" />
 
   <!-- PERSONA + JOURNEY MAP -->
   <section class="section reveal">
-    <span class="sec-anchor">04 — persona & journey</span>
-    <h2 class="sec-heading">Emily — the in-between gym-goer</h2>
-    <p class="sec-text">The persona Emily was synthesized from interview patterns — not a single individual. I defined her as an early-20s gym-goer who attends 2–3x/week and usually goes alone, because this profile consistently appeared across participants and best captured the tension between motivation and avoidance.</p>
+    <span class="sec-anchor">06 — persona & journey</span>
+    <h2 class="sec-heading">Anxiety starts before the door</h2>
+    <p class="sec-text">Meet Emily, the in-between gym-goer. The persona Emily was synthesized from interview patterns — not a single individual. I defined her as an early-20s gym-goer who attends 2–3x/week and usually goes alone, because this profile consistently appeared across participants and best captured the tension between motivation and avoidance.</p>
     <p class="sec-text">She's not a beginner, but not fully confident — an "in-between" state where she knows the gym but still experiences anxiety around visibility, judgment, and unclear social norms. Her behaviors (sticking to familiar machines, using phone to avoid eye contact) are adaptive strategies, not personal shortcomings.</p>
 
     <!-- Persona + Journey map side by side or stacked -->
@@ -504,26 +672,50 @@
 
   <hr class="divider" />
 
-  <!-- KEY INSIGHTS -->
-  <section class="section reveal">
-    <span class="sec-anchor">05 — key insights</span>
-    <h2 class="sec-heading">Three core insights that shaped the design</h2>
-
+  <!-- INSIGHTS -->
+  <section class="section reveal" id="insights">
+    <span class="sec-anchor">07 — insights</span>
+    <h2 class="sec-heading">What did I find?</h2>
     <div class="insight-grid">
-      <div class="insight-card">
-        <div class="insight-num">Insight 01</div>
-        <div class="insight-title">Anticipated judgment shapes behavior before interaction occurs</div>
-        <div class="insight-body">Users feel judged and pressured simply by being present — even without direct interaction. They hesitate to go knowing it'll be overcrowded and machines won't be available.</div>
+      <div class="flip-card" tabindex="0" aria-label="Insight 01: Judged just for being there">
+        <div class="flip-inner">
+          <div class="flip-face flip-front" aria-hidden="false">
+            <h3 class="flip-back-headline">Judged just for being there</h3>
+            <p class="flip-hint">↻ <span class="hint-hover">Hover</span><span class="hint-tap">Tap</span> to reveal</p>
+          </div>
+          <div class="flip-face flip-back" aria-hidden="true">
+            <div class="insight-num">Insight 01 — Anticipation</div>
+            <div class="insight-body">Users feel judged and pressured simply by being present, even before any interaction. Knowing the gym will be crowded and machines taken makes them hesitate to go at all.</div>
+            <div class="insight-link">→ Led to: Equipment availability list</div>
+          </div>
+        </div>
       </div>
-      <div class="insight-card">
-        <div class="insight-num">Insight 02</div>
-        <div class="insight-title">Unclear social norms create cognitive load</div>
-        <div class="insight-body">The thought of having to interact with people creates more discomfort than the interaction itself. Not knowing the unspoken rules around shared equipment is the real friction.</div>
+      <div class="flip-card" tabindex="0" aria-label="Insight 02: The rules are the hard part">
+        <div class="flip-inner">
+          <div class="flip-face flip-front" aria-hidden="false">
+            <h3 class="flip-back-headline">The rules are the hard part</h3>
+            <p class="flip-hint">↻ <span class="hint-hover">Hover</span><span class="hint-tap">Tap</span> to reveal</p>
+          </div>
+          <div class="flip-face flip-back" aria-hidden="true">
+            <div class="insight-num">Insight 02 — Norms</div>
+            <div class="insight-body">Thinking about having to interact causes more discomfort than the interaction itself. Not knowing the unspoken rules around shared equipment is the real friction.</div>
+            <div class="insight-link">→ Led to: Join Queue + remaining sets</div>
+          </div>
+        </div>
       </div>
-      <div class="insight-card" style="grid-column: 1/-1;">
-        <div class="insight-num">Insight 03 — Most Important</div>
-        <div class="insight-title">Users adapt and succumb, normalizing friction as "gym culture"</div>
-        <div class="insight-body">The contrast between socially confident and socially awkward users revealed that the issue is not interaction itself — it's a lack of agency over <em>when</em> and <em>how</em> interaction occurs. Both groups would thrive if norms were made explicit and opt-in.</div>
+      <div class="flip-card" tabindex="0" style="grid-column: 1 / -1;" aria-label="Insight 03: Avoidance gets called gym culture">
+        <div class="flip-inner">
+          <div class="flip-face flip-front" aria-hidden="false">
+            <h3 class="flip-back-headline">Avoidance gets called gym culture</h3>
+            <div class="flip-front-quote">"This is just how gyms are."</div>
+            <p class="flip-hint">↻ <span class="hint-hover">Hover</span><span class="hint-tap">Tap</span> to reveal</p>
+          </div>
+          <div class="flip-face flip-back" aria-hidden="true">
+            <div class="insight-num">Insight 03 — Agency · most important</div>
+            <div class="insight-body">Comparing socially confident and socially awkward users showed the issue isn't interaction itself. It's a lack of control over when and how it happens. Both groups would thrive if norms were explicit and opt-in.</div>
+            <div class="insight-link">→ Led to: DND / Open to Collaborate</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -532,8 +724,8 @@
 
   <!-- IDEATION -->
   <section class="section reveal">
-    <span class="sec-anchor">06 — ideation</span>
-    <h2 class="sec-heading">Diverge → Converge</h2>
+    <span class="sec-anchor">08 — ideation</span>
+    <h2 class="sec-heading">Eight ideas in eight minutes</h2>
     <p class="sec-text">I used <strong>Crazy 8s</strong> to rapidly generate ideas across digital, physical, and environmental dimensions — avoiding solution fixation by prioritizing quantity first. Then I used an <strong>Impact–Effort matrix</strong> to converge on the most viable concepts.</p>
 
     <div class="photo-grid-2">
@@ -560,8 +752,8 @@
 
   <!-- LO-FI PROTOTYPE -->
   <section class="section reveal">
-    <span class="sec-anchor">07 — lo-fi prototype</span>
-    <h2 class="sec-heading">Sketching the core flow</h2>
+    <span class="sec-anchor">09 — lo-fi prototype</span>
+    <h2 class="sec-heading">Fewer decisions at the machine</h2>
     <p class="sec-text">The low-fidelity prototype established the core linear flow: <strong>equipment list → machine detail → join queue → workout</strong>. I intentionally kept the flow simple to reduce hesitation at decision points — the journey map showed most drop-offs happen between "approaching equipment" and "deciding what to do next."</p>
 
     <!-- Lo-fi wireframe photo -->
@@ -575,8 +767,8 @@
 
   <!-- MID-FI + USER TESTING -->
   <section class="section reveal">
-    <span class="sec-anchor">08 — mid-fi & user testing</span>
-    <h2 class="sec-heading">Testing the interaction flow, not the visuals</h2>
+    <span class="sec-anchor">10 — mid-fi & user testing</span>
+    <h2 class="sec-heading">Waiting wasn't the problem. Not knowing was.</h2>
     <p class="sec-text">I ran moderated usability testing with 2 participants who regularly go to the gym alone. Testing goal: evaluate whether the core interaction flow reduced social discomfort and decision hesitation — not to validate visual design.</p>
 
     <!-- Mid-fi screens -->
@@ -605,20 +797,9 @@
 
   <!-- HI-FI PROTOTYPE -->
   <section class="section reveal">
-    <span class="sec-anchor">09 — hi-fi prototype</span>
+    <span class="sec-anchor">11 — hi-fi prototype</span>
     <h2 class="sec-heading">The final design</h2>
     <p class="sec-text">The high-fidelity prototype brought the system together — real-time availability, queue management, social signaling, and in-context tutorials — all in a single coherent flow.</p>
-
-    <!-- Hi-fi overview — prototype walkthrough -->
-    <div class="photo-wrap">
-      <div class="hifi-video-frame">
-        <video autoplay muted loop playsinline preload="metadata">
-          <source src="photos/gym/hifi_video.mp4" type="video/mp4" />
-          Your browser does not support embedded video.
-        </video>
-      </div>
-      <div class="photo-caption">Hi-fi prototype overview — Before workout & Start workout flows</div>
-    </div>
 
     <div class="screen-split">
       <div class="screen-split-row">
@@ -695,8 +876,8 @@
 
   <!-- REFLECTION -->
   <section class="section reveal">
-    <span class="sec-anchor">10 — reflection</span>
-    <h2 class="sec-heading">What I'd do next</h2>
+    <span class="sec-anchor">12 — reflection</span>
+    <h2 class="sec-heading">The gym starts before you arrive</h2>
     <p class="sec-text">Through additional user testing, I realized many users want to avoid awkward gym interactions <strong>before they even arrive</strong> — not just while using equipment. One tester wished the system showed which days and times are typically crowded, so they could plan around low-traffic periods.</p>
     <p class="sec-text">This revealed a gap in my original solution: while the design reduced discomfort <em>inside</em> the gym, it didn't sufficiently support decision-making <em>before entering</em> the space.</p>
 
@@ -721,7 +902,7 @@
   <div class="ft-left">© 2026 Daniel Park</div>
   <div class="ft-links">
     <a href="https://www.linkedin.com/in/daniel-park1104" target="_blank">LinkedIn</a>
-    <a href="#">Resume</a>
+    <a href="resume.html">Resume</a>
     <a href="mailto:jihongpark1104@gmail.com">Email</a>
   </div>
 </footer>
@@ -732,11 +913,30 @@
   let mx=0,my=0,bx=0,by=0;
   document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
   (function loop(){ bx+=(mx-bx)*0.1; by+=(my-by)*0.1; curb.style.left=bx+'px'; curb.style.top=by+'px'; requestAnimationFrame(loop); })();
+  function setFlipped(card, flipped) {
+    card.classList.toggle('is-flipped', flipped);
+    const front = card.querySelector('.flip-front');
+    const back = card.querySelector('.flip-back');
+    if (front) front.setAttribute('aria-hidden', flipped ? 'true' : 'false');
+    if (back) back.setAttribute('aria-hidden', flipped ? 'false' : 'true');
+  }
+  document.querySelectorAll('.flip-card').forEach(card => {
+    card.addEventListener('click', () => {
+      if (!window.matchMedia('(hover: none)').matches) return;
+      setFlipped(card, !card.classList.contains('is-flipped'));
+    });
+    card.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      setFlipped(card, !card.classList.contains('is-flipped'));
+    });
+  });
   const revs = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.08});
   revs.forEach(r=>io.observe(r));
 
   document.querySelectorAll('.screen-split video').forEach(video => {
+    if (!video.querySelector('source')?.getAttribute('src')?.includes('queue confirmation')) return;
     const speedUp = () => { video.playbackRate = 1.5; };
     speedUp();
     video.addEventListener('loadedmetadata', speedUp);
@@ -756,6 +956,23 @@
       if (href) document.getElementById('next-project').setAttribute('href', href);
     })
     .catch(() => {});
+</script>
+<a href="#top" class="to-top" id="to-top">Back to top</a>
+<script>
+  (function () {
+    var btn = document.getElementById('to-top');
+    if (!btn) return;
+    var footer = document.querySelector('footer');
+    var sync = function () {
+      btn.classList.toggle('is-on', window.scrollY > 480);
+      if (!footer) return;
+      var overlap = window.innerHeight - footer.getBoundingClientRect().top;
+      btn.style.bottom = overlap > 8 ? (overlap + 16) + 'px' : '';
+    };
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+  })();
 </script>
 </body>
 </html>
