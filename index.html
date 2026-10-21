@@ -7,9 +7,9 @@
     (function () {
       var DEFAULT_COLOR = '#2563eb';
       var WORK_COLORS = [
-        { match: /work-campus/, color: '#6c63ff' },
-        { match: /work-gym/, color: '#16a34a' },
-        { match: /work-vibe/, color: '#9b8fc4' },
+        { match: /(?:^|\/)campus(?:\/|$)/, color: '#6c63ff' },
+        { match: /(?:^|\/)gym(?:\/|$)/, color: '#16a34a' },
+        { match: /(?:^|\/)vibe(?:\/|$)/, color: '#9b8fc4' },
         { match: /(?:^|\/)tinder(?:\/|$)/, color: '#FF4458' }
       ];
       function colorForPath(pathname) {
@@ -634,7 +634,7 @@
       </div>
     </a>
 
-    <a href="work-gym.html" class="card">
+    <a href="gym" class="card">
       <div class="card-line" style="background:#16a34a;"></div>
       <div class="card-img" style="background:#052e16;">
         <video src="photos/thumbnails/gym thumnail video.mov" class="is-portrait" muted autoplay loop playsinline preload="metadata" aria-label="Gym prototype preview"></video>
@@ -658,7 +658,7 @@
       </div>
     </a>
 
-    <a href="work-campus.html" class="card">
+    <a href="campus" class="card">
       <div class="card-line" style="background:#6c63ff;"></div>
       <div class="card-img">
         <img src="photos/thumbnails/iPhone 16 Pro.png" alt="Campus Connect preview" class="is-blue-bg" />
@@ -686,7 +686,7 @@
       </div>
     </a>
 
-    <a href="work-vibe.html" class="card">
+    <a href="vibe" class="card">
       <div class="card-line" style="background:#9b8fc4;"></div>
       <div class="card-img" style="background:#1a1628;">
         <video src="photos/thumbnails/vibe.mov?v=2" muted autoplay loop playsinline preload="metadata" aria-label="Vibe app preview"></video>

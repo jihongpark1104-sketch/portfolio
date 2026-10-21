@@ -7,9 +7,9 @@
     (function () {
       var DEFAULT_COLOR = '#2563eb';
       var WORK_COLORS = [
-        { match: /work-campus/, color: '#6c63ff' },
-        { match: /work-gym/, color: '#16a34a' },
-        { match: /work-vibe/, color: '#9b8fc4' },
+        { match: /(?:^|\/)campus(?:\/|$)/, color: '#6c63ff' },
+        { match: /(?:^|\/)gym(?:\/|$)/, color: '#16a34a' },
+        { match: /(?:^|\/)vibe(?:\/|$)/, color: '#9b8fc4' },
         { match: /(?:^|\/)tinder(?:\/|$)/, color: '#FF4458' }
       ];
       function colorForPath(pathname) {
@@ -475,7 +475,7 @@
       .phase2-table td:first-child { grid-column: 1 / -1; padding-bottom: 4px; }
     }
   </style>
-  <link rel="stylesheet" href="responsive.css" />
+  <link rel="stylesheet" href="../responsive.css" />
 </head>
 <body id="top">
 
@@ -483,8 +483,8 @@
 <div class="cursor-box" id="curb"></div>
 
 <nav>
-  <a href="index.html" class="nav-logo">dp.portfolio</a>
-  <a href="index.html#works" class="nav-back"><span>←</span> back to work</a>
+  <a href="../index.html" class="nav-logo">dp.portfolio</a>
+  <a href="../index.html#works" class="nav-back"><span>←</span> back to work</a>
 </nav>
 
 <!-- HERO -->
@@ -515,7 +515,7 @@
 
 <div class="hero-video-band">
   <div class="photo-wrap hero-video-wrap">
-    <video src="photos/thumbnails/vibe.mov?v=2" muted autoplay loop playsinline preload="metadata" aria-label="Vibe app preview"></video>
+    <video src="../photos/thumbnails/vibe.mov?v=2" muted autoplay loop playsinline preload="metadata" aria-label="Vibe app preview"></video>
   </div>
 </div>
 
@@ -667,12 +667,12 @@
     </div>
 
     <div class="photo-wrap">
-      <img src="photos/vibe/empathy-map.png" alt="Empathy map — Says, Thinks, Does, and Feels for the Gen Z aesthetic curator" />
+      <img src="../photos/vibe/empathy-map.png" alt="Empathy map — Says, Thinks, Does, and Feels for the Gen Z aesthetic curator" />
       <div class="photo-caption">Empathy map — Says / Thinks / Does / Feels across the Gen Z aesthetic curator persona</div>
     </div>
 
     <div class="photo-wrap">
-      <img src="photos/vibe/journey-map.png" alt="Journey map — Mia's flow from Trigger to Returns" />
+      <img src="../photos/vibe/journey-map.png" alt="Journey map — Mia's flow from Trigger to Returns" />
       <div class="photo-caption">Journey map — Doing / Thinking / Feeling / Opportunities across each stage</div>
     </div>
   </section>
@@ -690,7 +690,7 @@
     <div class="screen-split">
       <div class="screen-split-row">
         <div class="screen-split-visual">
-          <video src="photos/vibe/screen1.mov" muted autoplay loop playsinline preload="metadata" aria-label="Home / Start screen"></video>
+          <video src="../photos/vibe/screen1.mov" muted autoplay loop playsinline preload="metadata" aria-label="Home / Start screen"></video>
         </div>
         <div class="screen-split-copy">
           <div class="screen-split-kicker">01</div>
@@ -702,7 +702,7 @@
 
       <div class="screen-split-row reverse">
         <div class="screen-split-visual">
-          <video src="photos/vibe/screen2.mov" muted autoplay loop playsinline preload="metadata" aria-label="Choose Your Inputs screen"></video>
+          <video src="../photos/vibe/screen2.mov" muted autoplay loop playsinline preload="metadata" aria-label="Choose Your Inputs screen"></video>
         </div>
         <div class="screen-split-copy">
           <div class="screen-split-kicker">02</div>
@@ -714,7 +714,7 @@
 
       <div class="screen-split-row">
         <div class="screen-split-visual">
-          <video src="photos/vibe/screen3.mov" muted autoplay loop playsinline preload="metadata" aria-label="Permission and Scan Mode screen"></video>
+          <video src="../photos/vibe/screen3.mov" muted autoplay loop playsinline preload="metadata" aria-label="Permission and Scan Mode screen"></video>
         </div>
         <div class="screen-split-copy">
           <div class="screen-split-kicker">03 · key screen</div>
@@ -726,7 +726,7 @@
 
       <div class="screen-split-row reverse">
         <div class="screen-split-visual">
-          <video src="photos/vibe/screen4.mov" muted autoplay loop playsinline preload="metadata" aria-label="Loading State screen"></video>
+          <video src="../photos/vibe/screen4.mov" muted autoplay loop playsinline preload="metadata" aria-label="Loading State screen"></video>
         </div>
         <div class="screen-split-copy">
           <div class="screen-split-kicker">04</div>
@@ -738,7 +738,7 @@
 
       <div class="screen-split-row">
         <div class="screen-split-visual">
-          <video src="photos/vibe/screen5.mov" muted autoplay loop playsinline preload="metadata" aria-label="Vibe Board Reveal screen"></video>
+          <video src="../photos/vibe/screen5.mov" muted autoplay loop playsinline preload="metadata" aria-label="Vibe Board Reveal screen"></video>
         </div>
         <div class="screen-split-copy">
           <div class="screen-split-kicker">05</div>
@@ -750,7 +750,7 @@
     </div>
 
     <div class="photo-wrap">
-      <img src="photos/vibe/full%20ui%20flow.png" alt="Complete UI flow: Home, Choose Inputs, Photo Selection, Loading, and Vibe Board" />
+      <img src="../photos/vibe/full%20ui%20flow.png" alt="Complete UI flow: Home, Choose Inputs, Photo Selection, Loading, and Vibe Board" />
       <div class="photo-caption">Complete UI flow: Home → Choose Inputs → Scan Mode → Loading → Vibe Board</div>
     </div>
   </section>
@@ -835,7 +835,7 @@
 
     <p class="sec-text" style="margin-top:24px;">Three personas used to prototype the concept:</p>
     <div class="photo-wrap">
-      <img src="photos/vibe/App.png" alt="Vibe Everywhere — Direct Minimalist, Warm Expressive, and Efficient Power User across Claude and Instagram" />
+      <img src="../photos/vibe/App.png" alt="Vibe Everywhere — Direct Minimalist, Warm Expressive, and Efficient Power User across Claude and Instagram" />
     </div>
 
     <p class="sec-text" style="margin-top:8px; font-style:italic; color:var(--muted)">
@@ -845,7 +845,7 @@
 
 </div>
 
-<a href="tinder" class="next-project">
+<a href="../tinder" class="next-project">
   <div>
     <div class="next-label">Next project</div>
     <div class="next-title">Tinder × Gen Z →</div>
@@ -857,7 +857,7 @@
   <div class="ft-left">© 2026 Daniel Park</div>
   <div class="ft-links">
     <a href="https://www.linkedin.com/in/daniel-park1104" target="_blank">LinkedIn</a>
-    <a href="resume.html">Resume</a>
+    <a href="../resume.html">Resume</a>
     <a href="mailto:jihongpark1104@gmail.com">Email</a>
   </div>
 </footer>

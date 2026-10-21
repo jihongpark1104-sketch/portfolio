@@ -7,9 +7,9 @@
     (function () {
       var DEFAULT_COLOR = '#2563eb';
       var WORK_COLORS = [
-        { match: /work-campus/, color: '#6c63ff' },
-        { match: /work-gym/, color: '#16a34a' },
-        { match: /work-vibe/, color: '#9b8fc4' },
+        { match: /(?:^|\/)campus(?:\/|$)/, color: '#6c63ff' },
+        { match: /(?:^|\/)gym(?:\/|$)/, color: '#16a34a' },
+        { match: /(?:^|\/)vibe(?:\/|$)/, color: '#9b8fc4' },
         { match: /(?:^|\/)tinder(?:\/|$)/, color: '#FF4458' }
       ];
       function colorForPath(pathname) {
@@ -338,7 +338,7 @@
     .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
     .reveal.in { opacity: 1; transform: none; }
   </style>
-  <link rel="stylesheet" href="responsive.css" />
+  <link rel="stylesheet" href="../responsive.css" />
 </head>
 <body id="top">
 
@@ -346,8 +346,8 @@
 <div class="cursor-box" id="curb"></div>
 
 <nav>
-  <a href="index.html" class="nav-logo">dp.portfolio</a>
-  <a href="index.html#works" class="nav-back"><span>←</span> back to work</a>
+  <a href="../index.html" class="nav-logo">dp.portfolio</a>
+  <a href="../index.html#works" class="nav-back"><span>←</span> back to work</a>
 </nav>
 
 <!-- HERO -->
@@ -456,13 +456,13 @@
 
     <!-- UI screenshot — dark mode -->
     <div class="photo-wrap">
-      <img src="photos/campus connect/UI_dark.png" alt="Campus Connect dark mode UI" style="width:100%;display:block;" />
+      <img src="../photos/campus connect/UI_dark.png" alt="Campus Connect dark mode UI" style="width:100%;display:block;" />
       <div class="photo-caption">Campus Connect — dark mode: Home, Market, Community, Rides, Housing</div>
     </div>
 
     <!-- UI screenshot — light mode -->
     <div class="photo-wrap">
-      <img src="photos/campus connect/UI_light.png" alt="Campus Connect light mode UI" style="width:100%;display:block;" />
+      <img src="../photos/campus connect/UI_light.png" alt="Campus Connect light mode UI" style="width:100%;display:block;" />
       <div class="photo-caption">Campus Connect — light mode variant</div>
     </div>
   </section>
@@ -703,7 +703,7 @@ BASE_URL <span class="o">=</span> <span class="s">"https://classes.berkeley.edu"
 
 </div>
 
-<a href="tinder" class="next-project">
+<a href="../tinder" class="next-project">
   <div>
     <div class="next-label">Next project</div>
     <div class="next-title">Tinder × Gen Z →</div>
@@ -715,7 +715,7 @@ BASE_URL <span class="o">=</span> <span class="s">"https://classes.berkeley.edu"
   <div class="ft-left">© 2026 Daniel Park</div>
   <div class="ft-links">
     <a href="https://www.linkedin.com/in/daniel-park1104" target="_blank">LinkedIn</a>
-    <a href="resume.html">Resume</a>
+    <a href="../resume.html">Resume</a>
     <a href="mailto:jihongpark1104@gmail.com">Email</a>
   </div>
 </footer>

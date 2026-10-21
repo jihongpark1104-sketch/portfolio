@@ -7,9 +7,9 @@
     (function () {
       var DEFAULT_COLOR = '#2563eb';
       var WORK_COLORS = [
-        { match: /work-campus/, color: '#6c63ff' },
-        { match: /work-gym/, color: '#16a34a' },
-        { match: /work-vibe/, color: '#9b8fc4' },
+        { match: /(?:^|\/)campus(?:\/|$)/, color: '#6c63ff' },
+        { match: /(?:^|\/)gym(?:\/|$)/, color: '#16a34a' },
+        { match: /(?:^|\/)vibe(?:\/|$)/, color: '#9b8fc4' },
         { match: /(?:^|\/)tinder(?:\/|$)/, color: '#FF4458' }
       ];
       function colorForPath(pathname) {
@@ -494,7 +494,7 @@
     .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
     .reveal.in { opacity: 1; transform: none; }
   </style>
-  <link rel="stylesheet" href="responsive.css" />
+  <link rel="stylesheet" href="../responsive.css" />
 </head>
 <body id="top">
 
@@ -502,8 +502,8 @@
 <div class="cursor-box" id="curb"></div>
 
 <nav>
-  <a href="index.html" class="nav-logo">dp.portfolio</a>
-  <a href="index.html#works" class="nav-back"><span>←</span> back to work</a>
+  <a href="../index.html" class="nav-logo">dp.portfolio</a>
+  <a href="../index.html#works" class="nav-back"><span>←</span> back to work</a>
 </nav>
 
 <!-- HERO -->
@@ -582,7 +582,7 @@
     <h2 class="sec-heading">Join the line without saying a word</h2>
     <p class="sec-text">The app makes the gym's unspoken rules visible: what's free, who's next, and who's open to talking. Everything a person used to negotiate out loud becomes something they can check quietly.</p>
     <div class="concept-hero">
-      <video autoplay muted loop playsinline preload="metadata"><source src="photos/gym/hifi_video.mp4" type="video/mp4" /></video>
+      <video autoplay muted loop playsinline preload="metadata"><source src="../photos/gym/hifi_video.mp4" type="video/mp4" /></video>
       <div>
         <div class="concept-label">The system · answers Insights 01–03</div>
         <h3 class="concept-heading">Know before you walk up</h3>
@@ -636,7 +636,7 @@
 
     <!-- Affinity map photo -->
     <div class="photo-wrap">
-      <img src="photos/gym/affinitymap.png" alt="Affinity map — full synthesis board with three theme clusters" style="width:100%;display:block;" />
+      <img src="../photos/gym/affinitymap.png" alt="Affinity map — full synthesis board with three theme clusters" style="width:100%;display:block;" />
       <div class="photo-caption">Affinity mapping — three clusters: anticipated judgment, unclear social norms, silent adaptation</div>
     </div>
 
@@ -655,13 +655,13 @@
     <div class="photo-grid-2 persona-journey-pair">
       <div class="photo-wrap no-margin">
         <div class="pj-visual">
-          <img src="photos/gym/persona.jpg" alt="User persona — Emily" />
+          <img src="../photos/gym/persona.jpg" alt="User persona — Emily" />
         </div>
         <div class="photo-caption">User persona: Emily</div>
       </div>
       <div class="photo-wrap no-margin">
         <div class="pj-visual">
-          <img src="photos/gym/journeymap.jpg" alt="Emotional journey map — five stages from before arrival to after" />
+          <img src="../photos/gym/journeymap.jpg" alt="Emotional journey map — five stages from before arrival to after" />
         </div>
         <div class="photo-caption">Journey map: Before Arrival → Entering → Approaching → Decision → After</div>
       </div>
@@ -730,11 +730,11 @@
 
     <div class="photo-grid-2">
       <div class="photo-wrap no-margin">
-        <img src="photos/gym/crazy8.jpg" alt="Crazy 8s — divergent ideation sketches" style="width:100%;display:block;" />
+        <img src="../photos/gym/crazy8.jpg" alt="Crazy 8s — divergent ideation sketches" style="width:100%;display:block;" />
         <div class="photo-caption">Crazy 8s — 8 ideas in 8 minutes</div>
       </div>
       <div class="photo-wrap no-margin">
-        <img src="photos/gym/2x2.png" alt="Impact–Effort matrix — 2×2 prioritization" style="width:100%;display:block;" />
+        <img src="../photos/gym/2x2.png" alt="Impact–Effort matrix — 2×2 prioritization" style="width:100%;display:block;" />
         <div class="photo-caption">Impact–Effort matrix — prioritizing low-effort, high-impact solutions</div>
       </div>
     </div>
@@ -758,7 +758,7 @@
 
     <!-- Lo-fi wireframe photo -->
     <div class="photo-wrap">
-      <img src="photos/gym/lofi.jpg" alt="Low-fidelity sketches — full equipment list to workout flow" style="width:100%;display:block;" />
+      <img src="../photos/gym/lofi.jpg" alt="Low-fidelity sketches — full equipment list to workout flow" style="width:100%;display:block;" />
       <div class="photo-caption">Lo-fi prototype: equipment list → machine detail → queue confirmation → workout</div>
     </div>
   </section>
@@ -773,7 +773,7 @@
 
     <!-- Mid-fi screens -->
     <div class="photo-wrap">
-      <img src="photos/gym/midfi.png" alt="Mid-fidelity screens — GYM list through working out flow" style="width:100%;display:block;" />
+      <img src="../photos/gym/midfi.png" alt="Mid-fidelity screens — GYM list through working out flow" style="width:100%;display:block;" />
       <div class="photo-caption">Mid-fi prototype — Frames 4–7: GYM list, Lat Pulldown detail, Queue Confirmation, Working Out</div>
     </div>
 
@@ -804,7 +804,7 @@
     <div class="screen-split">
       <div class="screen-split-row">
         <div class="screen-split-visual">
-          <img src="photos/gym/Landing page.png?v=3" alt="Hi-fi — equipment availability landing screen" />
+          <img src="../photos/gym/Landing page.png?v=3" alt="Hi-fi — equipment availability landing screen" />
         </div>
         <div class="screen-split-copy">
           <div class="screen-split-item">
@@ -817,7 +817,7 @@
 
       <div class="screen-split-row reverse">
         <div class="screen-split-visual">
-          <img src="photos/gym/Unavailable workout.png" alt="Hi-fi — occupied machine with queue, mode, and remaining sets" />
+          <img src="../photos/gym/Unavailable workout.png" alt="Hi-fi — occupied machine with queue, mode, and remaining sets" />
         </div>
         <div class="screen-split-copy">
           <div class="screen-split-item">
@@ -835,7 +835,7 @@
       <div class="screen-split-row">
         <div class="screen-split-visual">
           <video autoplay muted loop playsinline preload="metadata">
-            <source src="photos/gym/queue confirmation.mov" type="video/mp4" />
+            <source src="../photos/gym/queue confirmation.mov" type="video/mp4" />
           </video>
         </div>
         <div class="screen-split-copy">
@@ -854,7 +854,7 @@
       <div class="screen-split-row reverse">
         <div class="screen-split-visual">
           <video autoplay muted loop playsinline preload="metadata">
-            <source src="photos/gym/using the machine.mov" type="video/mp4" />
+            <source src="../photos/gym/using the machine.mov" type="video/mp4" />
           </video>
         </div>
         <div class="screen-split-copy">
@@ -890,7 +890,7 @@
 
 </div>
 
-<a href="work-campus.html" class="next-project" id="next-project">
+<a href="../campus" class="next-project" id="next-project">
   <div>
     <div class="next-label">Next project</div>
     <div class="next-title" id="next-title">Campus Connect →</div>
@@ -902,7 +902,7 @@
   <div class="ft-left">© 2026 Daniel Park</div>
   <div class="ft-links">
     <a href="https://www.linkedin.com/in/daniel-park1104" target="_blank">LinkedIn</a>
-    <a href="resume.html">Resume</a>
+    <a href="../resume.html">Resume</a>
     <a href="mailto:jihongpark1104@gmail.com">Email</a>
   </div>
 </footer>

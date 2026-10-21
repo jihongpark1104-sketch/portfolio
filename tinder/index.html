@@ -7,9 +7,9 @@
     (function () {
       var DEFAULT_COLOR = '#2563eb';
       var WORK_COLORS = [
-        { match: /work-campus/, color: '#6c63ff' },
-        { match: /work-gym/, color: '#16a34a' },
-        { match: /work-vibe/, color: '#9b8fc4' },
+        { match: /(?:^|\/)campus(?:\/|$)/, color: '#6c63ff' },
+        { match: /(?:^|\/)gym(?:\/|$)/, color: '#16a34a' },
+        { match: /(?:^|\/)vibe(?:\/|$)/, color: '#9b8fc4' },
         { match: /(?:^|\/)tinder(?:\/|$)/, color: '#FF4458' }
       ];
       function colorForPath(pathname) {
@@ -895,7 +895,7 @@
   </main>
 </div>
 
-<a href="../work-gym.html" class="next-project" id="next-project">
+<a href="../gym" class="next-project" id="next-project">
   <div>
     <div class="next-label">Next project</div>
     <div class="next-title" id="next-title">Revitalizing Third Spaces - Gym Interaction Case Study →</div>
