@@ -213,26 +213,6 @@
     .photo-wrap { border: 1px solid var(--border); overflow: hidden; margin: 28px 0; }
     .photo-wrap img { width: 100%; height: auto; display: block; background: #fff; }
     .photo-wrap.no-margin { margin: 0; }
-    .hero-video-band {
-      width: 100%;
-      max-width: none;
-      margin: 0;
-      padding: 48px 24px;
-      background: #0f0d0a;
-      display: flex;
-      justify-content: center;
-    }
-    .hero-video-wrap {
-      width: min(520px, 56vw);
-      margin: 0;
-      border: none;
-      background: #0f0d0a;
-    }
-    .hero-video-wrap video {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
     .photo-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
     .photo-grid-2 .photo-wrap { margin: 0; }
     .photo-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 28px 0; }
@@ -305,9 +285,90 @@
     .insight-body { font-size: 14px; line-height: 1.7; color: var(--muted); font-weight: 400; }
     .insight-quote { font-family: 'Space Mono', monospace; font-size: 12px; line-height: 1.7; color: var(--accent); font-style: italic; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
 
+    #insights .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0; }
+    #insights .insight-grid > :nth-child(3) { grid-column: 1 / -1; }
+    #insights .insight-static {
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+      padding: 28px;
+      background: var(--text);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 18px 44px rgba(20,16,22,0.16), 0 6px 16px rgba(20,16,22,0.08);
+    }
+    #insights .insight-static::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+    #insights .insight-static > * { position: relative; }
+    #insights .insight-static .insight-num { margin-bottom: 0; }
+    #insights .insight-static .insight-headline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin: 0;
+    }
+    #insights .insight-static .insight-body { color: rgba(255,255,255,0.78); }
+    #insights .insight-static .insight-quote {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 15px;
+      font-style: italic;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.92);
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+    #insights .insight-static .insight-quote::after {
+      content: '— Interview participant';
+      display: block;
+      margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-style: normal;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.5);
+    }
+    .insight-link { margin-top: auto; padding-top: 14px; font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-mid); }
+    @media (max-width: 720px) {
+      #insights .insight-grid { grid-template-columns: 1fr; }
+      .concept-hero { grid-template-columns: 1fr; }
+      .concept-hero .proto-frame { max-width: 280px; margin: 0 auto; }
+      .concept-pair { gap: 12px; }
+      .concept-row { grid-template-columns: 1fr; }
+      .concept-row .proto-frame { max-width: 260px; margin: 0 auto; }
+    }
+
     /* HIGHLIGHT BOX */
     .highlight-box { border: 1px solid var(--accent-mid); background: var(--accent-light); padding: 24px 28px; margin: 28px 0; }
     .highlight-box p { font-family: 'Space Mono', monospace; font-size: 14px; line-height: 1.8; color: var(--accent); letter-spacing: 0.01em; }
+    .highlight-box p.hmw { font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; font-size: 18px; line-height: 1.6; letter-spacing: normal; }
+    @media (max-width: 768px) {
+      .highlight-box p.hmw { font-size: 16px; }
+    }
+
+    .role-badge { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--accent-mid); background: var(--accent-light); padding: 10px 18px; margin-bottom: 28px; }
+    .role-badge-label { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .role-badge-val { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); font-weight: 500; }
+
+    .concept-hero { display: grid; grid-template-columns: minmax(240px, 340px) 1fr; gap: 48px; align-items: center; margin: 40px 0; }
+    .concept-label { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 10px; }
+    .concept-heading { font-family: 'Space Mono', monospace; font-size: 22px; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 14px; }
+    .decision-box { border-left: 2px solid var(--accent); background: var(--accent-light); padding: 16px 20px; margin: 20px 0 28px; }
+    .decision-label { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 6px; }
+    .decision-box p { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; line-height: 1.7; color: var(--text); }
 
     /* QUOTE */
     .quote-block { border-left: 3px solid var(--accent); padding: 16px 24px; margin: 24px 0; background: var(--accent-light); }
@@ -450,8 +511,6 @@
       footer { padding: 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
       .next-project { padding: 48px 24px; }
       .photo-grid-5 { grid-template-columns: repeat(3, 1fr); }
-      .hero-video-band { padding: 32px 16px; }
-      .hero-video-wrap { width: min(360px, 78vw); }
 
       .phase2-scroll { overflow: visible; }
       .phase2-table { display: block; min-width: 0; }
@@ -492,7 +551,7 @@
   <div class="hero-inner">
     <div class="breadcrumb">Work <span>/</span> Product Design · UC Berkeley CogSci 112</div>
     <h1 class="case-title">vibe<span class="lav">_</span></h1>
-    <div class="case-subtitle-line">Your aesthetic, in one board — AI product design, solo, 4 weeks</div>
+    <div class="case-subtitle-line">Gen Z knows their aesthetic. They just can't say it.</div>
     <p class="hero-desc">
       An AI-powered mobile app that turns a Gen Z user's fragmented digital footprint — camera roll, Spotify, saved posts — into a single, shareable visual identity board. Built for <strong>Cognitive Science 112</strong> at UC Berkeley. The project started as "Identity OS" and pivoted entirely after two interviews proved the core assumption wrong.
     </p>
@@ -505,7 +564,7 @@
       <span class="pdot" style="background:#6090b0;"></span>
     </div>
     <div class="case-meta">
-      <div class="meta-cell"><div class="meta-label">Role</div><div class="meta-val lav">Solo — Research, Design, Testing</div></div>
+      <div class="meta-cell"><div class="meta-label">My Role</div><div class="meta-val lav">Solo — Research, Design, Testing</div></div>
       <div class="meta-cell"><div class="meta-label">Timeline</div><div class="meta-val">4 weeks · Summer 2026</div></div>
       <div class="meta-cell"><div class="meta-label">Course</div><div class="meta-val">CogSci 112 · UC Berkeley</div></div>
       <div class="meta-cell"><div class="meta-label">Tools</div><div class="meta-val">Figma Make · Miro · User Interviews</div></div>
@@ -513,18 +572,13 @@
   </div>
 </section>
 
-<div class="hero-video-band">
-  <div class="photo-wrap hero-video-wrap">
-    <video src="../photos/thumbnails/vibe.mov?v=2" muted autoplay loop playsinline preload="metadata" aria-label="Vibe app preview"></video>
-  </div>
-</div>
-
 <div class="case-body">
 
   <!-- OVERVIEW -->
-  <section class="section reveal">
+  <section class="section reveal" id="overview">
     <span class="sec-anchor">01 — overview</span>
-    <h2 class="sec-heading">What is Vibe?</h2>
+    <h2 class="sec-heading">Spotify Wrapped, for your whole aesthetic</h2>
+    <div class="role-badge"><span class="role-badge-label">My Role</span><span class="role-badge-val">Solo — research to tested prototype</span></div>
     <p class="sec-text">
       <strong>Vibe</strong> is an AI-powered mobile app concept that consolidates a person's fragmented digital taste data — camera roll, Spotify listening history, saved posts — into a single, shareable visual identity board. Think Spotify Wrapped, but for your entire aesthetic.
     </p>
@@ -553,7 +607,7 @@
   <hr class="divider" />
 
   <!-- THE PROBLEM -->
-  <section class="section reveal">
+  <section class="section reveal" id="problem">
     <span class="sec-anchor">02 — problem</span>
     <h2 class="sec-heading">Text can't carry a vibe</h2>
     <p class="sec-text">
@@ -574,118 +628,28 @@
       </div>
     </div>
 
-    <p class="sec-text">Taste also evolves over time — shaped by algorithmic feedback loops, celebrity influence, and friend feedback — which text-based self-description can't capture. One interviewee noted her taste evolution is driven by platform algorithms ("the algorithm changes based on what I save/like") rather than organic change alone.</p>
+    <p class="sec-text">So the goal wasn't to tell people who they are. It was to give them a better way to show it.</p>
+    <div class="highlight-box"><p class="hmw">How might we turn a Gen Z user's scattered saves into one visual, shareable answer to "what's your vibe?"</p></div>
   </section>
 
   <hr class="divider" />
 
-  <!-- THE PIVOT — key narrative beat -->
-  <section class="section reveal">
-    <span class="sec-anchor">03 — the pivot</span>
-    <h2 class="sec-heading">Two interviews changed everything</h2>
-    <p class="sec-text">
-      This is the most important beat of this case study. The project <strong>did not start as Vibe.</strong> It started as <strong>Identity OS</strong> — built on an assumption that turned out to be wrong.
-    </p>
-
-    <div class="pivot-block">
-      <div class="pivot-row">
-        <div class="pivot-side before">
-          <div class="pivot-label before">Before — Identity OS</div>
-          <div class="pivot-name">Help users discover their identity</div>
-          <div class="pivot-desc">Original hypothesis: users are confused about who they are. They need a tool to synthesize their scattered data and surface patterns they don't already see about themselves.</div>
-        </div>
-        <div class="pivot-arrow">→</div>
-        <div class="pivot-side after">
-          <div class="pivot-label after">After — Vibe</div>
-          <div class="pivot-name">Help users express who they already know they are</div>
-          <div class="pivot-desc">What interviews revealed: both interviewees immediately named their aesthetic ("clean girl," "chic, girlish"). They weren't confused about their identity — they just couldn't express it. The problem was expression, not discovery.</div>
-        </div>
-      </div>
-      <div class="pivot-insight">Two interviews were enough to rename the product, rewrite the user needs statement, and redirect the entire feature set.</div>
-    </div>
-
-    <!-- needs statement evolution -->
-    <p class="sec-text" style="margin-top:32px;">The user needs statement evolved three times as research sharpened the problem:</p>
-    <div class="needs-list">
-      <div class="needs-item">
-        <div class="needs-version">v1 — initial</div>
-        <div class="needs-text">A self-curating Gen Z digital curator needs to synthesize and identify underlying patterns across their scattered digital data to deeply understand and articulate their personal aesthetic identity to others.</div>
-      </div>
-      <div class="needs-item">
-        <div class="needs-version">v2 — post interviews</div>
-        <div class="needs-text">A trend-conscious Gen Z digital native needs a way to consolidate their fragmented digital footprint into a singular visual output, because relying on text descriptions and rigid labels fails to capture the true essence of their personal identity.</div>
-      </div>
-      <div class="needs-item final">
-        <div class="needs-version">v3 — final</div>
-        <div class="needs-text">A trend-conscious Gen Z digital native needs a way to turn their fragmented saved content into a shareable cultural object that represents who they are — because text labels and rigid algorithms fail to capture the true essence of their personal style, and there's no satisfying way to present it socially.</div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- RESEARCH -->
-  <section class="section reveal">
-    <span class="sec-anchor">04 — research</span>
-    <h2 class="sec-heading">Interviews, empathy mapping, journey mapping</h2>
-    <p class="sec-text">
-      Structured 1:1 interviews following a formal interview plan (target audience, recruitment approach, 5 core hypotheses, warm-up script) per the CogSci 112 UX research framework.
-    </p>
-
-    <div class="insight-grid">
-      <div class="insight-card">
-        <div class="insight-num">Interviewee #1</div>
-        <div class="insight-title">23, female, UC Berkeley alumna, works at Amazon</div>
-        <div class="insight-body">Describes aesthetic as "Kimjiwon / chic, girlish." Saves via screenshots, Instagram, notes app. Taste driven by algorithmic feedback and celebrity references. Said: "Without visuals, it's hard."</div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-num">Interviewee #2</div>
-        <div class="insight-title">23, female, college student, digital native</div>
-        <div class="insight-body">Describes aesthetic as "clean girl, classy vibe." Uses TikTok and IG saves. Frustrated by language barriers: "청순하다" → "innocent" loses the meaning. Thinks contextually about style (TPO: Time, Place, Occasion).</div>
-      </div>
-    </div>
-
-    <p class="sec-text">Three key insights synthesized from interviews:</p>
-    <div class="insight-grid">
-      <div class="insight-card">
-        <div class="insight-num">Insight 01</div>
-        <div class="insight-title">Fragmented curation</div>
-        <div class="insight-body">Both relied on scattered, unorganized methods: screenshots, iPhone Notes app, Instagram saved, TikTok likes — never in one place.</div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-num">Insight 02</div>
-        <div class="insight-title">Failure of textual description</div>
-        <div class="insight-body">A major pain point. Severe limitation in expressing aesthetic identity through words alone. Language fails where visuals succeed.</div>
-      </div>
-    </div>
-    <div class="insight-grid" style="margin-top:12px">
-      <div class="insight-card" style="grid-column:1/-1">
-        <div class="insight-num">Insight 03</div>
-        <div class="insight-title">Taste evolution — driven externally, not just internally</div>
-        <div class="insight-body">Personal style shifts over time through curiosity, celebrity influence, and friend feedback — but also through algorithmic feedback loops. One interviewee's taste was explicitly shaped by what the platform's algorithm chose to show her based on her saves and likes, not just her own organic preferences.</div>
-      </div>
-    </div>
-
+  <!-- SOLUTION -->
+  <section class="section reveal" id="solution">
+    <span class="sec-anchor">03 — solution</span>
+    <h2 class="sec-heading">Your camera roll, turned into a vibe board</h2>
+    <p class="sec-text">Connect your camera roll and Spotify, let the AI read them, and get one board with your aesthetic label, color palette and soundtrack. It's built to be shared, not just viewed.</p>
     <div class="photo-wrap">
-      <img src="../photos/vibe/empathy-map.png" alt="Empathy map — Says, Thinks, Does, and Feels for the Gen Z aesthetic curator" />
-      <div class="photo-caption">Empathy map — Says / Thinks / Does / Feels across the Gen Z aesthetic curator persona</div>
+      <img src="../photos/vibe/full%20ui%20flow.png" alt="Complete UI flow: Home, Choose Inputs, Photo Selection, Loading, and Vibe Board" />
     </div>
-
-    <div class="photo-wrap">
-      <img src="../photos/vibe/journey-map.png" alt="Journey map — Mia's flow from Trigger to Returns" />
-      <div class="photo-caption">Journey map — Doing / Thinking / Feeling / Opportunities across each stage</div>
+    <div class="concept-label">The flow · answers Insights 01–03</div>
+    <h3 class="concept-heading">One scan, one board</h3>
+    <p class="sec-text">Five screens take you from "What's your vibe?" to a board worth posting.</p>
+    <div class="decision-box">
+      <div class="decision-label">Design decision</div>
+      <p>Why recommend the AI scan over picking your own photos? People pick what they think represents them, not what actually does. The camera roll shows real life, not a curated version. Trade-off: a full scan feels invasive to some users, so manual selection stays one tap away and the app says up front that photos are never stored.</p>
     </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- PRODUCT: 5-SCREEN FLOW -->
-  <section class="section reveal">
-    <span class="sec-anchor">05 — product</span>
-    <h2 class="sec-heading">The UI flow — 5 screens</h2>
-    <p class="sec-text">
-      The interface was generated using <strong>Figma Make</strong> (AI-generated UI) and tested with real users. Each screen was designed around a specific cognitive science or UX principle derived from research.
-    </p>
+    <p class="sec-text">How each screen answers the research:</p>
 
     <div class="screen-split">
       <div class="screen-split-row">
@@ -748,10 +712,112 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- RESEARCH -->
+  <section class="section reveal">
+    <span class="sec-anchor">04 — research</span>
+    <h2 class="sec-heading">Two people, scattered across five apps</h2>
+    <p class="sec-text">
+      Structured 1:1 interviews following a formal interview plan (target audience, recruitment approach, 5 core hypotheses, warm-up script) per the CogSci 112 UX research framework.
+    </p>
+
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="insight-num">Interviewee #1</div>
+        <div class="insight-title">23, female, UC Berkeley alumna, works at Amazon</div>
+        <div class="insight-body">Describes aesthetic as "Kimjiwon / chic, girlish." Saves via screenshots, Instagram, notes app. Taste driven by algorithmic feedback and celebrity references. Said: "Without visuals, it's hard."</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Interviewee #2</div>
+        <div class="insight-title">23, female, college student, digital native</div>
+        <div class="insight-body">Describes aesthetic as "clean girl, classy vibe." Uses TikTok and IG saves. Frustrated by language barriers: "청순하다" → "innocent" loses the meaning. Thinks contextually about style (TPO: Time, Place, Occasion).</div>
+      </div>
+    </div>
 
     <div class="photo-wrap">
-      <img src="../photos/vibe/full%20ui%20flow.png" alt="Complete UI flow: Home, Choose Inputs, Photo Selection, Loading, and Vibe Board" />
-      <div class="photo-caption">Complete UI flow: Home → Choose Inputs → Scan Mode → Loading → Vibe Board</div>
+      <img src="../photos/vibe/empathy-map.png" alt="Empathy map — Says, Thinks, Does, and Feels for the Gen Z aesthetic curator" />
+      <div class="photo-caption">Empathy map — Says / Thinks / Does / Feels across the Gen Z aesthetic curator persona</div>
+    </div>
+
+    <div class="photo-wrap">
+      <img src="../photos/vibe/journey-map.png" alt="Journey map — Mia's flow from Trigger to Returns" />
+      <div class="photo-caption">Journey map — Doing / Thinking / Feeling / Opportunities across each stage</div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- INSIGHTS -->
+  <section class="section reveal" id="insights">
+    <span class="sec-anchor">05 — insights</span>
+    <h2 class="sec-heading">What did I find?</h2>
+    <div class="insight-grid">
+      <article class="insight-static">
+        <div class="insight-num">Insight 01 — Fragmented</div>
+        <h3 class="insight-headline">Their taste lives in five apps</h3>
+        <div class="insight-body">Both interviewees kept their taste in scattered places: screenshots, the Notes app, Instagram saves, TikTok likes. It's never in one spot, so they can never see the whole picture.</div>
+        <div class="insight-link">→ Led to: Choose Your Inputs</div>
+      </article>
+      <article class="insight-static">
+        <div class="insight-num">Insight 02 — Expression</div>
+        <h3 class="insight-headline">Words lose the vibe</h3>
+        <div class="insight-quote">"Without visuals, it's hard to explain my style."</div>
+        <div class="insight-body">Describing an aesthetic in words falls flat. One interviewee's Korean word 청순하다 becomes 'innocent and pure' in English, which loses exactly what makes it work.</div>
+        <div class="insight-link">→ Led to: Vibe Board Reveal</div>
+      </article>
+      <article class="insight-static">
+        <div class="insight-num">Insight 03 — Evolution</div>
+        <h3 class="insight-headline">The algorithm shapes the taste</h3>
+        <div class="insight-quote">"The algorithm changes based on what I save/like."</div>
+        <div class="insight-body">Style shifts through celebrities, friends and curiosity, but also through what platforms choose to show. Taste is never fixed, so a one-time label won't hold.</div>
+        <div class="insight-link">→ Led to: Refine</div>
+      </article>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- THE PIVOT — key narrative beat -->
+  <section class="section reveal">
+    <span class="sec-anchor">06 — the pivot</span>
+    <h2 class="sec-heading">Two interviews killed my first idea</h2>
+    <p class="sec-text">The project didn't start as Vibe. It started as <strong>Identity OS</strong>, built on an assumption the interviews proved wrong.</p>
+
+    <div class="pivot-block">
+      <div class="pivot-row">
+        <div class="pivot-side before">
+          <div class="pivot-label before">Before — Identity OS</div>
+          <div class="pivot-name">Help users discover their identity</div>
+          <div class="pivot-desc">Original hypothesis: users are confused about who they are. They need a tool to synthesize their scattered data and surface patterns they don't already see about themselves.</div>
+        </div>
+        <div class="pivot-arrow">→</div>
+        <div class="pivot-side after">
+          <div class="pivot-label after">After — Vibe</div>
+          <div class="pivot-name">Help users express who they already know they are</div>
+          <div class="pivot-desc">What interviews revealed: both interviewees immediately named their aesthetic ("clean girl," "chic, girlish"). They weren't confused about their identity — they just couldn't express it. The problem was expression, not discovery.</div>
+        </div>
+      </div>
+      <div class="pivot-insight">Two interviews were enough to rename the product, rewrite the user needs statement, and redirect the entire feature set.</div>
+    </div>
+
+    <!-- needs statement evolution -->
+    <p class="sec-text" style="margin-top:32px;">The user needs statement evolved three times as research sharpened the problem:</p>
+    <div class="needs-list">
+      <div class="needs-item">
+        <div class="needs-version">v1 — initial</div>
+        <div class="needs-text">A self-curating Gen Z digital curator needs to synthesize and identify underlying patterns across their scattered digital data to deeply understand and articulate their personal aesthetic identity to others.</div>
+      </div>
+      <div class="needs-item">
+        <div class="needs-version">v2 — post interviews</div>
+        <div class="needs-text">A trend-conscious Gen Z digital native needs a way to consolidate their fragmented digital footprint into a singular visual output, because relying on text descriptions and rigid labels fails to capture the true essence of their personal identity.</div>
+      </div>
+      <div class="needs-item final">
+        <div class="needs-version">v3 — final</div>
+        <div class="needs-text">A trend-conscious Gen Z digital native needs a way to turn their fragmented saved content into a shareable cultural object that represents who they are — because text labels and rigid algorithms fail to capture the true essence of their personal style, and there's no satisfying way to present it socially.</div>
+      </div>
     </div>
   </section>
 
@@ -759,8 +825,8 @@
 
   <!-- USER TESTING -->
   <section class="section reveal">
-    <span class="sec-anchor">06 — testing</span>
-    <h2 class="sec-heading">What usability testing actually found</h2>
+    <span class="sec-anchor">07 — testing</span>
+    <h2 class="sec-heading">The wait was fine. The spinner wasn't.</h2>
     <p class="sec-text">
       Moderated usability tests with 2 participants — each given realistic task scenarios (e.g. "You want to use the app but your camera roll has personal photos in it — what do you do?"). Think-aloud protocol throughout.
     </p>
@@ -798,8 +864,8 @@
 
   <!-- REFLECTION -->
   <section class="section reveal">
-    <span class="sec-anchor">07 — reflection</span>
-    <h2 class="sec-heading">The central lesson</h2>
+    <span class="sec-anchor">08 — reflection</span>
+    <h2 class="sec-heading">Expression, not discovery</h2>
     <p class="sec-text">
       The original assumption was wrong. Users don't need help <em>discovering</em> who they are — they need better ways to <em>express</em> who they already are. <strong>Two interviews were enough to rename the product and redirect the entire feature set.</strong>
     </p>
@@ -820,8 +886,8 @@
 
   <!-- PHASE 2 — VIBE EVERYWHERE -->
   <section class="section reveal">
-    <span class="sec-anchor">08 — phase 2 vision</span>
-    <h2 class="sec-heading">Vibe Everywhere — design exploration <span style="font-size:14px;color:var(--muted);font-weight:400;">(not yet user-validated)</span></h2>
+    <span class="sec-anchor">09 — phase 2 vision</span>
+    <h2 class="sec-heading">What if every app knew your vibe? <span style="font-size:14px;color:var(--muted);font-weight:400;">(not yet user-validated)</span></h2>
     <p class="sec-text">
       Vibe already tells a user who they are. The next question: what if that same profile became a layer that <em>other</em> software adapts to — not just Vibe's own interface, but apps like Claude or Instagram, adjusted per person?
     </p>
